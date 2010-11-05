@@ -134,6 +134,10 @@ get '/manifest.xml' do
   erb :manifest, :layout => false
 end
 
+get '/' do
+  "Hello World"
+end
+
 # Catch-all route
 get '/*' do
   redirect '/cal'
