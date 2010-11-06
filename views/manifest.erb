@@ -20,8 +20,8 @@
   - under the License.
   -->
 <ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
-  <Name>Hello World</Name>
-  <Description>Demonstrates a simple Google Apps Marketplace application</Description>
+  <Name>PivoPlus</Name>
+  <Description>Integration with PivotalTracker</Description>
 
   <!-- Administrators and users will be sent to this URL for application support -->
   <Support>
@@ -30,7 +30,7 @@
 
   <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
-    <Name>Hello World</Name>
+    <Name>PivoPlus</Name>
     <Url><%= url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
     <Scope ref="calendarAPI"/>
   </Extension>
