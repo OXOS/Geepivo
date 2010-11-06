@@ -101,7 +101,8 @@ get '/cal' do
   oauth_consumer = OAuth::Consumer.new(CONSUMER_KEY, CONSUMER_SECRET)
   access_token = OAuth::AccessToken.new(oauth_consumer)
   client = Google::Client.new(access_token, '2.0');
-  feed = client.get('https://www.google.com/calendar/feeds/default/private/full', {
+  calendar_url = "http://www.google.com/calendar/feeds/oxos.pl_kaht1mepb6gcgkb5orsq91po88%40group.calendar.google.com/public/basic"
+  feed = client.get(calendar_url, {
     'xoauth_requestor_id' => @user_attrs[:email],
     'orderby' => 'starttime',
     'singleevents' => 'true',
