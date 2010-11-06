@@ -16,15 +16,8 @@
 # KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations
 # under the License.
-require 'rubygems'
-require 'sinatra'
-
 use Rack::Session::Cookie
 enable :sessions
-
-require 'gapps_openid'
-require 'rack/openid'
-require 'google_util'
 
 use Rack::OpenID
 
