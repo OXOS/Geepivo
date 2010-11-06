@@ -24,6 +24,8 @@ use Rack::OpenID
 CONSUMER_KEY = ENV['CONSUMER_KEY']
 CONSUMER_SECRET = ENV['CONSUMER_SECRET']
 
+require 'ruby-debug'
+
 helpers do
   def require_authentication    
     redirect '/login' unless authenticated?
@@ -101,7 +103,8 @@ get '/cal' do
   oauth_consumer = OAuth::Consumer.new(CONSUMER_KEY, CONSUMER_SECRET)
   access_token = OAuth::AccessToken.new(oauth_consumer)
   client = Google::Client.new(access_token, '2.0');
-  calendar_url = "http://www.google.com/calendar/feeds/oxos.pl_kaht1mepb6gcgkb5orsq91po88%40group.calendar.google.com/public/basic"
+  #calendar_url = "http://www.google.com/calendar/feeds/oxos.pl_kaht1mepb6gcgkb5orsq91po88%40group.calendar.google.com/public/basic"
+	calendar_url = "https://www.google.com/calendar/feeds/default/private/full"
   feed = client.get(calendar_url, {
     'xoauth_requestor_id' => @user_attrs[:email],
     'orderby' => 'starttime',
@@ -110,6 +113,7 @@ get '/cal' do
     'start-min' => Time.now.strftime('%Y-%m-%dT%H:%M:%S')
   })
   throw :halt, [500, "Unable to query calendar feed"] if feed.nil?
+
   @events = []
   feed.elements.each('//entry') do |entry|
     @events << {
