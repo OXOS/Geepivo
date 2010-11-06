@@ -38,7 +38,6 @@ module Google
     
     def make_request(method, url)
       response = @token.request(method, url, { 'GData-Version' => version })
-      raise response.inspect
       if response.is_a?(Net::HTTPFound)
         url = response['Location']
         return make_request(method, response['Location'])

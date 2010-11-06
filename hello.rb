@@ -30,7 +30,7 @@ helpers do
   end 
   
   def authenticated?
-    !session[:openid].nil?
+    !session["openid"].nil?
   end
   
   def url_for(path)
@@ -48,8 +48,8 @@ helpers do
 end
 
 before do
-  @openid = session[:openid]
-  @user_attrs = session[:user_attributes]
+  @openid = session["openid"]
+  @user_attrs = session["user_attributes"]
 end
 
 # Clear the session
@@ -81,9 +81,9 @@ end
 post '/openid/complete' do
   resp = request.env["rack.openid.response"]
   if resp.status == :success
-    session[:openid] = resp.display_identifier
+    session["openid"] = resp.display_identifier
     ax = OpenID::AX::FetchResponse.from_success_response(resp)
-    session[:user_attributes] = {
+    session["user_attributes"] = {
       :email => ax.get_single("http://axschema.org/contact/email"),
       :first_name => ax.get_single("http://axschema.org/namePerson/first"),
       :last_name => ax.get_single("http://axschema.org/namePerson/last")     
