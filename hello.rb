@@ -88,10 +88,14 @@ module GmailXoauth
     # +user+ is an email address: roger@gmail.com
     # +password+ is a hash of oauth parameters, see +build_oauth_string+
     def initialize(user, password)
-      @request_url = "https://mail.google.com/mail/b/#{user}/imap/?xoauth_requestor_id=daniel%40oxos.pl";
-			@oauth_string = build_2_legged_oauth_string(@request_url, user, password)
+			@request_url, @auth_string = if password[:two_legged]
+				[ "https://mail.google.com/mail/b/#{user}/imap/?xoauth_requestor_id=daniel%40oxos.pl",
+					build_2_legged_oauth_string(@request_url, user, password) ]
+			else
+				[ "https://mail.google.com/mail/b/#{user}/imap/",
+					build_oauth_string(@request_url, user, password) ]
+			end
     end
-    
   end
 end
 
@@ -100,7 +104,7 @@ Net::IMAP.add_authenticator('XOAUTH', GmailXoauth::ImapXoauthAuthenticator)
 
 imap = Net::IMAP.new('imap.googlemail.com', 993, usessl = true, certs = nil, verify = false)
 imap.send(:debug=,true)
-imap.authenticate 'XOAUTH', 'daniel@oxos.pl', :consumer_key => CONSUMER_KEY, :consumer_secret => CONSUMER_SECRET
+imap.authenticate 'XOAUTH', 'daniel@oxos.pl', :two_legged => true, :consumer_key => CONSUMER_KEY, :consumer_secret => CONSUMER_SECRET
 
 messages_count = imap.status('INBOX', ['MESSAGES'])['MESSAGES']
 puts "Seeing #{messages_count} messages in INBOX"
