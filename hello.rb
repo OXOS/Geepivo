@@ -89,7 +89,7 @@ module GmailXoauth
     # +password+ is a hash of oauth parameters, see +build_oauth_string+
     def initialize(user, password)
 			@request_url, @auth_string = if password[:two_legged]
-				[ "https://mail.google.com/mail/b/#{user}/imap/?xoauth_requestor_id=daniel%40oxos.pl",
+				[ "https://mail.google.com/mail/b/#{user}/imap/?xoauth_requestor_id=#{user}",
 					build_2_legged_oauth_string(@request_url, user, password) ]
 			else
 				[ "https://mail.google.com/mail/b/#{user}/imap/",
