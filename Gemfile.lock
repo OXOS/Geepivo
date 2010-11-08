@@ -2,6 +2,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     columnize (0.3.2)
+    gmail_xoauth (0.2.0)
+      oauth (>= 0.3.6)
     linecache (0.43)
     oauth (0.4.4)
     rack (1.2.1)
@@ -25,6 +27,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  gmail_xoauth
   oauth
   rack-openid
   ruby-debug
