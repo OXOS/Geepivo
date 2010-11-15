@@ -9,7 +9,8 @@ require 'gapps_openid'
 require 'rack/openid'
 require 'google_util'
 require 'oauth'
-require 'gmail_xoauth'
+require 'net/imap'
+#require 'gmail_xoauth'
 
 require 'hello'
 run Sinatra::Application
