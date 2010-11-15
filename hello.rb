@@ -84,10 +84,11 @@ end
 
 get '/mail' do
   require_authentication
+  email = @user_attrs[:email]
   
   imap = Net::IMAP.new('imap.googlemail.com', 993, usessl = true, certs = nil, verify = false)
   imap.send(:debug=,true)
-  imap.authenticate 'XOAUTH', 'daniel@oxos.pl', :two_legged => true, :consumer_key => CONSUMER_KEY, :consumer_secret => CONSUMER_SECRET
+  imap.authenticate 'XOAUTH', email, :two_legged => true, :consumer_key => CONSUMER_KEY, :consumer_secret => CONSUMER_SECRET
   
   messages_count = imap.status('INBOX', ['MESSAGES'])['MESSAGES']
   "Seeing #{messages_count} messages in INBOX"
