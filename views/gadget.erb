@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <ModulePrefs title="Hello World"
-    description="Matches and echoes 'Hello World' string in emails (<%=url_for('/') %>)"
+    description="Matches and echoes 'Hello World' string in emails (<%= @app_suffix %>)"
     height="20"
     author="Sarah M and Walter Q"
     author_email="..."
@@ -34,7 +34,7 @@
    "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
     <![CDATA[
-      <p>GeePivo 1</p>
+      <p>GeePivo 1 (<%= @app_suffix %>)</p>
     ]]>
   </Content>
 </Module>

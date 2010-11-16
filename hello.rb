@@ -37,6 +37,7 @@ end
 before do
   @openid = session["openid"]
   @user_attrs = session["user_attributes"]
+  @app_suffix = request.env['HTTP_HOST']
 end
 
 # Clear the session
@@ -100,7 +101,6 @@ end
 
 get '/manifest.xml' do
   content_type 'text/xml'
-  @application_name = "PivoPlus (#{request.env['HTTP_HOST']})"
   @gadget_specs_url = url_for('/gadget.xml')
 
   if ENV['RACK_ENV'] == 'development'
