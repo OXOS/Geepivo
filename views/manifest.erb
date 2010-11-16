@@ -8,7 +8,21 @@
   <Name><%= @application_name %></Name>
   <Description>Pivotal Plus integration</Description>
 
-<!-- EXTRACTOR -->
+  <Extension id="realm" type="openIdRealm">
+    <Url><%= url_for('') %></Url>
+  </Extension>
+
+
+  <Extension id="navLink" type="link">
+    <Name>PivoPlus</Name>
+    <Url><%= url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
+    <Scope ref="calendarAPI"/>
+  </Extension>
+
+  <Scope id="calendarAPI">
+    <Url>https://mail.google.com/</Url>
+    <Reason>This app monitors for emails with specified labels, to turn them into stories.</Reason>
+  </Scope>
 
 <Extension id="HelloWorldExtractor" type="contextExtractor">
   <Name>Hello World</Name>
@@ -19,15 +33,11 @@
   <Container name="mail"/>
 </Extension>
 
-<!-- GADGET -->
-
 <Extension id="HelloWorldGadget" type="gadget">
   <Name>PivoPlus Gmail contextual gadget</Name>
   <Url><%= @gadget_specs_url %></Url>
   <Container name="mail"/>
 </Extension>
-
-<!-- SCOPE -->
 
 <Scope id="emailSubject">
   <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
