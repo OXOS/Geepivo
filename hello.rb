@@ -105,6 +105,13 @@ end
 
 get '/manifest.xml' do
   content_type 'text/xml'
+  @application_name = "PivoPlus (#{request.env['HTTP_HOST']})"
+  @gadget_specs_url = url_for('/hello_world_gadget.xml')
+
+  if ENV['RACK_ENV'] == 'development'
+    @gadget_specs_url = 'http://pivodev.oxos.pl/hello_world_gadget.xml'
+  end
+
   erb :manifest, :layout => false
 end
 
