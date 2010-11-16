@@ -11,7 +11,7 @@ $:.push 'lib/gmail_xoauth/lib/'
 require 'gmail_xoauth.rb'
 
 helpers do
-	include Rack::Utils
+  include Rack::Utils
 
   def require_authentication    
     redirect '/login' unless authenticated?
@@ -26,8 +26,7 @@ helpers do
     url << request.host
 
     scheme, port = request.scheme, request.port
-    if scheme == "https" && port != 443 ||
-        scheme == "http" && port != 80
+    if scheme == "https" && port != 443 || scheme == "http" && port != 80
       url << ":#{port}"
     end
     url << path
@@ -104,36 +103,6 @@ get '/hello_world_gadget.xml' do
   erb :hello_world_gadget, :layout => false
 end
 
-# Display upcoming calendar appointments
-get '/cal' do
-  require_authentication
-  
-  oauth_consumer = OAuth::Consumer.new(CONSUMER_KEY, CONSUMER_SECRET)
-  access_token = OAuth::AccessToken.new(oauth_consumer)
-  client = Google::Client.new(access_token, '2.0');
-  #calendar_url = "http://www.google.com/calendar/feeds/oxos.pl_kaht1mepb6gcgkb5orsq91po88%40group.calendar.google.com/public/basic"
-	calendar_url = "https://www.google.com/calendar/feeds/default/private/full"
-  feed = client.get(calendar_url, {
-    'xoauth_requestor_id' => @user_attrs[:email],
-    'orderby' => 'starttime',
-    'singleevents' => 'true',
-    'sortorder' => 'a',
-    'start-min' => Time.now.strftime('%Y-%m-%dT%H:%M:%S')
-  })
-  throw :halt, [500, "Unable to query calendar feed"] if feed.nil?
-
-  @events = []
-  feed.elements.each('//entry') do |entry|
-    @events << {
-      :title => entry.elements["title"].text,
-      :content => entry.elements["content"].text,
-      :start_time => entry.elements["gd:when"].attribute("startTime").value,
-      :end_time => entry.elements["gd:when"].attribute("endTime").value
-    }
-  end
-  erb :events
-end
-
 get '/manifest.xml' do
   content_type 'text/xml'
   erb :manifest, :layout => false
@@ -143,9 +112,8 @@ get '/' do
   "Hello World"
 end
 
-# Catch-all route
 get '/*' do
-  redirect '/cal'
+  redirect '/'
 end
 
 
