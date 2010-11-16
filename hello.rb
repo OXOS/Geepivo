@@ -94,6 +94,16 @@ get '/mail' do
   "Seeing #{messages_count} messages in INBOX"
 end
 
+get '/gadget.xml' do
+  content_type 'text/xml'
+  erb :gadget, :layout => false
+end
+
+get '/hello_world_gadget.xml' do
+  content_type 'text/xml'
+  erb :hello_world_gadget, :layout => false
+end
+
 # Display upcoming calendar appointments
 get '/cal' do
   require_authentication
@@ -124,7 +134,6 @@ get '/cal' do
   erb :events
 end
 
-# Generate a manifest for this deployment
 get '/manifest.xml' do
   content_type 'text/xml'
   erb :manifest, :layout => false

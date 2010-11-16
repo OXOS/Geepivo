@@ -1,49 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-  <!--
-  - Copyright 2010 Google Inc.
-  -
-  - Licensed to the Apache Software Foundation (ASF) under one
-  - or more contributor license agreements. See the NOTICE file
-  - distributed with this work for additional information
-  - regarding copyright ownership. The ASF licenses this file
-  - to you under the Apache License, Version 2.0 (the "License");
-  - you may not use this file except in compliance
-  - with the License. You may obtain a copy of the License at
-  -
-  -     http://www.apache.org/licenses/LICENSE-2.0
-  -
-  - Unless required by applicable law or agreed to in writing,
-  - software distributed under the License is distributed on an
-  - "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  - KIND, either express or implied. See the License for the
-  - specific language governing permissions and limitations
-  - under the License.
-  -->
 <ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
-  <Name>PivoPlus</Name>
-  <Description>Integration with PivotalTracker</Description>
 
-  <!-- Administrators and users will be sent to this URL for application support -->
   <Support>
     <Link rel="support" href="<%= url_for('/support') %>" />
   </Support>
 
-  <!-- Show this link in Google's universal navigation for all users -->
-  <Extension id="navLink" type="link">
-    <Name>PivoPlus</Name>
-    <Url><%= url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
-    <Scope ref="calendarAPI"/>
-  </Extension>
+  <Name>HelloWorld</Name>
+  <Description>A simple Hello World application for testing
+  Gmail contextual gadgets</Description>
 
-  <!-- Declare our OpenID realm so our app is white listed -->
-  <Extension id="realm" type="openIdRealm">
-    <Url><%= url_for('') %></Url>
-  </Extension>
+<!-- EXTRACTOR -->
 
-  <!-- Need access to the Calendar API -->
-  <Scope id="calendarAPI">
-    <Url>https://mail.google.com/</Url>
-    <Reason>This app monitors for emails with specified labels, to turn them into stories.</Reason>
-  </Scope>
+<Extension id="HelloWorldExtractor" type="contextExtractor">
+  <Name>Hello World</Name>
+  <Url>google.com:HelloWorld</Url>
+  <Triggers ref="HelloWorldGadget"/>
+  <Scope ref="emailSubject"/>
+  <Scope ref="emailBody"/>
+  <Container name="mail"/>
+</Extension>
+
+<!-- GADGET -->
+
+<Extension id="HelloWorldGadget" type="gadget">
+  <Name>Hello World Gmail contextual gadget</Name>
+  <Url><%= url_for('/hello_world_gadget.xml') %></Url>
+  <Container name="mail"/>
+</Extension>
+
+<!-- SCOPE -->
+
+<Scope id="emailSubject">
+  <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
+  <Reason>This application searches the Subject: line of each email
+  for the text "Hello World."</Reason>
+</Scope>
+
+<Scope id="emailBody">
+  <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
+  <Reason>This application searches the message body of each email
+  for the text "Hello World."</Reason>
+</Scope>
 
 </ApplicationManifest>
+

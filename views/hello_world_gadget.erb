@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Hello World"
+    description="Matches and echoes 'Hello World' string in emails"
+    height="20"
+    author="Sarah M and Walter Q"
+    author_email="..."
+    author_location="Mountain View, CA">
+
+    <!-- Declare feature dependencies. -->
+
+    <!-- This one is not specific to Gmail contextual gadgets. -->
+    <Require feature="dynamic-height"/>
+
+    <!-- The next feature, Caja, is optional, and is supported for
+     use only within test domains. Uncomment the tag only for
+     non-production gadgets. -->
+    <!-- <Require feature="caja"/> -->
+
+    <!-- The next feature, google.contentmatch, is required for all
+     Gmail contextual gadgets.
+     <Param> - specify one or more comma-separated extractor IDs in
+     a param named "extractors". This line is overridden by the extractor ID
+     in the manifest, but is still expected to be present. -->
+    <Require feature="google.contentmatch">
+      <Param name="extractors">
+        google.com:HelloWorld
+      </Param>
+    </Require>
+
+  </ModulePrefs>
+
+  <!-- Define the content type and display location. The settings
+   "html" and "card" are required for all Gmail contextual gadgets. -->
+  <Content type="html" view="card">
+    <![CDATA[
+      <p>motor pompa</p>
+      <!-- Start with Single Sign-On -->
+      <script type="text/javascript">
+
+        <!-- Fetch the array of content matches. -->
+        var matches = google.contentmatch.getContentMatches();
+	alert( matches );
+
+      </script>
+    ]]>
+  </Content>
+</Module>
+
