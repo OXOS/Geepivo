@@ -27,25 +27,24 @@
 
   <!-- Contextual gadget -->
 
-  <Extension id="HelloWorldExtractor" type="contextExtractor">
-    <Name>Hello World</Name>
+  <Extension id="GeePivoExtractor" type="contextExtractor">
+    <Name>GeePivo</Name>
     <Url>google.com:HelloWorld</Url>
-    <Triggers ref="HelloWorldGadget"/>
+    <Triggers ref="GeePivoGadget"/>
     <Scope ref="emailSubject"/>
     <Scope ref="emailBody"/>
     <Container name="mail"/>
   </Extension>
   
-  <Extension id="HelloWorldGadget" type="gadget">
-    <Name>PivoPlus Gmail contextual gadget</Name>
+  <Extension id="GeePivoGadget" type="gadget">
+    <Name>GeePivo Gmail contextual gadget</Name>
     <Url><%= @gadget_specs_url %></Url>
     <Container name="mail"/>
   </Extension>
   
   <Scope id="emailSubject">
     <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
-    <Reason>This application searches the Subject: line of each email
-    for the text "Hello World."</Reason>
+    <Reason>GeePivo uses Email subjects as Story names.</Reason>
   </Scope>
   
   <Scope id="emailBody">
