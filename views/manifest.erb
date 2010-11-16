@@ -5,9 +5,8 @@
     <Link rel="support" href="<%= url_for('/support') %>" />
   </Support>
 
-  <Name>HelloWorld</Name>
-  <Description>A simple Hello World application for testing
-  Gmail contextual gadgets</Description>
+  <Name>PivoPlus</Name>
+  <Description>Pivotal Plus integration</Description>
 
 <!-- EXTRACTOR -->
 
@@ -23,7 +22,7 @@
 <!-- GADGET -->
 
 <Extension id="HelloWorldGadget" type="gadget">
-  <Name>Hello World Gmail contextual gadget</Name>
+  <Name>PivoPlus Gmail contextual gadget</Name>
   <Url><%= url_for('/hello_world_gadget.xml') %></Url>
   <Container name="mail"/>
 </Extension>
