@@ -29,10 +29,10 @@
 
   <Extension id="GeePivoExtractor" type="contextExtractor">
     <Name>GeePivo</Name>
-    <Url>google.com:HelloWorld</Url>
+    <Url>google.com:SubjectExtractor</Url>
+    <Param name="subject" value=".*"/>
     <Triggers ref="GeePivoGadget"/>
     <Scope ref="emailSubject"/>
-    <Scope ref="emailBody"/>
     <Container name="mail"/>
   </Extension>
   
