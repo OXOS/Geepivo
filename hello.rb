@@ -98,18 +98,13 @@ get '/gadget.xml' do
   erb :gadget, :layout => false
 end
 
-get '/hello_world_gadget.xml' do
-  content_type 'text/xml'
-  erb :hello_world_gadget, :layout => false
-end
-
 get '/manifest.xml' do
   content_type 'text/xml'
   @application_name = "PivoPlus (#{request.env['HTTP_HOST']})"
-  @gadget_specs_url = url_for('/hello_world_gadget.xml')
+  @gadget_specs_url = url_for('/gadget.xml')
 
   if ENV['RACK_ENV'] == 'development'
-    @gadget_specs_url = 'http://pivodev.oxos.pl/hello_world_gadget.xml'
+    @gadget_specs_url = 'http://pivodev.oxos.pl/gadget.xml'
   end
 
   erb :manifest, :layout => false
