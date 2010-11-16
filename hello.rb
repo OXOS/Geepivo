@@ -122,8 +122,3 @@ end
 get '/*' do
   redirect '/'
 end
-
-
-
-
-
