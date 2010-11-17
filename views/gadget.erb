@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <ModulePrefs title="GeePivo"
-    description="Creates Pivotal Tracker Stories from Emails (<%= @app_suffix %>)"
-    height="200"
+    description="Creates Pivotal Tracker Stories from Emails (<%= @app_suffix + ',' + @current_time %>)"
+    height="100"
     author="Wojciech Kruszewski (OXOS.pl)"
     author_email="wojciech@oxos.pl"
     author_location="Nowa Sól, Poland">
@@ -34,29 +34,38 @@
    "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
     <![CDATA[
-      <p>GeePivo 5 (<%= @app_suffix + ',' + @current_time %>)</p>
+      <p>
+	<button id="create_story_button">Create Story</button>
+      </p>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-
       <script type="text/javascript">
 	var root_url = "<%= url_for('/') %>";
-	var matches = google.contentmatch.getContentMatches();
-        <!-- Fetch the array of content matches. -->
-        var matches = google.contentmatch.getContentMatches();
-	var subject = matches[0]['subject'];
-	$("<p>subject: " + subject + "</p>").appendTo(document.body);
 
-	var stories_url = root_url + 'stories';
-	var params = {};
-   	params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
-   	params[gadgets.io.RequestParameters.POST_DATA]= gadgets.io.encodeValues({subject: subject});
-	var response_callback = function(response) {
-	  console.log( response.data );
-	  $("<p>response: " + response.text + "</p>").appendTo(document.body);
+	var post_create_story = function(subject) {
+	  var stories_url = root_url + 'stories';
+	  var params = {};
+   	  params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+   	  params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues({
+	    email: {
+	      subject: subject
+	    }
+	  });
+   	  //params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(gadgets.io.RequestParameters.POST_DATA);
+	  var response_callback = function(response) {
+	    console.log( response.data );
+	    $("<p>response: " + response.text + "</p>").appendTo(document.body);
+	  }
+	  gadgets.io.makeRequest(stories_url, response_callback, params);
 	}
-	gadgets.io.makeRequest(stories_url, response_callback, params);
 
-	gadgets.window.adjustHeight(300);
+	var matches = google.contentmatch.getContentMatches();
+	var subject = matches[0]['subject'];
+
+	$('#create_story_button').click(function(){
+	  post_create_story( subject );
+	  gadgets.window.adjustHeight(300);
+	});
 
       </script>
     ]]>
