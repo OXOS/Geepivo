@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'bundler'
 
-#Bundler.require
 Bundler.setup
 
 require 'sinatra'
@@ -10,7 +9,12 @@ require 'rack/openid'
 require 'google_util'
 require 'oauth'
 require 'net/imap'
-#require 'gmail_xoauth'
+require 'pivotal-tracker'
+
+configure(:development) do |c|
+  require "sinatra/reloader"
+  require "ruby-debug"
+end
 
 require 'hello'
 run Sinatra::Application

@@ -10,6 +10,32 @@ CONSUMER_SECRET = ENV['CONSUMER_SECRET']
 $:.push 'lib/gmail_xoauth/lib/'
 require 'gmail_xoauth.rb'
 
+module PivotalTracker
+  class Story
+
+    def move_to_top_of_backlog
+      project = Project.find self.project_id
+      top_story = project.stories.all(:current_state => "unstarted").first
+      move :before => top_story
+    end
+
+    def move opts
+      target = opts[:before] || opts[:after]
+      target_id = if target.is_a? Story
+        target.id
+      else
+        target
+      end
+
+      place  = opts.has_key?(:before) ? :before : :after
+
+      response = Client.connection["/projects/#{project_id}/stories/#{id}/moves?move\[move\]=#{place}&move\[target\]=#{target_id}"].post("", :content_type => 'application/xml')
+      return Story.parse(response)
+    end
+
+  end
+end
+
 helpers do
   include Rack::Utils
 
@@ -84,7 +110,32 @@ post '/openid/complete' do
 end
 
 post '/stories' do
-  "creating a story... (#{params.inspect})"
+  story = nil
+
+  PivotalTracker::Client.token = '894b02b8a2473be7ce6a2bf8847b7f16'
+  project = PivotalTracker::Project.find(145861)
+
+  default_attribs = {:story_type => 'chore', :current_state => "unstarted", :owned_by => "Daniel", :requested_by=> "Wojciech"}
+  attribs = default_attribs.dup.merge(
+    :name => params[:email][:subject]
+  )
+  begin
+    story = project.stories.create attribs
+    story.move_to_top_of_backlog
+  rescue Exception => e
+    story = e.inspect
+  end
+
+  "creating a story...<br />
+  <small><small>
+  params: #{params.inspect}<br />
+  project: #{project.inspect}<br />
+  attribs: #{attribs.inspect}<br />
+  <small></small>
+  <big>
+  story: #{story.inspect}<br />
+  <big>\n\n"
+  
 end
 
 get '/mail' do
