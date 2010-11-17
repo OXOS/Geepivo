@@ -44,12 +44,13 @@
       <script type="text/javascript">
 	var root_url = "<%= url_for('/') %>";
 
-	var post_create_story = function(subject) {
+	var post_create_story = function(subject, message_id) {
 	  var stories_url = root_url + 'stories';
 	  var params = {};
    	  params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
    	  params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues({
-	    "email[subject]": subject
+	    "email[subject]": subject,
+	    "email[message_id]": message_id
 	  });
    	  //params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(gadgets.io.RequestParameters.POST_DATA);
 	  var response_callback = function(response) {
@@ -59,10 +60,18 @@
 	}
 
 	var matches = google.contentmatch.getContentMatches();
-	var subject = matches[0]['subject'];
+
+	var inputs = {};
+	for(var imatch in matches){
+	  $.extend( inputs, matches[imatch] );
+	}
+
+	for(var key in inputs) {
+	  console.log( "inputs[" + key + " ] => " + inputs[key] );
+	}
 
 	$('#create_story_button').click(function(){
-	  post_create_story( subject );
+	  post_create_story( inputs.subject, inputs.message_id );
 	  gadgets.window.adjustHeight(300);
 	});
 

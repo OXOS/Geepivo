@@ -117,7 +117,9 @@ post '/stories' do
 
   default_attribs = {:story_type => 'chore', :current_state => "unstarted", :owned_by => "Daniel", :requested_by=> "Wojciech"}
   attribs = default_attribs.dup.merge(
-    :name => params[:email][:subject]
+    :name => params[:email][:subject],
+    :other_id => params[:email][:message_id],
+    :integration_id => 2033
   )
   begin
     story = project.stories.create attribs
@@ -133,7 +135,7 @@ post '/stories' do
   attribs: #{attribs.inspect}<br />
   <small></small>
   <big>
-  story: #{story.inspect}<br />
+  story: ##{story.id} #{story.inspect}<br />
   <big>\n\n"
   
 end
