@@ -133,7 +133,7 @@ post '/stories' do
   attribs: #{attribs.inspect}<br />
   <small></small>
   <big>
-  story: #{story.inspect}<br />
+  story: ##{story.id} #{story.inspect}<br />
   <big>\n\n"
   
 end

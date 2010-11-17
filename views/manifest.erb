@@ -35,7 +35,16 @@
     <Scope ref="emailSubject"/>
     <Container name="mail"/>
   </Extension>
-  
+
+  <Extension id="GeepivoMessageIDExtractor" type="contextExtractor">
+    <Name>GeePivo MessageId Extractor</Name>
+    <Url>google.com:MessageIDExtractor</Url>
+    <Param name="message_id" value=".*"/>
+    <Triggers ref="GeePivoGadget"/>
+    <Scope ref="emailIdScope"/>
+    <Container name="mail"/>
+  </Extension>
+
   <Extension id="GeePivoGadget" type="gadget">
     <Name>GeePivo Gmail contextual gadget</Name>
     <Url><%= @gadget_specs_url %></Url>
@@ -47,6 +56,11 @@
     <Reason>GeePivo uses Email subjects as Story names.</Reason>
   </Scope>
   
+  <Scope id="emailIdScope">
+    <Url>tag:google.com,2010:auth/contextual/extractor/MESSAGE_ID</Url>
+    <Reason>Geepivo links to Gmail message using its message ID.</Reason>
+  </Scope>
+
   <Scope id="emailBody">
     <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
     <Reason>This application searches the message body of each email
