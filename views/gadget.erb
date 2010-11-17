@@ -34,25 +34,16 @@
    "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
     <![CDATA[
-      <p>GeePivo 4 (<%= @app_suffix %>)</p>
+      <p>GeePivo 5 (<%= @app_suffix + ',' + @current_time %>)</p>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
       <script type="text/javascript">
 	var matches = google.contentmatch.getContentMatches();
         <!-- Fetch the array of content matches. -->
-        matches = google.contentmatch.getContentMatches();
-        var matchList = document.createElement('UL');
-        var listItem;
-        var extractedText;
-
-        <!-- Iterate through the array and display output for each match. -->
-        for (var match in matches) {
-          for (var key in matches[match]) {
-            listItem = document.createElement('LI');
-            extractedText = document.createTextNode(key + ": " + matches[match][key]);
-            listItem.appendChild(extractedText);
-            matchList.appendChild(listItem);
-          }
-        }
-        document.body.appendChild(matchList);
+        var matches = google.contentmatch.getContentMatches();
+	var subject = matches[0]['subject'];
+	$("<p>subject: " + subject + "</p>").appendTo(document.body);
 
 	gadgets.window.adjustHeight(300);
 

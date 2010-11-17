@@ -38,6 +38,7 @@ before do
   @openid = session["openid"]
   @user_attrs = session["user_attributes"]
   @app_suffix = request.env['HTTP_HOST']
+  @current_time = Time.now.to_s
 end
 
 # Clear the session
@@ -80,6 +81,10 @@ post '/openid/complete' do
   else
     "Error: #{resp.status}"
   end
+end
+
+post '/stories' do
+  "creating a story..."
 end
 
 get '/mail' do
