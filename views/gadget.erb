@@ -1,47 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="Pivotal Gadget" description="Creates Pivotal Tracker stories from emails." height="100" author="Wojciech Kruszewski" author_email="wojciech@oxos.pl" author_location="Nowa Sol, Poland">
+  <ModulePrefs title="GeePivo"
+    description="Creates Pivotal Tracker Stories from Emails (<%= @app_suffix + ',' + @current_time %>)"
+    height="40"
+    author="Wojciech Kruszewski (OXOS.pl)"
+    author_email="wojciech@oxos.pl"
+    author_location="Nowa Sól, Poland">
 
+    <!-- Declare feature dependencies. -->
+
+    <!-- This one is not specific to Gmail contextual gadgets. -->
+    <Require feature="dynamic-height"/>
+
+    <!-- The next feature, Caja, is optional, and is supported for
+     use only within test domains. Uncomment the tag only for
+     non-production gadgets. -->
+    <!-- <Require feature="caja"/> -->
+
+    <!-- The next feature, google.contentmatch, is required for all
+     Gmail contextual gadgets.
+     <Param> - specify one or more comma-separated extractor IDs in
+     a param named "extractors". This line is overridden by the extractor ID
+     in the manifest, but is still expected to be present. -->
     <Require feature="google.contentmatch">
-      <Param name="extractors">google.com:SubjectExtractor</Param>
+      <Param name="extractors">
+        google.com:SubjectExtractor
+      </Param>
     </Require>
 
   </ModulePrefs>
 
+  <!-- Define the content type and display location. The settings
+   "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
     <![CDATA[
-      <p>AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH
-      AAAAAARRRRRRGHGGGGHHHHHH</p>
-    ]]> 
+      <p>
+	<button id="create_story_button">Create Story</button>
+      </p>
+      <p id='notification'>.</p>
+
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+      <script type="text/javascript">
+	var root_url = "<%= url_for('/') %>";
+
+	var post_create_story = function(subject) {
+	  var stories_url = root_url + 'stories';
+	  var params = {};
+   	  params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+   	  params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues({
+	    "email[subject]": subject
+	  });
+   	  //params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(gadgets.io.RequestParameters.POST_DATA);
+	  var response_callback = function(response) {
+	    $('#notification').html( response.text );
+	  }
+	  gadgets.io.makeRequest(stories_url, response_callback, params);
+	}
+
+	var matches = google.contentmatch.getContentMatches();
+	var subject = matches[0]['subject'];
+
+	$('#create_story_button').click(function(){
+	  post_create_story( subject );
+	  gadgets.window.adjustHeight(300);
+	});
+
+      </script>
+    ]]>
   </Content>
 </Module>
 

@@ -10,6 +10,32 @@ CONSUMER_SECRET = ENV['CONSUMER_SECRET']
 $:.push 'lib/gmail_xoauth/lib/'
 require 'gmail_xoauth.rb'
 
+module PivotalTracker
+  class Story
+
+    def move_to_top_of_backlog
+      project = Project.find self.project_id
+      top_story = project.stories.all(:current_state => "unstarted").first
+      move :before => top_story
+    end
+
+    def move opts
+      target = opts[:before] || opts[:after]
+      target_id = if target.is_a? Story
+        target.id
+      else
+        target
+      end
+
+      place  = opts.has_key?(:before) ? :before : :after
+
+      response = Client.connection["/projects/#{project_id}/stories/#{id}/moves?move\[move\]=#{place}&move\[target\]=#{target_id}"].post("", :content_type => 'application/xml')
+      return Story.parse(response)
+    end
+
+  end
+end
+
 helpers do
   include Rack::Utils
 
@@ -37,6 +63,8 @@ end
 before do
   @openid = session["openid"]
   @user_attrs = session["user_attributes"]
+  @app_suffix = request.env['HTTP_HOST']
+  @current_time = Time.now.utc.to_s
 end
 
 # Clear the session
@@ -81,6 +109,35 @@ post '/openid/complete' do
   end
 end
 
+post '/stories' do
+  story = nil
+
+  PivotalTracker::Client.token = '894b02b8a2473be7ce6a2bf8847b7f16'
+  project = PivotalTracker::Project.find(145861)
+
+  default_attribs = {:story_type => 'chore', :current_state => "unstarted", :owned_by => "Daniel", :requested_by=> "Wojciech"}
+  attribs = default_attribs.dup.merge(
+    :name => params[:email][:subject]
+  )
+  begin
+    story = project.stories.create attribs
+    story.move_to_top_of_backlog
+  rescue Exception => e
+    story = e.inspect
+  end
+
+  "creating a story...<br />
+  <small><small>
+  params: #{params.inspect}<br />
+  project: #{project.inspect}<br />
+  attribs: #{attribs.inspect}<br />
+  <small></small>
+  <big>
+  story: #{story.inspect}<br />
+  <big>\n\n"
+  
+end
+
 get '/mail' do
   require_authentication
   email = @user_attrs[:email]
@@ -98,18 +155,12 @@ get '/gadget.xml' do
   erb :gadget, :layout => false
 end
 
-get '/hello_world_gadget.xml' do
-  content_type 'text/xml'
-  erb :hello_world_gadget, :layout => false
-end
-
 get '/manifest.xml' do
   content_type 'text/xml'
-  @application_name = "PivoPlus (#{request.env['HTTP_HOST']})"
-  @gadget_specs_url = url_for('/hello_world_gadget.xml')
+  @gadget_specs_url = url_for('/gadget.xml')
 
   if ENV['RACK_ENV'] == 'development'
-    @gadget_specs_url = 'http://pivodev.oxos.pl/hello_world_gadget.xml'
+    @gadget_specs_url = 'http://pivodev.oxos.pl/gadget.xml'
   end
 
   erb :manifest, :layout => false
