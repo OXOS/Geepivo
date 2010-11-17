@@ -38,7 +38,7 @@ before do
   @openid = session["openid"]
   @user_attrs = session["user_attributes"]
   @app_suffix = request.env['HTTP_HOST']
-  @current_time = Time.now.to_s
+  @current_time = Time.now.utc.to_s
 end
 
 # Clear the session
@@ -84,7 +84,7 @@ post '/openid/complete' do
 end
 
 post '/stories' do
-  "creating a story..."
+  "creating a story... (#{params.inspect})"
 end
 
 get '/mail' do

@@ -39,11 +39,22 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 
       <script type="text/javascript">
+	var root_url = "<%= url_for('/') %>";
 	var matches = google.contentmatch.getContentMatches();
         <!-- Fetch the array of content matches. -->
         var matches = google.contentmatch.getContentMatches();
 	var subject = matches[0]['subject'];
 	$("<p>subject: " + subject + "</p>").appendTo(document.body);
+
+	var stories_url = root_url + 'stories';
+	var params = {};
+   	params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+   	params[gadgets.io.RequestParameters.POST_DATA]= gadgets.io.encodeValues({subject: subject});
+	var response_callback = function(response) {
+	  console.log( response.data );
+	  $("<p>response: " + response.text + "</p>").appendTo(document.body);
+	}
+	gadgets.io.makeRequest(stories_url, response_callback, params);
 
 	gadgets.window.adjustHeight(300);
 
