@@ -17,13 +17,7 @@
   <Extension id="navLink" type="link">
     <Name>PivoPlus</Name>
     <Url><%= url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
-    <Scope ref="GmailScope"/>
   </Extension>
-
-  <Scope id="GmailScope">
-    <Url>https://mail.google.com/</Url>
-    <Reason>This app monitors for emails with specified labels, to turn them into stories.</Reason>
-  </Scope>
 
   <!-- Contextual gadget -->
 
@@ -59,12 +53,6 @@
   <Scope id="emailIdScope">
     <Url>tag:google.com,2010:auth/contextual/extractor/MESSAGE_ID</Url>
     <Reason>Geepivo links to Gmail message using its message ID.</Reason>
-  </Scope>
-
-  <Scope id="emailBody">
-    <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
-    <Reason>This application searches the message body of each email
-    for the text "Hello World."</Reason>
   </Scope>
 
 </ApplicationManifest>
