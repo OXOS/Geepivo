@@ -152,11 +152,6 @@ get '/mail' do
   "Seeing #{messages_count} messages in INBOX"
 end
 
-get '/gadget.xml' do
-  content_type 'text/xml'
-  erb :gadget, :layout => false
-end
-
 get '/manifest.xml' do
   content_type 'text/xml'
   @gadget_specs_url = url_for('/gadget.xml')
