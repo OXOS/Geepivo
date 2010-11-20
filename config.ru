@@ -1,22 +1,24 @@
-require 'rubygems'
-require 'bundler'
+#require 'rubygems'
+#require 'bundler'
+#
+#Bundler.setup
+#
+#require 'sinatra'
+#require 'gapps_openid'
+#require 'rack/openid'
+#require 'google_util'
+#require 'oauth'
+#require 'net/imap'
+#require 'pivotal-tracker'
+#
+#configure(:development) do |c|
+#  require "sinatra/reloader"
+#  require "ruby-debug"
+#end
+#
+#require 'hello'
+#run Sinatra::Application
 
-Bundler.setup
 
-require 'sinatra'
-require 'gapps_openid'
-require 'rack/openid'
-require 'google_util'
-require 'oauth'
-require 'net/imap'
-require 'pivotal-tracker'
-
-configure(:development) do |c|
-  require "sinatra/reloader"
-  require "ruby-debug"
-end
-
-require 'hello'
-run Sinatra::Application
-
-
+use Rack::Static, :urls => ["/stylesheets", "/images"], :root => "public"
+run lambda { |env| [200, { 'Content-Type' => 'text/html', 'Cache-Control' => 'public, max-age=86400' }, File.open('public/index.html', File::RDONLY)] }
