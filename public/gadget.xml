@@ -2,7 +2,7 @@
 <Module>
   <ModulePrefs title="GeePivo"
     description="Creates Pivotal Tracker Stories from Emails (oxospl.nazwa.pl, 004)"
-    height="200"
+    height="50"
     author="Wojciech Kruszewski (OXOS.pl)"
     author_email="wojciech@oxos.pl"
     author_location="Nowa Sól, Poland">
@@ -37,7 +37,7 @@
   <Content type="html" view="card">
       <![CDATA[	<span></span>
 
-      <div id='gadget_container'>
+      <div id='gadget_container' style='display: none;'>
 
       <p>
 	<button class="create_story_button">Create Story</button>
@@ -85,8 +85,6 @@
       <script src="http://mustache.github.com/extras/mustache.js"></script>
 
       <script type="text/javascript">
-	gadgets.window.adjustHeight(500);
-
 	var container = $('#gadget_container');
 
 	var prefs = new gadgets.Prefs();
@@ -167,7 +165,6 @@
 
 	var inputs = {};
 	for(var imatch in matches){
-	  console.log(matches[imatch]);
 	  $.extend( inputs, matches[imatch] );
 	}
 
@@ -175,9 +172,16 @@
 	  console.log( "inputs[" + key + " ] => " + inputs[key] );
 	}
 
+	if (inputs.subject) {
+	  gadgets.window.adjustHeight(500);
+	  container.show();
+	} else {
+	  //Seems we're in a reply email - let's hide ourselves.
+	  gadgets.window.adjustHeight(0);
+	}
+
 	$('.create_story_button', container).click(function(){
 	  post_create_story( inputs.subject, inputs.message_id );
-	  gadgets.window.adjustHeight(300);
 	});
 
       </script>
