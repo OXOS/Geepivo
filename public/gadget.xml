@@ -44,8 +44,9 @@
 
       <div id='settings' style='font-size: small;'>
 	<p>
-	  <label for="pivotal_api_token_input">Pivotal API Token</label>
-	  <input id="pivotal_api_token_input" name="pivotal_api_token" />
+	  <label>Pivotal API Token
+	    <input id="pivotal_api_token_input" name="pivotal_api_token" />
+	  </label>
 	</p>
 
 	<p>
