@@ -1,4 +1,4 @@
-#source :rubygems
+source :rubygems
 
 #gem "sinatra"
 #gem "ruby-openid"
@@ -12,5 +12,6 @@
 #  gem "sinatra-reloader"
 #end
 
-
-
+gem "rack"
+gem "rack-contrib"
+gem "rack-rewrite"
