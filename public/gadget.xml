@@ -167,6 +167,7 @@
 
 	var inputs = {};
 	for(var imatch in matches){
+	  console.log(matches[imatch]);
 	  $.extend( inputs, matches[imatch] );
 	}
 
