@@ -37,6 +37,8 @@
   <Content type="html" view="card">
       <![CDATA[	<span></span>
 
+      <div id='gadget_container'>
+
       <p>
 	<button id="create_story_button">Create Story</button>
       </p>
@@ -45,36 +47,38 @@
       <div id='settings' style='font-size: small;'>
 	<p>
 	  <label>Pivotal API Token
-	    <input id="pivotal_api_token_input" name="pivotal_api_token" />
+	    <input name="pivotal_api_token" />
 	  </label>
 	</p>
 
 	<p>
-	  <label for="project_id_input">Project ID</label>
-	  <input id="project_id_input" name="project_id" />
+	  <label>Project ID
+	  <input name="project_id" /></label>
 	</p>
 
 	<p>
-	  <label for="story_type_input">Story type</label>
-	  <input id="story_type_input" name="story_type" />
+	  <label>Story type
+	  <input name="story_type" /></label>
 	</p>
 
 	<p>
-	  <label for="requested_by_input">Requested by</label>
-	  <input id="requested_by_input" name="requested_by" />
+	  <label>Requested by
+	  <input name="requested_by" /></label>
 	</p>
 
 	<p>
-	  <label for="integration_id_input">Integration ID</label>
-	  <input id="integration_id_input" name="integration_id" />
+	  <label>Integration ID
+	  <input name="integration_id" /></label>
 	</p>
 
 	<p>
-	  <label for="owned_by_input">Owned by</label>
-	  <input id="owned_by_input" name="owned_by" />
+	  <label>Owned by
+	  <input name="owned_by" /></label>
 	</p>
 
-	<input type='submit' id='save_settings' value="Save settings" />
+	<input type='submit' class='save_settings_button' value="Save settings" />
+      </div>
+
       </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
@@ -83,18 +87,22 @@
       <script type="text/javascript">
 	gadgets.window.adjustHeight(500);
 
-	console.log( 'start' );
+	var container = $('#gadget_container');
 
 	var prefs = new gadgets.Prefs();
 
-	var settings = [ 'pivotal_api_token', 'project_id', 'story_type', 'requested_by', 'integration_id', 'owned_by' ];
-	for( i in settings ) {
-	  $("#" + settings[i] + "_input").val( prefs.getString(settings[i]) );
+	var setting_input = function(name) {
+	  return $("input[name=" + name + "]", container);
 	}
 
-	$("#save_settings").click(function(){
+	var settings = [ 'pivotal_api_token', 'project_id', 'story_type', 'requested_by', 'integration_id', 'owned_by' ];
+	for( i in settings ) {
+	  setting_input( settings[i] ).val( prefs.getString(settings[i]) );
+	}
+
+	$(".save_settings_button").click(function(){
 	  for( i in settings ) {
-	    var val = $("#" + settings[i] + "_input").val();
+	    var val = setting_input( settings[i] ).val();
 	    prefs.set(settings[i], val );
 	  }
 	  alert('settings saved');
