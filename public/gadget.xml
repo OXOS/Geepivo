@@ -39,10 +39,10 @@
 
       <div id='gadget_container' style='display: none;'>
 
-      <p>
+      <div style='widh: 100px; float: left'>
 	<button class="create_story_button">Create Story</button>
-      </p>
-      <div class='notification_area'>.</div>
+      </div>
+      <div class='notification_area'>&nbsp;</div>
 
       <div id='settings' style='font-size: small;'>
 	<p>
