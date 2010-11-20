@@ -42,7 +42,7 @@
       <p>
 	<button id="create_story_button">Create Story</button>
       </p>
-      <div id='notification'>.</div>
+      <div class='notification_area'>.</div>
 
       <div id='settings' style='font-size: small;'>
 	<p>
@@ -100,7 +100,7 @@
 	  setting_input( settings[i] ).val( prefs.getString(settings[i]) );
 	}
 
-	$(".save_settings_button").click(function(){
+	$(".save_settings_button", container).click(function(){
 	  for( i in settings ) {
 	    var val = setting_input( settings[i] ).val();
 	    prefs.set(settings[i], val );
@@ -156,9 +156,7 @@
 
 	    var url = $(respXML).find("url").text();
 	    console.log( url );
-	    //$("#notification").empty();
-	    $("#notification").html( '<a href="' + url + '">' + url + '</a>' );
-	    //$("<a />", {href: url}).text(url).appendTo( $("notification") );
+	    $(".notification_area", container).html( '<a href="' + url + '">' + url + '</a>' );
 
 
 	  };
