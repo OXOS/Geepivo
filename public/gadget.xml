@@ -40,7 +40,7 @@
       <div id='gadget_container'>
 
       <p>
-	<button id="create_story_button">Create Story</button>
+	<button class="create_story_button">Create Story</button>
       </p>
       <div class='notification_area'>.</div>
 
@@ -174,7 +174,7 @@
 	  console.log( "inputs[" + key + " ] => " + inputs[key] );
 	}
 
-	$('#create_story_button').click(function(){
+	$('.create_story_button', container).click(function(){
 	  post_create_story( inputs.subject, inputs.message_id );
 	  gadgets.window.adjustHeight(300);
 	});
