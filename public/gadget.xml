@@ -85,6 +85,12 @@
       <script src="http://mustache.github.com/extras/mustache.js"></script>
 
       <script type="text/javascript">
+	if(!window.console) {
+	  window.console = {};
+	  console.log = function(msg) {};
+	  console.debug = function(msg) {};
+	}
+
 	var container = $('#gadget_container');
 
 	var prefs = new gadgets.Prefs();
