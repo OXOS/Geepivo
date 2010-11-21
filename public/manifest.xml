@@ -14,10 +14,12 @@
 
   <!-- Contextual gadget -->
 
+  <!--
   <Extension id="navLink" type="link">
     <Name>PivoPlus</Name>
     <Url>http://geepivo.com/login?openid_identifier=${DOMAIN_NAME}</Url> 
   </Extension>
+  -->
 
   <!-- Contextual gadget -->
 
