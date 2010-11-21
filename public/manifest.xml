@@ -2,21 +2,21 @@
 <ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
 
   <Support>
-    <Link rel="support" href="<%= url_for('/support') %>" />
+    <Link rel="support" href="http://getsatisfaction.com/geepivo" />
   </Support>
 
-  <Name>Gee Pivo (<%= @app_suffix %>)</Name>
+  <Name>Gee Pivo (geepivo.com)</Name>
   <Description>Pivotal Plus integration</Description>
 
   <Extension id="realm" type="openIdRealm">
-    <Url><%= url_for('') %></Url>
+    <Url>http://geepivo.com</Url>
   </Extension>
 
   <!-- Contextual gadget -->
 
   <Extension id="navLink" type="link">
     <Name>PivoPlus</Name>
-    <Url><%= url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
+    <Url>http://geepivo.com/login?openid_identifier=${DOMAIN_NAME}</Url> 
   </Extension>
 
   <!-- Contextual gadget -->
@@ -27,6 +27,7 @@
     <Param name="subject" value=".*"/>
     <Triggers ref="GeePivoGadget"/>
     <Scope ref="emailSubject"/>
+
     <Container name="mail"/>
   </Extension>
 
@@ -35,14 +36,16 @@
     <Url>google.com:MessageIDExtractor</Url>
     <Param name="message_id" value=".*"/>
     <Triggers ref="GeePivoGadget"/>
+
     <Scope ref="emailIdScope"/>
     <Container name="mail"/>
   </Extension>
 
   <Extension id="GeePivoGadget" type="gadget">
     <Name>GeePivo Gmail contextual gadget</Name>
-    <Url><%= @gadget_specs_url %></Url>
+    <Url>http://geepivo.com/gadget.xml</Url>
     <Container name="mail"/>
+
   </Extension>
   
   <Scope id="emailSubject">
@@ -52,8 +55,8 @@
   
   <Scope id="emailIdScope">
     <Url>tag:google.com,2010:auth/contextual/extractor/MESSAGE_ID</Url>
+
     <Reason>Geepivo links to Gmail message using its message ID.</Reason>
   </Scope>
 
 </ApplicationManifest>
-
