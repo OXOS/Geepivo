@@ -41,8 +41,8 @@
 	<button id="create_story_button">Create Story</button>
       </p>
       <div id='notification'>.</div>
-
-      <div id='settings' style='font-size: small;'>
+      <a href="#" id='toggle_settings_button' style='font-size: small;'>Show settings</a>
+      <div id='settings' style='font-size: small; display:none;'>
 	<p>
 	  <label for="pivotal_api_token_input">Pivotal API Token</label>
 	  <input id="pivotal_api_token_input" name="pivotal_api_token" />
@@ -171,6 +171,13 @@
 	  post_create_story( inputs.subject, inputs.message_id );
 	  gadgets.window.adjustHeight(300);
 	});
+
+        $('#toggle_settings_button').click(function(){
+          if($('#settings').toggle().is(":visible"))
+            $(this).html("Hide settings");
+          else
+            $(this).html("Show settings");
+        });
 
       </script>
       ]]>
