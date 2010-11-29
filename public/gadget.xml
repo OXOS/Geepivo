@@ -37,17 +37,21 @@
   <Content type="html" view="card">
       <![CDATA[	<span></span>
 
-      <div id='gadget_container' style='display: none;'>
+      <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'>
 
-      <div style='widh: 100px; float: left'>
+      <div style='widh: 100px; position:absolute; top:3px; left:3px;'>
 	<button class="create_story_button">Create Story</button>
       </div>
-      <div class='notification_area'>&nbsp;</div>
-      <div style='clear:both;'></div>
-      <div style='padding:2px 0px;'>
-        <a href="#" id='toggle_settings_button' style='font-size: small;'>Show settings</a>
+
+      <div class='notification_area' style=' position:absolute; top:3px; left:113px;'>&nbsp;</div>
+
+      <div style='widh: 100px; position:absolute; top:3px; right:3px;'>
+        <a href="#" id='toggle_settings_button' style='font-size: small; text-decoration:none;'>settings ▼</a>
       </div>
-      <div id='settings' style='font-size: small; display:none;'>
+
+      <div style='clear:both;'></div>
+
+      <div id='settings' style='font-size: small; display:none; padding-top:30px;'>
 	<p>
 	  <label>Pivotal API Token
 	    <input name="pivotal_api_token" />
@@ -182,7 +186,7 @@
 	}
 
 	if (inputs.subject) {
-	  gadgets.window.adjustHeight(50);
+	  gadgets.window.adjustHeight(32);
 	  container.show();
 	} else {
 	  //Seems we're in a reply email - let's hide ourselves.
@@ -196,13 +200,13 @@
         $('#toggle_settings_button').click(function(){
           if($('#settings').toggle().is(":visible"))
           {
-            $(this).html("Hide settings");
+            $(this).html("settings ▲");
             gadgets.window.adjustHeight(350);
           }
           else
           {
-            $(this).html("Show settings");
-            gadgets.window.adjustHeight(50);
+            $(this).html("settings ▼");
+            gadgets.window.adjustHeight(32);
           }
         });
 
