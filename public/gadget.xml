@@ -182,7 +182,7 @@
 	}
 
 	if (inputs.subject) {
-	  gadgets.window.adjustHeight(500);
+	  gadgets.window.adjustHeight(50);
 	  container.show();
 	} else {
 	  //Seems we're in a reply email - let's hide ourselves.
@@ -195,9 +195,15 @@
 
         $('#toggle_settings_button').click(function(){
           if($('#settings').toggle().is(":visible"))
+          {
             $(this).html("Hide settings");
+            gadgets.window.adjustHeight(350);
+          }
           else
+          {
             $(this).html("Show settings");
+            gadgets.window.adjustHeight(50);
+          }
         });
 
       </script>
