@@ -160,7 +160,7 @@
 
 	    var url = $(respXML).find("url").text();
 	    console.log( url );
-	    $(".notification_area", container).html( '<a href="' + url + '">' + url + '</a>' );
+	    $(".notification_area", container).html( '<a href="' + url + '" target="_blank">' + url + '</a>' );
 
 
 	  };
