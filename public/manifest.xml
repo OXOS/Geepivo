@@ -9,7 +9,7 @@
   <Description>Pivotal Plus integration</Description>
 
   <Extension id="realm" type="openIdRealm">
-    <Url>http://geepivo.com</Url>
+    <Url>http://dev.geepivo.com</Url>
   </Extension>
 
   <!-- Contextual gadget -->
@@ -17,7 +17,7 @@
   <!--
   <Extension id="navLink" type="link">
     <Name>PivoPlus</Name>
-    <Url>http://geepivo.com/login?openid_identifier=${DOMAIN_NAME}</Url> 
+    <Url>http://dev.geepivo.com/login?openid_identifier=${DOMAIN_NAME}</Url> 
   </Extension>
   -->
 
@@ -33,19 +33,9 @@
     <Container name="mail"/>
   </Extension>
 
-  <Extension id="GeepivoMessageIDExtractor" type="contextExtractor">
-    <Name>GeePivo MessageId Extractor</Name>
-    <Url>google.com:MessageIDExtractor</Url>
-    <Param name="message_id" value=".*"/>
-    <Triggers ref="GeePivoGadget"/>
-
-    <Scope ref="emailIdScope"/>
-    <Container name="mail"/>
-  </Extension>
-
   <Extension id="GeePivoGadget" type="gadget">
     <Name>GeePivo Gmail contextual gadget</Name>
-    <Url>http://geepivo.com/gadget.xml</Url>
+    <Url>http://dev.geepivo.com/gadget.xml</Url>
     <Container name="mail"/>
 
   </Extension>
@@ -53,12 +43,6 @@
   <Scope id="emailSubject">
     <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
     <Reason>GeePivo uses Email subjects as Story names.</Reason>
-  </Scope>
-  
-  <Scope id="emailIdScope">
-    <Url>tag:google.com,2010:auth/contextual/extractor/MESSAGE_ID</Url>
-
-    <Reason>Geepivo links to Gmail message using its message ID.</Reason>
   </Scope>
 
 </ApplicationManifest>
