@@ -45,7 +45,10 @@ class Story
     console.log "post new story xml:", story_xml
     params[gadgets.io.RequestParameters.POST_DATA] = story_xml
     response_callback = (response) =>
-      console.log "post new story response:", response.text
+      console.log "post new story response:", response
+      console.log "post new story response data:", response.data
+      console.log "post new story response errors:", response.errors
+      console.log "post new story response text:", response.text
       respXML = null
       if window.DOMParser
         parser = new DOMParser()
@@ -57,8 +60,8 @@ class Story
       @url = $(respXML).find("url").text()
       console.log @url
       @story_id = $(respXML).find("id").text()
-      this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
       on_success(this)
+      this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
     
     gadgets.io.makeRequest stories_url, response_callback, params
 

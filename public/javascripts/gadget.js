@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:24:41 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:34:57 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -45,7 +45,10 @@
       params[gadgets.io.RequestParameters.POST_DATA] = story_xml;
       response_callback = __bind(function(response) {
         var parser, respXML;
-        console.log("post new story response:", response.text);
+        console.log("post new story response:", response);
+        console.log("post new story response data:", response.data);
+        console.log("post new story response errors:", response.errors);
+        console.log("post new story response text:", response.text);
         respXML = null;
         if (window.DOMParser) {
           parser = new DOMParser();
@@ -58,8 +61,8 @@
         this.url = $(respXML).find("url").text();
         console.log(this.url);
         this.story_id = $(respXML).find("id").text();
-        this.put_update_other_id();
-        return on_success(this);
+        on_success(this);
+        return this.put_update_other_id();
       }, this);
       return gadgets.io.makeRequest(stories_url, response_callback, params);
     };
