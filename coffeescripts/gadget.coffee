@@ -102,36 +102,42 @@ gadget_content = """
   <div style='clear:both;'></div>
   
   <div id='settings' style='font-size: small; display:none; padding-top:30px;'>
-    <p>
-      <label>Pivotal API Token
+    <div>
+      <label>Pivotal API Token *
         <input name="pivotal_api_token" />
       </label>
-    </p>
+      <p><small>To get an API token log in to PivotalTracker, open <em><a href='https://www.pivotaltracker.com/profile'>Profile</a></em> form, scroll down to <em>API Token section</em> and click <em>Create New Token</em>.</small></p>
+    </div>
     
-    <p>
-      <label>Project ID
+    <div>
+      <label>Project ID *
       <input name="project_id" /></label>
-    </p>
+      <p><small>ID of a PivotalTracker project Geepivo will create stories in. You can find project ID at the end of project URL, e.g.: https://www.pivotaltracker.com/projects/12345</small></p>.
+    </div>
     
-    <p>
+    <div>
       <label>Story type
       <input name="story_type" /></label>
-    </p>
+      <p><small>One of following: "feature", "chore" or "bug". Leave the field empty to use the default value - "feature".</small></p>
+    </div>
     
-    <p>
-      <label>Requested by
+    <div>
+      <label>Requested by:
       <input name="requested_by" /></label>
-    </p>
+      <p><small>Optionally specify user who will be notified about story delivery and prompted to accept or reject it. By default it's the owner of API token. Enter "Full Name" here, as visible in Pivotal Tracker's story form.</small></em>.
+    </div>
     
-    <p>
-      <label>Integration ID
-      <input name="integration_id" /></label>
-    </p>
-    
-    <p>
-      <label>Owned by
+    <div>
+      <label>Owned by:
       <input name="owned_by" /></label>
-    </p>
+      <p><small>User the story will be assigned to. By default the story is not assigned. Enter "Full Name" here, as visible in Pivotal Tracker's story form.</small></em>.
+    </div>
+
+    <div>
+      <label>Integration ID (optional)
+      <input name="integration_id" /></label>
+      <p><small>Experimental hack. Configure "External Integration" in Pivotal Tracker and it will be filled with Story ID. Set base URL of the integration to something like <em>https://mail.google.com/mail/u/0/?shva=1#search/</em>, story ID will be prepended and you will be able to search for emails that contain links to the story.</small></em>.
+    </div>
     
     <input type='submit' class='save_settings_button' value="Save settings" />
   </div>
