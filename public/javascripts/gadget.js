@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 09:04:55 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 09:18:00 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -28,7 +28,7 @@
   });
   post_create_story = function(subject, message_id) {
     var params, response_callback, stories_url, story_xml, template;
-    stories_url = "http://www.pivotaltracker.com/services/v3/projects/" + prefs.getString("project_id") + "/stories";
+    stories_url = "http://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories";
     params = {};
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
     params[gadgets.io.RequestParameters.HEADERS] = {
@@ -63,13 +63,13 @@
       url = $(respXML).find("url").text();
       console.log(url);
       put_update_other_id($(respXML).find("id").text());
-      return $(".notification_area", container).html("<a href=\"" + url + "\" target=\"_blank\">" + url + "</a>");
+      return $(".notification_area", container).html("<a href='" + url + "' target='_blank'>" + url + "</a>");
     };
     return gadgets.io.makeRequest(stories_url, response_callback, params);
   };
   put_update_other_id = function(story_id) {
     var params, response_callback, story_url, story_xml, template;
-    story_url = "http://www.pivotaltracker.com/services/v3/projects/" + prefs.getString("project_id") + "/stories/" + story_id;
+    story_url = "http://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories/" + story_id;
     params = {};
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT;
     params[gadgets.io.RequestParameters.HEADERS] = {

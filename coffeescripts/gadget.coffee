@@ -1,16 +1,17 @@
 unless window.console
   window.console = {}
   console.log = (msg) ->
-  
   console.debug = (msg) ->
+
 container = $("#gadget_container")
 prefs = new gadgets.Prefs()
 setting_input = (name) ->
-  $ "input[name=" + name + "]", container
+  $ "input[name=#{name}]", container
 
 settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
 for i of settings
   setting_input(settings[i]).val prefs.getString(settings[i])
+
 $(".save_settings_button", container).click ->
   for i of settings
     val = setting_input(settings[i]).val()
@@ -18,16 +19,16 @@ $(".save_settings_button", container).click ->
   alert "settings saved"
 
 post_create_story = (subject, message_id) ->
-  stories_url = "http://www.pivotaltracker.com/services/v3/projects/" + prefs.getString("project_id") + "/stories"
+  stories_url = "http://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
   params = {}
   params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST
-  params[gadgets.io.RequestParameters.HEADERS] = 
+  params[gadgets.io.RequestParameters.HEADERS] =
     "X-TrackerToken": prefs.getString("pivotal_api_token")
     "Content-type": "application/xml"
   
   params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
   template = "<story>" + "<project_id>{{project_id}}</project_id>" + "<story_type>{{story_type}}</story_type>" + "<name>{{name}}</name>" + "<integration_id>{{integration_id}}</integration_id>" + "<other_id>{{other_id}}</other_id>" + "<requested_by>{{requested_by}}</requested_by>" + "<owned_by>{{owned_by}}</owned_by>" + "</story>"
-  story_xml = Mustache.to_html(template, 
+  story_xml = Mustache.to_html(template,
     project_id: prefs.getString("project_id")
     story_type: prefs.getString("story_type")
     name: subject
@@ -51,21 +52,21 @@ post_create_story = (subject, message_id) ->
     url = $(respXML).find("url").text()
     console.log url
     put_update_other_id $(respXML).find("id").text()
-    $(".notification_area", container).html "<a href=\"" + url + "\" target=\"_blank\">" + url + "</a>"
+    $(".notification_area", container).html "<a href='#{url}' target='_blank'>#{url}</a>"
   
   gadgets.io.makeRequest stories_url, response_callback, params
 
 put_update_other_id = (story_id) ->
-  story_url = "http://www.pivotaltracker.com/services/v3/projects/" + prefs.getString("project_id") + "/stories/" + story_id
+  story_url = "http://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories/#{story_id}"
   params = {}
   params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT
-  params[gadgets.io.RequestParameters.HEADERS] = 
+  params[gadgets.io.RequestParameters.HEADERS] =
     "X-TrackerToken": prefs.getString("pivotal_api_token")
     "Content-type": "application/xml"
   
   params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
   template = "<story>" + "<integration_id>{{integration_id}}</integration_id>" + "<other_id>{{other_id}}</other_id>" + "</story>"
-  story_xml = Mustache.to_html(template, 
+  story_xml = Mustache.to_html(template,
     integration_id: prefs.getString("integration_id")
     other_id: story_id
   )
