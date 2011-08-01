@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:42:50 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:48:48 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -115,7 +115,7 @@
     for (i in settings) {
       setting_input(settings[i]).val(prefs.getString(settings[i]));
     }
-    if (!(prefs.getString("pivotal_api_token") && prefs.getString("pivotal_api_token"))) {
+    if (!(prefs.getString("pivotal_api_token") && prefs.getString("project_id"))) {
       $(".notification_area", container).html("Please fill required settings");
       $("#settings").show();
       on_settings_opened_or_closed();
