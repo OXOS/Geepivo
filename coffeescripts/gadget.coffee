@@ -27,16 +27,18 @@ post_create_story = (subject, message_id) ->
     "Content-type": "application/xml"
   
   params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
-  template = "<story>" + "<project_id>{{project_id}}</project_id>" + "<story_type>{{story_type}}</story_type>" + "<name>{{name}}</name>" + "<integration_id>{{integration_id}}</integration_id>" + "<other_id>{{other_id}}</other_id>" + "<requested_by>{{requested_by}}</requested_by>" + "<owned_by>{{owned_by}}</owned_by>" + "</story>"
-  story_xml = Mustache.to_html(template,
-    project_id: prefs.getString("project_id")
-    story_type: prefs.getString("story_type")
-    name: subject
-    integration_id: prefs.getString("integration_id")
-    other_id: message_id
-    requested_by: prefs.getString("requested_by")
-    owned_by: prefs.getString("owned_by")
-  )
+  story_xml = """
+    <story>
+      <project_id>#{prefs.getString('project_id')}</project_id>
+      <story_type>#{prefs.getString('story_type')}</story_type>
+      <name>#{subject}</name>
+      <integration_id>#{prefs.getString('integration_id')}</integration_id>
+      <other_id>#{message_id}</other_id>
+      <requested_by>#{prefs.getString('requested_by')}</requested_by>
+      <owned_by>#{prefs.getString('owned_by')}</owned_by>
+    </story>
+    """
+
   console.log "post new story xml:", story_xml
   params[gadgets.io.RequestParameters.POST_DATA] = story_xml
   response_callback = (response) ->
@@ -65,11 +67,7 @@ put_update_other_id = (story_id) ->
     "Content-type": "application/xml"
   
   params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
-  template = "<story>" + "<integration_id>{{integration_id}}</integration_id>" + "<other_id>{{other_id}}</other_id>" + "</story>"
-  story_xml = Mustache.to_html(template,
-    integration_id: prefs.getString("integration_id")
-    other_id: story_id
-  )
+  story_xml = "<story>" + "<integration_id>#{prefs.getString("integration_id")}</integration_id><other_id>#{story_id}</other_id></story>"
   console.log "update other_id xml:", story_xml
   params[gadgets.io.RequestParameters.POST_DATA] = story_xml
   response_callback = (response) ->

@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 09:18:00 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 09:33:22 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -27,7 +27,7 @@
     return alert("settings saved");
   });
   post_create_story = function(subject, message_id) {
-    var params, response_callback, stories_url, story_xml, template;
+    var params, response_callback, stories_url, story_xml;
     stories_url = "http://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories";
     params = {};
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
@@ -36,16 +36,7 @@
       "Content-type": "application/xml"
     };
     params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
-    template = "<story>" + "<project_id>{{project_id}}</project_id>" + "<story_type>{{story_type}}</story_type>" + "<name>{{name}}</name>" + "<integration_id>{{integration_id}}</integration_id>" + "<other_id>{{other_id}}</other_id>" + "<requested_by>{{requested_by}}</requested_by>" + "<owned_by>{{owned_by}}</owned_by>" + "</story>";
-    story_xml = Mustache.to_html(template, {
-      project_id: prefs.getString("project_id"),
-      story_type: prefs.getString("story_type"),
-      name: subject,
-      integration_id: prefs.getString("integration_id"),
-      other_id: message_id,
-      requested_by: prefs.getString("requested_by"),
-      owned_by: prefs.getString("owned_by")
-    });
+    story_xml = "<story>\n  <project_id>" + (prefs.getString('project_id')) + "</project_id>\n  <story_type>" + (prefs.getString('story_type')) + "</story_type>\n  <name>" + subject + "</name>\n  <integration_id>" + (prefs.getString('integration_id')) + "</integration_id>\n  <other_id>" + message_id + "</other_id>\n  <requested_by>" + (prefs.getString('requested_by')) + "</requested_by>\n  <owned_by>" + (prefs.getString('owned_by')) + "</owned_by>\n</story>";
     console.log("post new story xml:", story_xml);
     params[gadgets.io.RequestParameters.POST_DATA] = story_xml;
     response_callback = function(response) {
@@ -68,7 +59,7 @@
     return gadgets.io.makeRequest(stories_url, response_callback, params);
   };
   put_update_other_id = function(story_id) {
-    var params, response_callback, story_url, story_xml, template;
+    var params, response_callback, story_url, story_xml;
     story_url = "http://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories/" + story_id;
     params = {};
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT;
@@ -77,11 +68,7 @@
       "Content-type": "application/xml"
     };
     params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
-    template = "<story>" + "<integration_id>{{integration_id}}</integration_id>" + "<other_id>{{other_id}}</other_id>" + "</story>";
-    story_xml = Mustache.to_html(template, {
-      integration_id: prefs.getString("integration_id"),
-      other_id: story_id
-    });
+    story_xml = "<story>" + ("<integration_id>" + (prefs.getString("integration_id")) + "</integration_id><other_id>" + story_id + "</other_id></story>");
     console.log("update other_id xml:", story_xml);
     params[gadgets.io.RequestParameters.POST_DATA] = story_xml;
     response_callback = function(response) {
