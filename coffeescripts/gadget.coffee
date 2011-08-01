@@ -46,22 +46,22 @@ class Story
     params[gadgets.io.RequestParameters.POST_DATA] = story_xml
     response_callback = (response) =>
       console.log "post new story response:", response
-      console.log "post new story response data:", response.data
-      console.log "post new story response errors:", response.errors
-      console.log "post new story response text:", response.text
-      respXML = null
-      if window.DOMParser
-        parser = new DOMParser()
-        respXML = parser.parseFromString(response.text, "text/xml")
+      if (response.rc > 400)
+        $(".notification_area", container).html("Error creating story")
       else
-        respXML = new ActiveXObject("Microsoft.XMLDOM")
-        respXML.async = "false"
-        respXML.loadXML response.text
-      @url = $(respXML).find("url").text()
-      console.log @url
-      @story_id = $(respXML).find("id").text()
-      on_success(this)
-      this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
+        respXML = null
+        if window.DOMParser
+          parser = new DOMParser()
+          respXML = parser.parseFromString(response.text, "text/xml")
+        else
+          respXML = new ActiveXObject("Microsoft.XMLDOM")
+          respXML.async = "false"
+          respXML.loadXML response.text
+        @url = $(respXML).find("url").text()
+        console.log @url
+        @story_id = $(respXML).find("id").text()
+        on_success(this)
+        this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
     
     gadgets.io.makeRequest stories_url, response_callback, params
 
@@ -71,12 +71,12 @@ on_story_created = (story) ->
 
 post_create_story = (subject, message_id) ->
   story = new Story
-  story.name	      	      = subject
-  story.project_id	      = prefs.getString('project_id')
-  story.story_type    	      = prefs.getString('story_type')
+  story.name                    = subject
+  story.project_id          = prefs.getString('project_id')
+  story.story_type              = prefs.getString('story_type')
   story.integration_id        = prefs.getString('integration_id')
   story.requested_by          = prefs.getString('requested_by')
-  story.owned_by	      = prefs.getString('owned_by')
+  story.owned_by          = prefs.getString('owned_by')
   story.create_and_update_other_id( on_story_created )
 
 matches = google.contentmatch.getContentMatches()
