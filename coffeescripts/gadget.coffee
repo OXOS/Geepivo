@@ -180,4 +180,4 @@ else
       prefs.set settings[i], val
       $("#settings").hide()
       on_settings_opened_or_closed()
-
+      $(".notification_area", container).html "Settings saved"

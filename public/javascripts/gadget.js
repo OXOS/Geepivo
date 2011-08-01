@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:21:31 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:24:41 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -130,7 +130,8 @@
         val = setting_input(settings[i]).val();
         prefs.set(settings[i], val);
         $("#settings").hide();
-        _results.push(on_settings_opened_or_closed());
+        on_settings_opened_or_closed();
+        _results.push($(".notification_area", container).html("Settings saved"));
       }
       return _results;
     });
