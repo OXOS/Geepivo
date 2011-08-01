@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 11:28:54 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 11:38:12 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -31,7 +31,7 @@
     function Story() {}
     Story.prototype.put_update_other_id = function() {
       var params, response_callback, story_url, story_xml;
-      story_url = "http://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories/" + this.story_id;
+      story_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories/" + this.story_id;
       params = {};
       params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT;
       params[gadgets.io.RequestParameters.HEADERS] = {
@@ -49,7 +49,7 @@
     };
     Story.prototype.create_and_update_other_id = function(on_success) {
       var params, response_callback, stories_url, story_xml;
-      stories_url = "http://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories";
+      stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories";
       params = {};
       params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
       params[gadgets.io.RequestParameters.HEADERS] = {

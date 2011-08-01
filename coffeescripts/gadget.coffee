@@ -20,7 +20,7 @@ $(".save_settings_button", container).click ->
 
 class Story
   put_update_other_id: ->
-    story_url = "http://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
+    story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
     params = {}
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT
     params[gadgets.io.RequestParameters.HEADERS] =
@@ -37,7 +37,7 @@ class Story
     gadgets.io.makeRequest story_url, response_callback, params
 
   create_and_update_other_id: (on_success) ->
-    stories_url = "http://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
+    stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
     params = {}
     params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST
     params[gadgets.io.RequestParameters.HEADERS] =
