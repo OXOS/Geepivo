@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:19:22 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:21:31 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -124,12 +124,15 @@
       return on_settings_opened_or_closed();
     });
     $(".save_settings_button", container).click(function() {
-      var i, val;
+      var i, val, _results;
+      _results = [];
       for (i in settings) {
         val = setting_input(settings[i]).val();
         prefs.set(settings[i], val);
+        $("#settings").hide();
+        _results.push(on_settings_opened_or_closed());
       }
-      return alert("settings saved");
+      return _results;
     });
   }
 }).call(this);

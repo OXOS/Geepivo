@@ -143,6 +143,7 @@ gadget_content = """
   </div>
 """
 
+#TODO: use DOM event instead
 on_settings_opened_or_closed = () ->
   if $("#settings").is(":visible")
     $(this).html "settings ▲"
@@ -177,7 +178,6 @@ else
     for i of settings
       val = setting_input(settings[i]).val()
       prefs.set settings[i], val
-    alert "settings saved"
-
-
+      $("#settings").hide()
+      on_settings_opened_or_closed()
 
