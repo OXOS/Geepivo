@@ -1,6 +1,8 @@
 source :rubygems
 
-gem "sinatra"
+group :common do
+  gem "sinatra", :require => "sinatra"
+end
 
 group :development do
   gem "barista"
