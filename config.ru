@@ -10,5 +10,10 @@ get '/gadget.xml' do
   erb :'gadget.xml'
 end
 
+get '/manifest.xml' do
+  @root_url = ENV['ROOT_URL']
+  erb :'manifest.xml'
+end
+
 run Sinatra::Application
 
