@@ -1,34 +1,13 @@
-require "rubygems"
-require 'rack/contrib'
-require 'rack-rewrite'
+require 'rubygems'
+require 'sinatra'
 
-use Rack::Static, :urls => ['/images'], :root => "public"
-use Rack::ETag
-use Rack::Rewrite do
-  rewrite '/', '/index.html'
+get '/' do
+  File.read(File.join('public', 'index.html'))
 end
-run Rack::Directory.new('public')
 
+get '/gadget.xml' do
+  erb :'gadget.xml'
+end
 
-
-#require 'rubygems'
-#require 'bundler'
-#
-#Bundler.setup
-#
-#require 'sinatra'
-#require 'gapps_openid'
-#require 'rack/openid'
-#require 'google_util'
-#require 'oauth'
-#require 'net/imap'
-#require 'pivotal-tracker'
-#
-#configure(:development) do |c|
-#  require "sinatra/reloader"
-#  require "ruby-debug"
-#end
-#
-#require 'hello'
-#run Sinatra::Application
+run Sinatra::Application
 
