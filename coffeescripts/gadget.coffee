@@ -71,11 +71,11 @@ on_story_created = (story) ->
 
 post_create_story = (subject, message_id) ->
   story = new Story
-  story.name                    = subject
-  story.project_id          = prefs.getString('project_id')
-  story.story_type              = prefs.getString('story_type')
-  story.integration_id        = prefs.getString('integration_id')
-  story.requested_by          = prefs.getString('requested_by')
+  story.name              = subject
+  story.project_id        = prefs.getString('project_id')
+  story.story_type        = prefs.getString('story_type')
+  story.integration_id    = prefs.getString('integration_id')
+  story.requested_by      = prefs.getString('requested_by')
   story.owned_by          = prefs.getString('owned_by')
   story.create_and_update_other_id( on_story_created )
 
