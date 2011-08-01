@@ -37,59 +37,10 @@
   <Content type="html" view="card">
       <![CDATA[	<span></span>
 
-      <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'>
+      <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'></div>
 
-      	<div style='widh: 100px; position:absolute; top:3px; left:3px;'>
-      	  <button class="create_story_button">Create Story</button>
-      	</div>
-
-      	<div class='notification_area' style=' position:absolute; top:3px; left:113px;'>&nbsp;</div>
-
-      	<div style='widh: 100px; position:absolute; top:3px; right:3px;'>
-      	  <a href="#" id='toggle_settings_button' style='font-size: small; text-decoration:none;'>settings ▼</a>
-      	</div>
-
-      	<div style='clear:both;'></div>
-
-      	<div id='settings' style='font-size: small; display:none; padding-top:30px;'>
-      	  <p>
-      	    <label>Pivotal API Token
-      	      <input name="pivotal_api_token" />
-      	    </label>
-      	  </p>
-
-      	  <p>
-      	    <label>Project ID
-      	    <input name="project_id" /></label>
-      	  </p>
-
-      	  <p>
-      	    <label>Story type
-      	    <input name="story_type" /></label>
-      	  </p>
-
-      	  <p>
-      	    <label>Requested by
-      	    <input name="requested_by" /></label>
-      	  </p>
-
-      	  <p>
-      	    <label>Integration ID
-      	    <input name="integration_id" /></label>
-      	  </p>
-
-      	  <p>
-      	    <label>Owned by
-      	    <input name="owned_by" /></label>
-      	  </p>
-
-      	  <input type='submit' class='save_settings_button' value="Save settings" />
-      	</div>
-
-      	</div>
-
-      	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-      	<script src="<%=@root_url%>/javascripts/gadget.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+      <script src="<%=@root_url%>/javascripts/gadget.js"></script>
       ]]>
   </Content>
 </Module>

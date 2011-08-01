@@ -3,21 +3,6 @@ unless window.console
   console.log = (msg) ->
   console.debug = (msg) ->
 
-container = $("#gadget_container")
-prefs = new gadgets.Prefs()
-setting_input = (name) ->
-  $ "input[name=#{name}]", container
-
-settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
-for i of settings
-  setting_input(settings[i]).val prefs.getString(settings[i])
-
-$(".save_settings_button", container).click ->
-  for i of settings
-    val = setting_input(settings[i]).val()
-    prefs.set settings[i], val
-  alert "settings saved"
-
 class Story
   put_update_other_id: ->
     story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
@@ -97,19 +82,86 @@ for imatch of matches
   $.extend inputs, matches[imatch]
 for key of inputs
   console.log "inputs[" + key + " ] => " + inputs[key]
-if inputs.subject
-  gadgets.window.adjustHeight 32
-  container.show()
-else
-  gadgets.window.adjustHeight 0
-$(".create_story_button", container).click ->
-  post_create_story inputs.subject, inputs.message_id
 
-$("#toggle_settings_button").click ->
-  if $("#settings").toggle().is(":visible")
-    $(this).html "settings ▲"
-    gadgets.window.adjustHeight 350
-  else
-    $(this).html "settings ▼"
-    gadgets.window.adjustHeight 32
+container = $("#gadget_container")
+prefs = new gadgets.Prefs()
+setting_input = (name) ->
+  $ "input[name=#{name}]", container
+
+gadget_content = """
+  <div style='widh: 100px; position:absolute; top:3px; left:3px;'>
+    <button class="create_story_button">Create Story</button>
+  </div>
+  
+  <div class='notification_area' style=' position:absolute; top:3px; left:113px;'>&nbsp;</div>
+  
+  <div style='widh: 100px; position:absolute; top:3px; right:3px;'>
+    <a href="#" id='toggle_settings_button' style='font-size: small; text-decoration:none;'>settings ▼</a>
+  </div>
+  
+  <div style='clear:both;'></div>
+  
+  <div id='settings' style='font-size: small; display:none; padding-top:30px;'>
+    <p>
+      <label>Pivotal API Token
+        <input name="pivotal_api_token" />
+      </label>
+    </p>
+    
+    <p>
+      <label>Project ID
+      <input name="project_id" /></label>
+    </p>
+    
+    <p>
+      <label>Story type
+      <input name="story_type" /></label>
+    </p>
+    
+    <p>
+      <label>Requested by
+      <input name="requested_by" /></label>
+    </p>
+    
+    <p>
+      <label>Integration ID
+      <input name="integration_id" /></label>
+    </p>
+    
+    <p>
+      <label>Owned by
+      <input name="owned_by" /></label>
+    </p>
+    
+    <input type='submit' class='save_settings_button' value="Save settings" />
+  </div>
+"""
+
+if ! inputs.subject
+  gadgets.window.adjustHeight 0
+else
+  gadgets.window.adjustHeight 32
+  container.html(gadget_content).show()
+  $(".create_story_button", container).click ->
+    post_create_story inputs.subject, inputs.message_id
+  
+  settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
+  for i of settings
+    setting_input(settings[i]).val prefs.getString(settings[i])
+
+  $("#toggle_settings_button").click ->
+    if $("#settings").toggle().is(":visible")
+      $(this).html "settings ▲"
+      gadgets.window.adjustHeight 350
+    else
+      $(this).html "settings ▼"
+      gadgets.window.adjustHeight 32
+
+  $(".save_settings_button", container).click ->
+    for i of settings
+      val = setting_input(settings[i]).val()
+      prefs.set settings[i], val
+    alert "settings saved"
+
+
 

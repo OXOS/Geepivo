@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 12:54:37 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 12:54:09 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -92,6 +92,18 @@
   setting_input = function(name) {
     return $("input[name=" + name + "]", container);
   };
+  settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
+  for (i in settings) {
+    setting_input(settings[i]).val(prefs.getString(settings[i]));
+  }
+  $(".save_settings_button", container).click(function() {
+    var i, val;
+    for (i in settings) {
+      val = setting_input(settings[i]).val();
+      prefs.set(settings[i], val);
+    }
+    return alert("settings saved");
+  });
   gadget_content = "<div style='widh: 100px; position:absolute; top:3px; left:3px;'>\n  <button class=\"create_story_button\">Create Story</button>\n</div>\n\n<div class='notification_area' style=' position:absolute; top:3px; left:113px;'>&nbsp;</div>\n\n<div style='widh: 100px; position:absolute; top:3px; right:3px;'>\n  <a href=\"#\" id='toggle_settings_button' style='font-size: small; text-decoration:none;'>settings ▼</a>\n</div>\n\n<div style='clear:both;'></div>\n\n<div id='settings' style='font-size: small; display:none; padding-top:30px;'>\n  <p>\n    <label>Pivotal API Token\n      <input name=\"pivotal_api_token\" />\n    </label>\n  </p>\n  \n  <p>\n    <label>Project ID\n    <input name=\"project_id\" /></label>\n  </p>\n  \n  <p>\n    <label>Story type\n    <input name=\"story_type\" /></label>\n  </p>\n  \n  <p>\n    <label>Requested by\n    <input name=\"requested_by\" /></label>\n  </p>\n  \n  <p>\n    <label>Integration ID\n    <input name=\"integration_id\" /></label>\n  </p>\n  \n  <p>\n    <label>Owned by\n    <input name=\"owned_by\" /></label>\n  </p>\n  \n  <input type='submit' class='save_settings_button' value=\"Save settings\" />\n</div>";
   if (!inputs.subject) {
     gadgets.window.adjustHeight(0);
@@ -101,10 +113,6 @@
     $(".create_story_button", container).click(function() {
       return post_create_story(inputs.subject, inputs.message_id);
     });
-    settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
-    for (i in settings) {
-      setting_input(settings[i]).val(prefs.getString(settings[i]));
-    }
     $("#toggle_settings_button").click(function() {
       if ($("#settings").toggle().is(":visible")) {
         $(this).html("settings ▲");
@@ -113,14 +121,6 @@
         $(this).html("settings ▼");
         return gadgets.window.adjustHeight(32);
       }
-    });
-    $(".save_settings_button", container).click(function() {
-      var i, val;
-      for (i in settings) {
-        val = setting_input(settings[i]).val();
-        prefs.set(settings[i], val);
-      }
-      return alert("settings saved");
     });
   }
 }).call(this);
