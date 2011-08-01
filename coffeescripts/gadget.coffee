@@ -53,7 +53,7 @@ post_create_story = (subject, message_id) ->
       respXML.loadXML response.text
     url = $(respXML).find("url").text()
     console.log url
-    put_update_other_id $(respXML).find("id").text()
+    put_update_other_id $(respXML).find("id").text() #TODO: Do it only if previous request succeeds
     $(".notification_area", container).html "<a href='#{url}' target='_blank'>#{url}</a>"
   
   gadgets.io.makeRequest stories_url, response_callback, params
