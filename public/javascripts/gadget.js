@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:05:29 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 01 Aug 2011 13:14:57 GMT from
  * /Users/wojciech/Geepivo/geepivo-heroku/coffeescripts/gadget.coffee
  */
 
@@ -98,13 +98,16 @@
   } else {
     gadgets.window.adjustHeight(32);
     container.html(gadget_content).show();
-    $(".create_story_button", container).click(function() {
-      return post_create_story(inputs.subject, inputs.message_id);
-    });
     settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
     for (i in settings) {
       setting_input(settings[i]).val(prefs.getString(settings[i]));
     }
+    if (!(prefs.getString("pivotal_api_token") && prefs.getString("pivotal_api_token"))) {
+      $(".notification_area", container).html("Please fill required settings");
+    }
+    $(".create_story_button", container).click(function() {
+      return post_create_story(inputs.subject, inputs.message_id);
+    });
     $("#toggle_settings_button").click(function() {
       if ($("#settings").toggle().is(":visible")) {
         $(this).html("settings ▲");

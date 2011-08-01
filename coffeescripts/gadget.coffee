@@ -148,13 +148,18 @@ if ! inputs.subject
 else
   gadgets.window.adjustHeight 32
   container.html(gadget_content).show()
-  $(".create_story_button", container).click ->
-    post_create_story inputs.subject, inputs.message_id
-  
+
   settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
   for i of settings
     setting_input(settings[i]).val prefs.getString(settings[i])
 
+  unless prefs.getString("pivotal_api_token") && prefs.getString("pivotal_api_token")
+    $(".notification_area", container).html "Please fill required settings"
+    
+
+  $(".create_story_button", container).click ->
+    post_create_story inputs.subject, inputs.message_id
+  
   $("#toggle_settings_button").click ->
     if $("#settings").toggle().is(":visible")
       $(this).html "settings ▲"
