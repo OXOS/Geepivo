@@ -6,6 +6,7 @@ get '/' do
 end
 
 get '/gadget.xml' do
+  @root_url = ENV['ROOT_URL']
   erb :'gadget.xml'
 end
 
