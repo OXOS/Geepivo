@@ -158,7 +158,7 @@ else
   $("#toggle_settings_button").click ->
     if $("#settings").toggle().is(":visible")
       $(this).html "settings ▲"
-      gadgets.window.adjustHeight 350
+      gadgets.window.adjustHeight 500
     else
       $(this).html "settings ▼"
       gadgets.window.adjustHeight 32
