@@ -18,62 +18,78 @@ $(".save_settings_button", container).click ->
     prefs.set settings[i], val
   alert "settings saved"
 
+class Story
+  put_update_other_id: ->
+    story_url = "http://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
+    params = {}
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT
+    params[gadgets.io.RequestParameters.HEADERS] =
+      "X-TrackerToken": prefs.getString("pivotal_api_token")
+      "Content-type": "application/xml"
+    
+    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
+    story_xml = "<story><integration_id>#{@integration_id}</integration_id><other_id>#{@story_id}</other_id></story>"
+    console.log "update other_id xml:", story_xml
+    params[gadgets.io.RequestParameters.POST_DATA] = story_xml
+    response_callback = (response) ->
+      console.log "put other_id response:", response.text
+    
+    gadgets.io.makeRequest story_url, response_callback, params
+
+  create_and_update_other_id: (on_success) ->
+    stories_url = "http://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
+    params = {}
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST
+    params[gadgets.io.RequestParameters.HEADERS] =
+      "X-TrackerToken": prefs.getString("pivotal_api_token")
+      "Content-type": "application/xml"
+    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
+
+    #TODO: Find a library to construct XML
+    story_xml = """
+      <story>
+        <project_id>#{@project_id}</project_id>
+        <story_type>#{@story_type}</story_type>
+        <name>#{@name}</name>
+        <integration_id>#{@integration_id}</integration_id>
+        <requested_by>#{@requested_by}</requested_by>
+        <owned_by>#{@owned_by}</owned_by>
+      </story>
+      """
+  
+    console.log "post new story xml:", story_xml
+    params[gadgets.io.RequestParameters.POST_DATA] = story_xml
+    response_callback = (response) =>
+      console.log "post new story response:", response.text
+      respXML = null
+      if window.DOMParser
+        parser = new DOMParser()
+        respXML = parser.parseFromString(response.text, "text/xml")
+      else
+        respXML = new ActiveXObject("Microsoft.XMLDOM")
+        respXML.async = "false"
+        respXML.loadXML response.text
+      @url = $(respXML).find("url").text()
+      console.log @url
+      @story_id = $(respXML).find("id").text()
+      this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
+      on_success(this)
+    
+    gadgets.io.makeRequest stories_url, response_callback, params
+
+
+on_story_created = (story) ->
+  $(".notification_area", container).html "<a href='#{story.url}' target='_blank'>#{story.url}</a>"
+
 post_create_story = (subject, message_id) ->
-  stories_url = "http://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
-  params = {}
-  params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST
-  params[gadgets.io.RequestParameters.HEADERS] =
-    "X-TrackerToken": prefs.getString("pivotal_api_token")
-    "Content-type": "application/xml"
-  
-  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
-  story_xml = """
-    <story>
-      <project_id>#{prefs.getString('project_id')}</project_id>
-      <story_type>#{prefs.getString('story_type')}</story_type>
-      <name>#{subject}</name>
-      <integration_id>#{prefs.getString('integration_id')}</integration_id>
-      <other_id>#{message_id}</other_id>
-      <requested_by>#{prefs.getString('requested_by')}</requested_by>
-      <owned_by>#{prefs.getString('owned_by')}</owned_by>
-    </story>
-    """
-
-  console.log "post new story xml:", story_xml
-  params[gadgets.io.RequestParameters.POST_DATA] = story_xml
-  response_callback = (response) ->
-    console.log "post new story response:", response.text
-    respXML = null
-    if window.DOMParser
-      parser = new DOMParser()
-      respXML = parser.parseFromString(response.text, "text/xml")
-    else
-      respXML = new ActiveXObject("Microsoft.XMLDOM")
-      respXML.async = "false"
-      respXML.loadXML response.text
-    url = $(respXML).find("url").text()
-    console.log url
-    put_update_other_id $(respXML).find("id").text() #TODO: Do it only if previous request succeeds
-    $(".notification_area", container).html "<a href='#{url}' target='_blank'>#{url}</a>"
-  
-  gadgets.io.makeRequest stories_url, response_callback, params
-
-put_update_other_id = (story_id) ->
-  story_url = "http://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories/#{story_id}"
-  params = {}
-  params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT
-  params[gadgets.io.RequestParameters.HEADERS] =
-    "X-TrackerToken": prefs.getString("pivotal_api_token")
-    "Content-type": "application/xml"
-  
-  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
-  story_xml = "<story>" + "<integration_id>#{prefs.getString("integration_id")}</integration_id><other_id>#{story_id}</other_id></story>"
-  console.log "update other_id xml:", story_xml
-  params[gadgets.io.RequestParameters.POST_DATA] = story_xml
-  response_callback = (response) ->
-    console.log "put other_id response:", response.text
-  
-  gadgets.io.makeRequest story_url, response_callback, params
+  story = new Story
+  story.name	      	      = subject
+  story.project_id	      = prefs.getString('project_id')
+  story.story_type    	      = prefs.getString('story_type')
+  story.integration_id        = prefs.getString('integration_id')
+  story.requested_by          = prefs.getString('requested_by')
+  story.owned_by	      = prefs.getString('owned_by')
+  story.create_and_update_other_id( on_story_created )
 
 matches = google.contentmatch.getContentMatches()
 inputs = {}
