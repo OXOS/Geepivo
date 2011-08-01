@@ -143,6 +143,14 @@ gadget_content = """
   </div>
 """
 
+on_settings_opened_or_closed = () ->
+  if $("#settings").is(":visible")
+    $(this).html "settings ▲"
+    gadgets.window.adjustHeight 500
+  else
+    $(this).html "settings ▼"
+    gadgets.window.adjustHeight 32
+
 if ! inputs.subject
   gadgets.window.adjustHeight 0
 else
@@ -155,18 +163,15 @@ else
 
   unless prefs.getString("pivotal_api_token") && prefs.getString("pivotal_api_token")
     $(".notification_area", container).html "Please fill required settings"
-    
+    $("#settings").show()
+    on_settings_opened_or_closed()
 
   $(".create_story_button", container).click ->
     post_create_story inputs.subject, inputs.message_id
   
   $("#toggle_settings_button").click ->
-    if $("#settings").toggle().is(":visible")
-      $(this).html "settings ▲"
-      gadgets.window.adjustHeight 500
-    else
-      $(this).html "settings ▼"
-      gadgets.window.adjustHeight 32
+    $("#settings").toggle()
+    on_settings_opened_or_closed()
 
   $(".save_settings_button", container).click ->
     for i of settings
