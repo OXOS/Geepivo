@@ -33,20 +33,17 @@ end
 
 # Handle login form & navigation links from Google Apps
 get '/login' do
-  if params["openid_identifier"].nil?
-    # No identifier, just render login form
-    erb :login
-  else
-    # Have provider identifier, tell rack-openid to start OpenID process
-    headers 'WWW-Authenticate' => Rack::OpenID.build_header(
-      :identifier => params["openid_identifier"],
-      :required => ["http://axschema.org/contact/email",
-                    "http://axschema.org/namePerson/first",
-                    "http://axschema.org/namePerson/last"],
-      :return_to => url_for('/openid/complete'),
-      :method => 'post')
-    halt 401, 'Authentication required.'
-  end
+  halt 422 if params["openid_identifier"].nil?
+
+  # Have provider identifier, tell rack-openid to start OpenID process
+  headers 'WWW-Authenticate' => Rack::OpenID.build_header(
+    :identifier => params["openid_identifier"],
+    :required => ["http://axschema.org/contact/email",
+                  "http://axschema.org/namePerson/first",
+                  "http://axschema.org/namePerson/last"],
+    :return_to => url_for('/openid/complete'),
+    :method => 'post')
+  halt 401, 'Authentication required.'
 end
 
 # Handle the response from the OpenID provider
