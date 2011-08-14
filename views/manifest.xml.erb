@@ -11,12 +11,12 @@
   <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
     <Name>Geepivo</Name>
-    <Url><%=@root_url%>/login?openid_identifier=${DOMAIN_NAME}</Url> 
+    <Url><%=url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
   </Extension>
 
   <!-- Declare our OpenID realm so our app is white listed -->
   <Extension id="realm" type="openIdRealm">
-    <Url><%=@root_url%>/</Url> 
+    <Url><%=url_for('') %></Url> 
   </Extension>
 
   <!-- Contextual gadget -->
@@ -33,7 +33,7 @@
 
   <Extension id="GeepivoGadget" type="gadget">
     <Name>Geepivo Gmail contextual gadget</Name>
-    <Url><%=@root_url%>/gadget.xml</Url>
+    <Url><%=url_for('/gadget.xml') %></Url>
     <Container name="mail"/>
 
   </Extension>
