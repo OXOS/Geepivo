@@ -57,7 +57,7 @@ post '/openid/complete' do
       :first_name => ax.get_single("http://axschema.org/namePerson/first"),
       :last_name => ax.get_single("http://axschema.org/namePerson/last")
     }
-    redirect '/cal'
+    redirect '/'
   else
     "Error: #{resp.status}"
   end
