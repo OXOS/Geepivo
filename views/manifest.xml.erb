@@ -5,44 +5,42 @@
     <Link rel="support" href="http://getsatisfaction.com/geepivo" />
   </Support>
 
-  <Name>Gee Pivo (geepivo.com)</Name>
-  <Description>Pivotal Plus integration</Description>
+  <Name>Geepivo</Name>
+  <Description>Create Pivotal Tracker stories directly from a GMail gadget.</Description>
 
-  <Extension id="realm" type="openIdRealm">
-    <Url>http://dev.geepivo.com</Url>
-  </Extension>
-
-  <!-- Contextual gadget -->
-
-  <!--
+  <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
-    <Name>PivoPlus</Name>
-    <Url>http://dev.geepivo.com/login?openid_identifier=${DOMAIN_NAME}</Url> 
+    <Name>Geepivo</Name>
+    <Url><%=url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
   </Extension>
-  -->
+
+  <!-- Declare our OpenID realm so our app is white listed -->
+  <Extension id="realm" type="openIdRealm">
+    <Url><%=url_for('') %></Url> 
+  </Extension>
 
   <!-- Contextual gadget -->
 
-  <Extension id="GeePivoExtractor" type="contextExtractor">
-    <Name>GeePivo</Name>
+  <Extension id="GeepivoExtractor" type="contextExtractor">
+    <Name>Geepivo</Name>
     <Url>google.com:SubjectExtractor</Url>
     <Param name="subject" value=".*"/>
-    <Triggers ref="GeePivoGadget"/>
+    <Triggers ref="GeepivoGadget"/>
     <Scope ref="emailSubject"/>
 
     <Container name="mail"/>
   </Extension>
 
-  <Extension id="GeePivoGadget" type="gadget">
-    <Name>GeePivo Gmail contextual gadget</Name>
-    <Url><%=@root_url%>/gadget.xml</Url>
+  <Extension id="GeepivoGadget" type="gadget">
+    <Name>Geepivo Gmail contextual gadget</Name>
+    <Url><%=url_for('/gadget.xml') %></Url>
     <Container name="mail"/>
 
   </Extension>
   
   <Scope id="emailSubject">
     <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
-    <Reason>GeePivo uses Email subjects as Story names.</Reason>
+    <Reason>Geepivo uses Email subjects as Story names.</Reason>
   </Scope>
 
 </ApplicationManifest>
