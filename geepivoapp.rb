@@ -67,6 +67,11 @@ get '/' do
   erb :'index.html'
 end
 
+post '/install' do
+  domain = params[:domain]
+  redirect "https://www.google.com/a/cpanel/#{domain}/DomainAppInstall?appId=188904047522&productListingId=7163+5344149554839870582&editionId"
+end
+
 get '/gadget.xml' do
   @root_url = ENV['ROOT_URL']
   erb :'gadget.xml'
