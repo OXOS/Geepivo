@@ -67,7 +67,7 @@ post '/openid/complete' do
 end
 
 get '/' do
-  File.read(File.join('public', 'index.html'))
+  erb :'index.html'
 end
 
 get '/gadget.xml' do
