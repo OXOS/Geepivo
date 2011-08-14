@@ -8,6 +8,7 @@ group :common do
 end
 
 group :development do
+  gem "ruby-debug"
   gem "barista"
   gem "rake"
 end
