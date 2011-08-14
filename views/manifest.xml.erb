@@ -12,14 +12,16 @@
     <Url>http://dev.geepivo.com</Url>
   </Extension>
 
-  <!-- Contextual gadget -->
-
-  <!--
+  <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
-    <Name>PivoPlus</Name>
-    <Url>http://dev.geepivo.com/login?openid_identifier=${DOMAIN_NAME}</Url> 
+    <Name>Geepivo</Name>
+    <Url><%=@root_url%>/login?openid_identifier=${DOMAIN_NAME}</Url> 
   </Extension>
-  -->
+
+  <!-- Declare our OpenID realm so our app is white listed -->
+  <Extension id="realm" type="openIdRealm">
+    <Url><%=@root_url%>/</Url> 
+  </Extension>
 
   <!-- Contextual gadget -->
 
