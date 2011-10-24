@@ -7,6 +7,10 @@ group :common do
   gem "rack-openid"
 end
 
+group :test do
+  gem "jasmine", "1.1.1", :git => "git://github.com/pivotal/jasmine-gem.git"
+end
+
 group :development do
   gem "ruby-debug"
   gem "barista"
