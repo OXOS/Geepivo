@@ -74,6 +74,7 @@ end
 
 get '/gadget.xml' do
   @root_url = ENV['ROOT_URL']
+  @git_revision = ENV['COMMIT_HASH']
   erb :'gadget.xml'
 end
 
