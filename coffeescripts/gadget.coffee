@@ -79,6 +79,15 @@ post_create_story = (subject, message_id) ->
   story.owned_by          = prefs.getString('owned_by')
   story.create_and_update_other_id( on_story_created )
 
+#TODO: use DOM event instead
+on_settings_opened_or_closed = () ->
+  if $("#settings").is(":visible")
+    $(this).html "settings ▲"
+    gadgets.window.adjustHeight 500
+  else
+    $(this).html "settings ▼"
+    gadgets.window.adjustHeight 32
+
 matches = google.contentmatch.getContentMatches()
 inputs = {}
 for imatch of matches
@@ -145,15 +154,6 @@ gadget_content = """
     <input type='submit' class='save_settings_button' value="Save settings" />
   </div>
 """
-
-#TODO: use DOM event instead
-on_settings_opened_or_closed = () ->
-  if $("#settings").is(":visible")
-    $(this).html "settings ▲"
-    gadgets.window.adjustHeight 500
-  else
-    $(this).html "settings ▼"
-    gadgets.window.adjustHeight 32
 
 if ! inputs.subject
   gadgets.window.adjustHeight 0
