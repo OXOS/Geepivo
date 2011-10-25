@@ -51,14 +51,17 @@ describe("Configured gadget", function() {
     expect(getString).toHaveBeenCalled();
   });
 
-  it("should send xml when btn clicked", function() {
+  it("should post XML story to Tracker", function() {
     $('button.create_story_button').click();
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
 
     var args = window.gadgets.io.makeRequest.mostRecentCall.args;
     expect(args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects/dupa/stories');
-    expect(typeof args.shift()).toEqual('function');
+
+    var callback = args.shift();
+    expect(typeof callback).toEqual('function');
+
     expect( args.shift() ).toEqual({
       METHOD: 'POST',
       HEADERS: { 'X-TrackerToken' : 'dupa', 'Content-type' : 'application/xml' },
@@ -67,5 +70,22 @@ describe("Configured gadget", function() {
     });
   });
 
+  it("should display story link when callback called with success message", function() {
+    $('button.create_story_button').click();
+
+    expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
+    var callback = window.gadgets.io.makeRequest.mostRecentCall.args[1];
+
+    story_data = "<story><url>http://tracker/story/555</url><id>555</id></story>";
+    response_data = {
+      rc: 201,
+      text: story_data
+    };
+
+    callback(response_data);
+
+    expect( $(".notification_area").html() ).toEqual('<a href="http://tracker/story/555" target="_blank">http://tracker/story/555</a>');
+
+  });
 
 });
