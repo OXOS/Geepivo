@@ -9,28 +9,28 @@ window.initializeGeepivoGadget = ->
     put_update_other_id: ->
       story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
       params = {}
-      params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.PUT
-      params[gadgets.io.RequestParameters.HEADERS] =
+      params[window.gadgets.io.RequestParameters.METHOD] = window.gadgets.io.MethodType.PUT
+      params[window.gadgets.io.RequestParameters.HEADERS] =
         "X-TrackerToken": prefs.getString("pivotal_api_token")
         "Content-type": "application/xml"
       
-      params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
+      params[window.gadgets.io.RequestParameters.CONTENT_TYPE] = window.gadgets.io.ContentType.DOM
       story_xml = "<story><integration_id>#{@integration_id}</integration_id><other_id>#{@story_id}</other_id></story>"
       console.log "update other_id xml:", story_xml
-      params[gadgets.io.RequestParameters.POST_DATA] = story_xml
+      params[window.gadgets.io.RequestParameters.POST_DATA] = story_xml
       response_callback = (response) ->
         console.log "put other_id response:", response.text
       
-      gadgets.io.makeRequest story_url, response_callback, params
+      window.gadgets.io.makeRequest story_url, response_callback, params
   
     create_and_update_other_id: (on_success) ->
       stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
       params = {}
-      params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST
-      params[gadgets.io.RequestParameters.HEADERS] =
+      params[window.gadgets.io.RequestParameters.METHOD] = window.gadgets.io.MethodType.POST
+      params[window.gadgets.io.RequestParameters.HEADERS] =
         "X-TrackerToken": prefs.getString("pivotal_api_token")
         "Content-type": "application/xml"
-      params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM
+      params[window.gadgets.io.RequestParameters.CONTENT_TYPE] = window.gadgets.io.ContentType.DOM
   
       #TODO: Find a library to construct XML
       story_xml = """
@@ -45,7 +45,7 @@ window.initializeGeepivoGadget = ->
         """
     
       console.log "post new story xml:", story_xml
-      params[gadgets.io.RequestParameters.POST_DATA] = story_xml
+      params[window.gadgets.io.RequestParameters.POST_DATA] = story_xml
       response_callback = (response) =>
         console.log "post new story response:", response
         if (response.rc > 400)
@@ -65,7 +65,7 @@ window.initializeGeepivoGadget = ->
           on_success(this)
           this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
       
-      gadgets.io.makeRequest stories_url, response_callback, params
+      window.gadgets.io.makeRequest stories_url, response_callback, params
   
   
   on_story_created = (story) ->
@@ -85,12 +85,12 @@ window.initializeGeepivoGadget = ->
   on_settings_opened_or_closed = () ->
     if $("#settings").is(":visible")
       $(this).html "settings ▲"
-      gadgets.window.adjustHeight 500
+      window.gadgets.window.adjustHeight 500
     else
       $(this).html "settings ▼"
-      gadgets.window.adjustHeight 32
+      window.gadgets.window.adjustHeight 32
   
-  matches = google.contentmatch.getContentMatches()
+  matches = window.google.contentmatch.getContentMatches()
   inputs = {}
   for imatch of matches
     $.extend inputs, matches[imatch]
@@ -98,7 +98,7 @@ window.initializeGeepivoGadget = ->
     console.log "inputs[" + key + " ] => " + inputs[key]
   
   container = $("#gadget_container")
-  prefs = new gadgets.Prefs()
+  prefs = new window.gadgets.Prefs()
   setting_input = (name) ->
     $ "input[name=#{name}]", container
   
@@ -158,9 +158,9 @@ window.initializeGeepivoGadget = ->
   """
   
   if ! inputs.subject
-    gadgets.window.adjustHeight 0
+    window.gadgets.window.adjustHeight 0
   else
-    gadgets.window.adjustHeight 32
+    window.gadgets.window.adjustHeight 32
     container.html(gadget_content).show()
   
     settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
