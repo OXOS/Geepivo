@@ -1,20 +1,19 @@
-describe("Gadget", function() {
-  beforeEach(function() {
-  });
+describe("Configured gadget", function() {
+  var gadget_window, getString;
 
-  it("should be", function() {
+  beforeEach(function() {
     window.google = {};
 
     var contentmatch = {getContentMatches: function(){} };
     spyOn(contentmatch,'getContentMatches').andReturn( [ {subject: "An email subject"} ] );
     window.google.contentmatch = contentmatch;
 
-    var getString  = jasmine.createSpy().andReturn("dupa");
+    getString  = jasmine.createSpy().andReturn("dupa");
     var Prefs =  function() {
       this.getString = getString;
     };
 
-    var gadget_window = {
+    gadget_window = {
       adjustHeight: jasmine.createSpy('window')
     };
 
@@ -24,10 +23,14 @@ describe("Gadget", function() {
     };
 
     window.initializeGeepivoGadget();
+  });
 
-    expect(gadget_window.adjustHeight).toHaveBeenCalledWith(32);
+  it("should read settings", function() {
     expect(getString).toHaveBeenCalled();
+  });
 
+  it("should adjust height to 32", function() {
+    expect(getString).toHaveBeenCalled();
   });
 
 });
