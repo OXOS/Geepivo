@@ -88,4 +88,16 @@ describe("Configured gadget", function() {
 
   });
 
+  it("should show error message callback called with error message", function() {
+    $('button.create_story_button').click();
+
+    expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
+    var callback = window.gadgets.io.makeRequest.mostRecentCall.args[1];
+
+    response_data = { rc: 500, text: '' };
+    callback(response_data);
+
+    expect( $(".notification_area").html() ).toEqual('Error creating story');
+  });
+
 });
