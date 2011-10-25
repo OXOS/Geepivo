@@ -98,6 +98,10 @@ window.initializeGeepivoGadget = ->
     console.log "inputs[" + key + " ] => " + inputs[key]
   
   container = $("#gadget_container")
+
+  if container.length != 1
+    throw "Error. Can't find gadget container."
+
   prefs = new window.gadgets.Prefs()
   setting_input = (name) ->
     $ "input[name=#{name}]", container

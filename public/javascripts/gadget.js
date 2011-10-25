@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 25 Oct 2011 19:13:07 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 25 Oct 2011 19:49:53 GMT from
  * /Users/wojtek/GeePivo/geepivo/coffeescripts/gadget.coffee
  */
 
@@ -102,6 +102,9 @@
       console.log("inputs[" + key + " ] => " + inputs[key]);
     }
     container = $("#gadget_container");
+    if (container.length !== 1) {
+      throw "Error. Can't find gadget container.";
+    }
     prefs = new window.gadgets.Prefs();
     setting_input = function(name) {
       return $("input[name=" + name + "]", container);
