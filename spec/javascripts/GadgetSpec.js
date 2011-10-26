@@ -1,3 +1,16 @@
+describe("Unconfigured gadget", function() {
+
+  xit("should display prompt", function() {
+  });
+
+  xit("should expand settings", function() {
+  });
+
+  xit("should save settings", function() {
+  });
+
+});
+
 describe("Configured gadget", function() {
   var gadget_window, getString;
 
@@ -84,6 +97,27 @@ describe("Configured gadget", function() {
     expect( $(".notification_area").html() ).toEqual('<a href="http://tracker/story/555" target="_blank">http://tracker/story/555</a>');
 
   });
+
+  xit("should make another request when callback called with success message", function() {
+    $('button.create_story_button').click();
+
+    expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
+    var callback = window.gadgets.io.makeRequest.mostRecentCall.args[1];
+
+    story_data = "<story><url>http://tracker/story/555</url><id>555</id></story>";
+    response_data = {
+      rc: 201,
+      text: story_data
+    };
+
+    callback(response_data);
+
+    expect(window.gadgets.io.makeRequest.callCount).toEqual(2);
+    var args = window.gadgets.io.makeRequest.mostRecentCall.args;
+
+    expect(args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects/project_id_value/stories/555');
+  });
+
 
   it("should show error message callback called with error message", function() {
     $('button.create_story_button').click();
