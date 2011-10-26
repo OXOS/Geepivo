@@ -36,22 +36,7 @@ describe("Configured gadget", function() {
     window.gadgets = {
       Prefs: Prefs,
       'window': gadget_window,
-      io: {
-	makeRequest: jasmine.createSpy('makeRequest'),
-	ContentType: {
-	  DOM: 'DOM'
-	},
-	MethodType: {
-	  POST: 'POST',
-	  PUT: 'PUT'
-	},
-	RequestParameters: {
-	  METHOD: 'METHOD',
-	  HEADERS: 'HEADERS',
-	  CONTENT_TYPE: 'CONTENT_TYPE',
-	  POST_DATA: 'POST_DATA'
-	}
-      }
+      io: GoogleGadgetsEnvironment.gadgets.io()
     };
 
     window.initializeGeepivoGadget();
