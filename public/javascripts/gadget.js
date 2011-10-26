@@ -1,5 +1,18 @@
 (function() {
+  var parse_xml;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  parse_xml = function(xml_string) {
+    var parser, respXML;
+    if (window.DOMParser) {
+      parser = new DOMParser();
+      respXML = parser.parseFromString(xml_string, "text/xml");
+    } else {
+      respXML = new ActiveXObject("Microsoft.XMLDOM");
+      respXML.async = "false";
+      respXML.loadXML(xml_string);
+    }
+    return respXML;
+  };
   window.Story = (function() {
     function Story(io) {
       this.io = io;
@@ -39,20 +52,12 @@
       console.log("post new story xml:", story_xml);
       params[this.io.RequestParameters.POST_DATA] = story_xml;
       response_callback = __bind(function(response) {
-        var parser, respXML;
+        var respXML;
         console.log("post new story response:", response);
         if (response.rc > 400) {
           return on_error("Error creating story");
         } else {
-          respXML = null;
-          if (window.DOMParser) {
-            parser = new DOMParser();
-            respXML = parser.parseFromString(response.text, "text/xml");
-          } else {
-            respXML = new ActiveXObject("Microsoft.XMLDOM");
-            respXML.async = "false";
-            respXML.loadXML(response.text);
-          }
+          respXML = parse_xml(response.text);
           this.url = $(respXML).find("url").text();
           console.log(this.url);
           this.story_id = $(respXML).find("id").text();

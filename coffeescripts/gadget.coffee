@@ -1,8 +1,18 @@
+parse_xml = (xml_string) ->
+  if window.DOMParser
+    parser = new DOMParser()
+    respXML = parser.parseFromString(xml_string, "text/xml")
+  else
+    respXML = new ActiveXObject("Microsoft.XMLDOM")
+    respXML.async = "false"
+    respXML.loadXML xml_string
+  return respXML
+
 class window.Story
   constructor: (@io) ->
 
   create: (on_success, on_error) ->
-    this._create_and_update_other_id(on_success, on_error)
+    return this._create_and_update_other_id(on_success, on_error)
 
   _put_update_other_id: ->
     story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
@@ -49,19 +59,12 @@ class window.Story
       if (response.rc > 400)
         on_error("Error creating story")
       else
-        respXML = null
-        if window.DOMParser
-          parser = new DOMParser()
-          respXML = parser.parseFromString(response.text, "text/xml")
-        else
-          respXML = new ActiveXObject("Microsoft.XMLDOM")
-          respXML.async = "false"
-          respXML.loadXML response.text
+        respXML = parse_xml(response.text)
         @url = $(respXML).find("url").text()
         console.log @url
         @story_id = $(respXML).find("id").text()
         on_success(this)
-        this._put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
+        this._put_update_other_id() #TODO: Do it only if integration id is set
     
     @io.makeRequest stories_url, response_callback, params
 
