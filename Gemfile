@@ -13,8 +13,8 @@ end
 
 group :development do
   gem "ruby-debug"
-  gem "barista"
   gem "rake"
   gem "guard"
   gem "guard-coffeescript"
+  gem "therubyracer"
 end
