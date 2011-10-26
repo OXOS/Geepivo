@@ -12,6 +12,7 @@ group :test do
 end
 
 group :development do
+  gem "growl"
   gem "ruby-debug"
   gem "rake"
   gem "guard"
