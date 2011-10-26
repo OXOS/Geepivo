@@ -1,7 +1,10 @@
 class window.Story
   constructor: (@io) ->
 
-  put_update_other_id: ->
+  create: (on_success, on_error) ->
+    this._create_and_update_other_id(on_success, on_error)
+
+  _put_update_other_id: ->
     story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
     params = {}
     params[@io.RequestParameters.METHOD] = @io.MethodType.PUT
@@ -18,7 +21,7 @@ class window.Story
     
     @io.makeRequest story_url, response_callback, params
 
-  create_and_update_other_id: (on_success, on_error) ->
+  _create_and_update_other_id: (on_success, on_error) ->
     stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories"
     params = {}
     params[@io.RequestParameters.METHOD] = @io.MethodType.POST
@@ -58,7 +61,7 @@ class window.Story
         console.log @url
         @story_id = $(respXML).find("id").text()
         on_success(this)
-        this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
+        this._put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
     
     @io.makeRequest stories_url, response_callback, params
 
@@ -86,7 +89,7 @@ window.initializeGeepivoGadget = ->
     story.integration_id    = prefs.getString('integration_id')
     story.requested_by      = prefs.getString('requested_by')
     story.owned_by          = prefs.getString('owned_by')
-    story.create_and_update_other_id  on_story_created, on_story_creation_error
+    story.create on_story_created, on_story_creation_error
   
   #TODO: use DOM event instead
   on_settings_opened_or_closed = () ->

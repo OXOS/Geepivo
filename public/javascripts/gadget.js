@@ -4,7 +4,10 @@
     function Story(io) {
       this.io = io;
     }
-    Story.prototype.put_update_other_id = function() {
+    Story.prototype.create = function(on_success, on_error) {
+      return this._create_and_update_other_id(on_success, on_error);
+    };
+    Story.prototype._put_update_other_id = function() {
       var params, response_callback, story_url, story_xml;
       story_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories/" + this.story_id;
       params = {};
@@ -22,7 +25,7 @@
       };
       return this.io.makeRequest(story_url, response_callback, params);
     };
-    Story.prototype.create_and_update_other_id = function(on_success, on_error) {
+    Story.prototype._create_and_update_other_id = function(on_success, on_error) {
       var params, response_callback, stories_url, story_xml;
       stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
       params = {};
@@ -54,7 +57,7 @@
           console.log(this.url);
           this.story_id = $(respXML).find("id").text();
           on_success(this);
-          return this.put_update_other_id();
+          return this._put_update_other_id();
         }
       }, this);
       return this.io.makeRequest(stories_url, response_callback, params);
@@ -84,7 +87,7 @@
       story.integration_id = prefs.getString('integration_id');
       story.requested_by = prefs.getString('requested_by');
       story.owned_by = prefs.getString('owned_by');
-      return story.create_and_update_other_id(on_story_created, on_story_creation_error);
+      return story.create(on_story_created, on_story_creation_error);
     };
     on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {
