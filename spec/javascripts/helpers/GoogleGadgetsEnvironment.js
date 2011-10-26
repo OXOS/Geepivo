@@ -29,16 +29,14 @@ GoogleGadgetsEnvironmentStubs = function() {
     adjustHeight: jasmine.createSpy('window')
   };
 
-  this.gadgets.Prefs = function() {
-    this.getString = function(key) {
+  this.gadgets.Prefs = function() {};
+  this.gadgets.Prefs.prototype.getString = function(key) {
       return key + '_value';
-    };
   };
 
   this.google = {};
 
   this.google.contentmatch = {};
-  //this.google.contentmatch.getContentMatches = jasmine.createSpy('google.contentmatch.getContentMatches').andReturn( [ {subject: "An email subject"} ] );
   this.google.contentmatch.getContentMatches = function(){
     return [ {subject: "An email subject"} ];
   };

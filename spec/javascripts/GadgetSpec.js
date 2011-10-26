@@ -1,9 +1,21 @@
 describe("Unconfigured gadget", function() {
 
-  xit("should display prompt", function() {
+  beforeEach(function() {
+    loadFixtures('gadget.html');
+    environment_stub = new GoogleGadgetsEnvironmentStubs();
+    window.google  = environment_stub.google;
+    window.gadgets = environment_stub.gadgets;
+    spyOn(window.gadgets.Prefs.prototype,'getString').andReturn(null);
+    window.initializeGeepivoGadget();
   });
 
-  xit("should expand settings", function() {
+  it("should display prompt", function() {
+    expect( $(".notification_area").html() ).toEqual('Please fill required settings');
+  });
+
+  it("should expand settings", function() {
+    expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(500);
+    expect($("#settings")).toBeVisible();
   });
 
   xit("should save settings", function() {
@@ -22,7 +34,7 @@ describe("Configured gadget", function() {
   it("should hide itself when no inputs", function() {
     spyOn(window.google.contentmatch,'getContentMatches').andReturn([]);
     window.initializeGeepivoGadget();
-
+    expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(0);
   });
 
 });
