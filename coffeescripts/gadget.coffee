@@ -89,6 +89,7 @@ window.initializeGeepivoGadget = ->
     else
       $(this).html "settings ▼"
       window.gadgets.window.adjustHeight 32
+    return false
   
   matches = window.google.contentmatch.getContentMatches()
   inputs = {}

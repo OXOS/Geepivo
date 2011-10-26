@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 25 Oct 2011 19:49:53 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 26 Oct 2011 09:38:59 GMT from
  * /Users/wojtek/GeePivo/geepivo/coffeescripts/gadget.coffee
  */
 
@@ -87,11 +87,12 @@
     on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {
         $(this).html("settings ▲");
-        return window.gadgets.window.adjustHeight(500);
+        window.gadgets.window.adjustHeight(500);
       } else {
         $(this).html("settings ▼");
-        return window.gadgets.window.adjustHeight(32);
+        window.gadgets.window.adjustHeight(32);
       }
+      return false;
     };
     matches = window.google.contentmatch.getContentMatches();
     inputs = {};
