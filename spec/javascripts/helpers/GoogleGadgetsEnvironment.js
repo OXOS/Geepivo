@@ -1,11 +1,8 @@
-GoogleGadgetsEnvironment = {
-  google: {},
-  gadgets: {}
-};
+GoogleGadgetsEnvironmentStubs = function() {
 
-GoogleGadgetsEnvironment.gadgets.io = function(){
+  this.gadgets = {};
 
-  return {
+  this.gadgets.io = {
     makeRequest: jasmine.createSpy('gadgets.io.makeRequest'),
 
     //I don't know what values those 'constants' actually have,
@@ -27,4 +24,10 @@ GoogleGadgetsEnvironment.gadgets.io = function(){
       POST_DATA: 'POST_DATA'
     }
   };
+
+  this.gadgets['window'] = {
+    adjustHeight: jasmine.createSpy('window')
+  };
+
+
 };

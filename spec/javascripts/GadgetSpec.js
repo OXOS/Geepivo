@@ -29,14 +29,11 @@ describe("Configured gadget", function() {
       };
     };
 
-    gadget_window = {
-      adjustHeight: jasmine.createSpy('window')
-    };
-
+    environment_stub = new GoogleGadgetsEnvironmentStubs();
     window.gadgets = {
       Prefs: Prefs,
-      'window': gadget_window,
-      io: GoogleGadgetsEnvironment.gadgets.io()
+      'window': environment_stub.gadgets['window'],
+      io: environment_stub.gadgets.io
     };
 
     window.initializeGeepivoGadget();
