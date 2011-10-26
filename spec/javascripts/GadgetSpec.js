@@ -17,13 +17,8 @@ describe("Configured gadget", function() {
   beforeEach(function() {
     loadFixtures('gadget.html');
 
-    window.google = {};
-
-    var contentmatch = {getContentMatches: function(){} };
-    spyOn(contentmatch,'getContentMatches').andReturn( [ {subject: "An email subject"} ] );
-    window.google.contentmatch = contentmatch;
-
     environment_stub = new GoogleGadgetsEnvironmentStubs();
+    window.google  = environment_stub.google;
     window.gadgets = environment_stub.gadgets;
 
     window.initializeGeepivoGadget();

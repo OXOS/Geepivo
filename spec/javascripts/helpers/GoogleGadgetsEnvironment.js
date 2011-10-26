@@ -35,4 +35,9 @@ GoogleGadgetsEnvironmentStubs = function() {
     };
   };
 
+  this.google = {};
+
+  this.google.contentmatch = {};
+  this.google.contentmatch.getContentMatches = jasmine.createSpy('google.contentmatch.getContentMatches').andReturn( [ {subject: "An email subject"} ] );
+
 };
