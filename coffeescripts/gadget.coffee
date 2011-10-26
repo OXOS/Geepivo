@@ -6,31 +6,33 @@ window.initializeGeepivoGadget = ->
     console.debug = (msg) ->
   
   class Story
+    constructor: (@io) ->
+
     put_update_other_id: ->
       story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
       params = {}
-      params[window.gadgets.io.RequestParameters.METHOD] = window.gadgets.io.MethodType.PUT
-      params[window.gadgets.io.RequestParameters.HEADERS] =
-        "X-TrackerToken": prefs.getString("pivotal_api_token")
+      params[@io.RequestParameters.METHOD] = @io.MethodType.PUT
+      params[@io.RequestParameters.HEADERS] =
+        "X-TrackerToken": @pivotal_api_token
         "Content-type": "application/xml"
       
-      params[window.gadgets.io.RequestParameters.CONTENT_TYPE] = window.gadgets.io.ContentType.DOM
+      params[@io.RequestParameters.CONTENT_TYPE] = @io.ContentType.DOM
       story_xml = "<story><integration_id>#{@integration_id}</integration_id><other_id>#{@story_id}</other_id></story>"
       console.log "update other_id xml:", story_xml
-      params[window.gadgets.io.RequestParameters.POST_DATA] = story_xml
+      params[@io.RequestParameters.POST_DATA] = story_xml
       response_callback = (response) ->
         console.log "put other_id response:", response.text
       
-      window.gadgets.io.makeRequest story_url, response_callback, params
+      @io.makeRequest story_url, response_callback, params
   
     create_and_update_other_id: (on_success) ->
-      stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{prefs.getString('project_id')}/stories"
+      stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories"
       params = {}
-      params[window.gadgets.io.RequestParameters.METHOD] = window.gadgets.io.MethodType.POST
-      params[window.gadgets.io.RequestParameters.HEADERS] =
-        "X-TrackerToken": prefs.getString("pivotal_api_token")
+      params[@io.RequestParameters.METHOD] = @io.MethodType.POST
+      params[@io.RequestParameters.HEADERS] =
+        "X-TrackerToken": @pivotal_api_token
         "Content-type": "application/xml"
-      params[window.gadgets.io.RequestParameters.CONTENT_TYPE] = window.gadgets.io.ContentType.DOM
+      params[@io.RequestParameters.CONTENT_TYPE] = @io.ContentType.DOM
   
       #TODO: Find a library to construct XML
       story_xml = """
@@ -45,7 +47,7 @@ window.initializeGeepivoGadget = ->
         """
     
       console.log "post new story xml:", story_xml
-      params[window.gadgets.io.RequestParameters.POST_DATA] = story_xml
+      params[@io.RequestParameters.POST_DATA] = story_xml
       response_callback = (response) =>
         console.log "post new story response:", response
         if (response.rc > 400)
@@ -65,15 +67,17 @@ window.initializeGeepivoGadget = ->
           on_success(this)
           this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
       
-      window.gadgets.io.makeRequest stories_url, response_callback, params
+      @io.makeRequest stories_url, response_callback, params
   
   
   on_story_created = (story) ->
     $(".notification_area", container).html "<a href='#{story.url}' target='_blank'>#{story.url}</a>"
   
   post_create_story = (subject, message_id) ->
-    story = new Story
+    story = new Story(window.gadgets.io)
+
     story.name              = subject
+    story.pivotal_api_token = prefs.getString('pivotal_api_token')
     story.project_id        = prefs.getString('project_id')
     story.story_type        = prefs.getString('story_type')
     story.integration_id    = prefs.getString('integration_id')

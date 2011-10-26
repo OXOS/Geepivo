@@ -1,7 +1,3 @@
-/* DO NOT MODIFY. This file was compiled Wed, 26 Oct 2011 09:38:59 GMT from
- * /Users/wojtek/GeePivo/geepivo/coffeescripts/gadget.coffee
- */
-
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.initializeGeepivoGadget = function() {
@@ -12,38 +8,40 @@
       console.debug = function(msg) {};
     }
     Story = (function() {
-      function Story() {}
+      function Story(io) {
+        this.io = io;
+      }
       Story.prototype.put_update_other_id = function() {
         var params, response_callback, story_url, story_xml;
         story_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories/" + this.story_id;
         params = {};
-        params[window.gadgets.io.RequestParameters.METHOD] = window.gadgets.io.MethodType.PUT;
-        params[window.gadgets.io.RequestParameters.HEADERS] = {
-          "X-TrackerToken": prefs.getString("pivotal_api_token"),
+        params[this.io.RequestParameters.METHOD] = this.io.MethodType.PUT;
+        params[this.io.RequestParameters.HEADERS] = {
+          "X-TrackerToken": this.pivotal_api_token,
           "Content-type": "application/xml"
         };
-        params[window.gadgets.io.RequestParameters.CONTENT_TYPE] = window.gadgets.io.ContentType.DOM;
+        params[this.io.RequestParameters.CONTENT_TYPE] = this.io.ContentType.DOM;
         story_xml = "<story><integration_id>" + this.integration_id + "</integration_id><other_id>" + this.story_id + "</other_id></story>";
         console.log("update other_id xml:", story_xml);
-        params[window.gadgets.io.RequestParameters.POST_DATA] = story_xml;
+        params[this.io.RequestParameters.POST_DATA] = story_xml;
         response_callback = function(response) {
           return console.log("put other_id response:", response.text);
         };
-        return window.gadgets.io.makeRequest(story_url, response_callback, params);
+        return this.io.makeRequest(story_url, response_callback, params);
       };
       Story.prototype.create_and_update_other_id = function(on_success) {
         var params, response_callback, stories_url, story_xml;
-        stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + (prefs.getString('project_id')) + "/stories";
+        stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
         params = {};
-        params[window.gadgets.io.RequestParameters.METHOD] = window.gadgets.io.MethodType.POST;
-        params[window.gadgets.io.RequestParameters.HEADERS] = {
-          "X-TrackerToken": prefs.getString("pivotal_api_token"),
+        params[this.io.RequestParameters.METHOD] = this.io.MethodType.POST;
+        params[this.io.RequestParameters.HEADERS] = {
+          "X-TrackerToken": this.pivotal_api_token,
           "Content-type": "application/xml"
         };
-        params[window.gadgets.io.RequestParameters.CONTENT_TYPE] = window.gadgets.io.ContentType.DOM;
+        params[this.io.RequestParameters.CONTENT_TYPE] = this.io.ContentType.DOM;
         story_xml = "<story>\n  <project_id>" + this.project_id + "</project_id>\n  <story_type>" + this.story_type + "</story_type>\n  <name>" + this.name + "</name>\n  <integration_id>" + this.integration_id + "</integration_id>\n  <requested_by>" + this.requested_by + "</requested_by>\n  <owned_by>" + this.owned_by + "</owned_by>\n</story>";
         console.log("post new story xml:", story_xml);
-        params[window.gadgets.io.RequestParameters.POST_DATA] = story_xml;
+        params[this.io.RequestParameters.POST_DATA] = story_xml;
         response_callback = __bind(function(response) {
           var parser, respXML;
           console.log("post new story response:", response);
@@ -66,7 +64,7 @@
             return this.put_update_other_id();
           }
         }, this);
-        return window.gadgets.io.makeRequest(stories_url, response_callback, params);
+        return this.io.makeRequest(stories_url, response_callback, params);
       };
       return Story;
     })();
@@ -75,8 +73,9 @@
     };
     post_create_story = function(subject, message_id) {
       var story;
-      story = new Story;
+      story = new Story(window.gadgets.io);
       story.name = subject;
+      story.pivotal_api_token = prefs.getString('pivotal_api_token');
       story.project_id = prefs.getString('project_id');
       story.story_type = prefs.getString('story_type');
       story.integration_id = prefs.getString('integration_id');
