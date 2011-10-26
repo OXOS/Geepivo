@@ -66,13 +66,10 @@ describe("Configured gadget", function() {
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
 
-    var args = window.gadgets.io.makeRequest.mostRecentCall.args;
-    expect(args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects/project_id_value/stories');
-
-    var callback = args.shift();
-    expect(typeof callback).toEqual('function');
-
-    expect( args.shift() ).toEqual({
+    var request_args = window.gadgets.io.makeRequest.mostRecentCall.args;
+    expect(request_args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects/project_id_value/stories');
+    expect(typeof request_args.shift()).toEqual('function');
+    expect( request_args.shift() ).toEqual({
       METHOD: 'POST',
       HEADERS: { 'X-TrackerToken' : 'pivotal_api_token_value', 'Content-type' : 'application/xml' },
       CONTENT_TYPE: 'DOM',
@@ -98,7 +95,7 @@ describe("Configured gadget", function() {
 
   });
 
-  xit("should make another request when callback called with success message", function() {
+  it("should make another request when callback called with success message", function() {
     $('button.create_story_button').click();
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
@@ -113,9 +110,21 @@ describe("Configured gadget", function() {
     callback(response_data);
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(2);
-    var args = window.gadgets.io.makeRequest.mostRecentCall.args;
+    var request_args = window.gadgets.io.makeRequest.mostRecentCall.args;
 
-    expect(args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects/project_id_value/stories/555');
+    expect(request_args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects/project_id_value/stories/555');
+    expect(typeof request_args.shift()).toEqual('function');
+
+    var params = request_args.shift();
+    var post_data = params.POST_DATA; delete(params.POST_DATA);
+
+    expect( params ).toEqual({
+      METHOD: 'PUT',
+      HEADERS: { 'X-TrackerToken' : 'pivotal_api_token_value', 'Content-type' : 'application/xml' },
+      CONTENT_TYPE: 'DOM'
+    });
+
+    expect(post_data).toEqual("<story><integration_id>integration_id_value</integration_id><other_id>555</other_id></story>");
   });
 
 
