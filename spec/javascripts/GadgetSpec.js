@@ -23,18 +23,8 @@ describe("Configured gadget", function() {
     spyOn(contentmatch,'getContentMatches').andReturn( [ {subject: "An email subject"} ] );
     window.google.contentmatch = contentmatch;
 
-    var Prefs =  function() {
-      this.getString = function(key) {
-	return key + '_value';
-      };
-    };
-
     environment_stub = new GoogleGadgetsEnvironmentStubs();
-    window.gadgets = {
-      Prefs: Prefs,
-      'window': environment_stub.gadgets['window'],
-      io: environment_stub.gadgets.io
-    };
+    window.gadgets = environment_stub.gadgets;
 
     window.initializeGeepivoGadget();
   });
