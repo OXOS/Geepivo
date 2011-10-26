@@ -1,74 +1,74 @@
+class window.Story
+  constructor: (@io) ->
+
+  put_update_other_id: ->
+    story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
+    params = {}
+    params[@io.RequestParameters.METHOD] = @io.MethodType.PUT
+    params[@io.RequestParameters.HEADERS] =
+      "X-TrackerToken": @pivotal_api_token
+      "Content-type": "application/xml"
+    
+    params[@io.RequestParameters.CONTENT_TYPE] = @io.ContentType.DOM
+    story_xml = "<story><integration_id>#{@integration_id}</integration_id><other_id>#{@story_id}</other_id></story>"
+    console.log "update other_id xml:", story_xml
+    params[@io.RequestParameters.POST_DATA] = story_xml
+    response_callback = (response) ->
+      console.log "put other_id response:", response.text
+    
+    @io.makeRequest story_url, response_callback, params
+
+  create_and_update_other_id: (on_success, on_error) ->
+    stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories"
+    params = {}
+    params[@io.RequestParameters.METHOD] = @io.MethodType.POST
+    params[@io.RequestParameters.HEADERS] =
+      "X-TrackerToken": @pivotal_api_token
+      "Content-type": "application/xml"
+    params[@io.RequestParameters.CONTENT_TYPE] = @io.ContentType.DOM
+
+    #TODO: Find a library to construct XML
+    story_xml = """
+      <story>
+        <project_id>#{@project_id}</project_id>
+        <story_type>#{@story_type}</story_type>
+        <name>#{@name}</name>
+        <integration_id>#{@integration_id}</integration_id>
+        <requested_by>#{@requested_by}</requested_by>
+        <owned_by>#{@owned_by}</owned_by>
+      </story>
+      """
+  
+    console.log "post new story xml:", story_xml
+    params[@io.RequestParameters.POST_DATA] = story_xml
+    response_callback = (response) =>
+      console.log "post new story response:", response
+      if (response.rc > 400)
+        on_error("Error creating story")
+      else
+        respXML = null
+        if window.DOMParser
+          parser = new DOMParser()
+          respXML = parser.parseFromString(response.text, "text/xml")
+        else
+          respXML = new ActiveXObject("Microsoft.XMLDOM")
+          respXML.async = "false"
+          respXML.loadXML response.text
+        @url = $(respXML).find("url").text()
+        console.log @url
+        @story_id = $(respXML).find("id").text()
+        on_success(this)
+        this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
+    
+    @io.makeRequest stories_url, response_callback, params
+
+
 window.initializeGeepivoGadget = ->
 
   unless window.console
     window.console = {}
     console.log = (msg) ->
     console.debug = (msg) ->
-  
-  class window.Story
-    constructor: (@io) ->
-
-    put_update_other_id: ->
-      story_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories/#{@story_id}"
-      params = {}
-      params[@io.RequestParameters.METHOD] = @io.MethodType.PUT
-      params[@io.RequestParameters.HEADERS] =
-        "X-TrackerToken": @pivotal_api_token
-        "Content-type": "application/xml"
-      
-      params[@io.RequestParameters.CONTENT_TYPE] = @io.ContentType.DOM
-      story_xml = "<story><integration_id>#{@integration_id}</integration_id><other_id>#{@story_id}</other_id></story>"
-      console.log "update other_id xml:", story_xml
-      params[@io.RequestParameters.POST_DATA] = story_xml
-      response_callback = (response) ->
-        console.log "put other_id response:", response.text
-      
-      @io.makeRequest story_url, response_callback, params
-  
-    create_and_update_other_id: (on_success, on_error) ->
-      stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories"
-      params = {}
-      params[@io.RequestParameters.METHOD] = @io.MethodType.POST
-      params[@io.RequestParameters.HEADERS] =
-        "X-TrackerToken": @pivotal_api_token
-        "Content-type": "application/xml"
-      params[@io.RequestParameters.CONTENT_TYPE] = @io.ContentType.DOM
-  
-      #TODO: Find a library to construct XML
-      story_xml = """
-        <story>
-          <project_id>#{@project_id}</project_id>
-          <story_type>#{@story_type}</story_type>
-          <name>#{@name}</name>
-          <integration_id>#{@integration_id}</integration_id>
-          <requested_by>#{@requested_by}</requested_by>
-          <owned_by>#{@owned_by}</owned_by>
-        </story>
-        """
-    
-      console.log "post new story xml:", story_xml
-      params[@io.RequestParameters.POST_DATA] = story_xml
-      response_callback = (response) =>
-        console.log "post new story response:", response
-        if (response.rc > 400)
-          on_error("Error creating story")
-        else
-          respXML = null
-          if window.DOMParser
-            parser = new DOMParser()
-            respXML = parser.parseFromString(response.text, "text/xml")
-          else
-            respXML = new ActiveXObject("Microsoft.XMLDOM")
-            respXML.async = "false"
-            respXML.loadXML response.text
-          @url = $(respXML).find("url").text()
-          console.log @url
-          @story_id = $(respXML).find("id").text()
-          on_success(this)
-          this.put_update_other_id() #TODO: Do it only if previous request succeeds and integration id is set
-      
-      @io.makeRequest stories_url, response_callback, params
-  
   
   on_story_created = (story) ->
     $(".notification_area", container).html "<a href='#{story.url}' target='_blank'>#{story.url}</a>"

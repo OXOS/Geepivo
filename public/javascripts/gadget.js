@@ -1,5 +1,66 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  window.Story = (function() {
+    function Story(io) {
+      this.io = io;
+    }
+    Story.prototype.put_update_other_id = function() {
+      var params, response_callback, story_url, story_xml;
+      story_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories/" + this.story_id;
+      params = {};
+      params[this.io.RequestParameters.METHOD] = this.io.MethodType.PUT;
+      params[this.io.RequestParameters.HEADERS] = {
+        "X-TrackerToken": this.pivotal_api_token,
+        "Content-type": "application/xml"
+      };
+      params[this.io.RequestParameters.CONTENT_TYPE] = this.io.ContentType.DOM;
+      story_xml = "<story><integration_id>" + this.integration_id + "</integration_id><other_id>" + this.story_id + "</other_id></story>";
+      console.log("update other_id xml:", story_xml);
+      params[this.io.RequestParameters.POST_DATA] = story_xml;
+      response_callback = function(response) {
+        return console.log("put other_id response:", response.text);
+      };
+      return this.io.makeRequest(story_url, response_callback, params);
+    };
+    Story.prototype.create_and_update_other_id = function(on_success, on_error) {
+      var params, response_callback, stories_url, story_xml;
+      stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
+      params = {};
+      params[this.io.RequestParameters.METHOD] = this.io.MethodType.POST;
+      params[this.io.RequestParameters.HEADERS] = {
+        "X-TrackerToken": this.pivotal_api_token,
+        "Content-type": "application/xml"
+      };
+      params[this.io.RequestParameters.CONTENT_TYPE] = this.io.ContentType.DOM;
+      story_xml = "<story>\n  <project_id>" + this.project_id + "</project_id>\n  <story_type>" + this.story_type + "</story_type>\n  <name>" + this.name + "</name>\n  <integration_id>" + this.integration_id + "</integration_id>\n  <requested_by>" + this.requested_by + "</requested_by>\n  <owned_by>" + this.owned_by + "</owned_by>\n</story>";
+      console.log("post new story xml:", story_xml);
+      params[this.io.RequestParameters.POST_DATA] = story_xml;
+      response_callback = __bind(function(response) {
+        var parser, respXML;
+        console.log("post new story response:", response);
+        if (response.rc > 400) {
+          return on_error("Error creating story");
+        } else {
+          respXML = null;
+          if (window.DOMParser) {
+            parser = new DOMParser();
+            respXML = parser.parseFromString(response.text, "text/xml");
+          } else {
+            respXML = new ActiveXObject("Microsoft.XMLDOM");
+            respXML.async = "false";
+            respXML.loadXML(response.text);
+          }
+          this.url = $(respXML).find("url").text();
+          console.log(this.url);
+          this.story_id = $(respXML).find("id").text();
+          on_success(this);
+          return this.put_update_other_id();
+        }
+      }, this);
+      return this.io.makeRequest(stories_url, response_callback, params);
+    };
+    return Story;
+  })();
   window.initializeGeepivoGadget = function() {
     var container, gadget_content, i, imatch, inputs, key, matches, on_settings_opened_or_closed, on_story_created, on_story_creation_error, post_create_story, prefs, setting_input, settings;
     if (!window.console) {
@@ -7,67 +68,6 @@
       console.log = function(msg) {};
       console.debug = function(msg) {};
     }
-    window.Story = (function() {
-      function Story(io) {
-        this.io = io;
-      }
-      Story.prototype.put_update_other_id = function() {
-        var params, response_callback, story_url, story_xml;
-        story_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories/" + this.story_id;
-        params = {};
-        params[this.io.RequestParameters.METHOD] = this.io.MethodType.PUT;
-        params[this.io.RequestParameters.HEADERS] = {
-          "X-TrackerToken": this.pivotal_api_token,
-          "Content-type": "application/xml"
-        };
-        params[this.io.RequestParameters.CONTENT_TYPE] = this.io.ContentType.DOM;
-        story_xml = "<story><integration_id>" + this.integration_id + "</integration_id><other_id>" + this.story_id + "</other_id></story>";
-        console.log("update other_id xml:", story_xml);
-        params[this.io.RequestParameters.POST_DATA] = story_xml;
-        response_callback = function(response) {
-          return console.log("put other_id response:", response.text);
-        };
-        return this.io.makeRequest(story_url, response_callback, params);
-      };
-      Story.prototype.create_and_update_other_id = function(on_success, on_error) {
-        var params, response_callback, stories_url, story_xml;
-        stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
-        params = {};
-        params[this.io.RequestParameters.METHOD] = this.io.MethodType.POST;
-        params[this.io.RequestParameters.HEADERS] = {
-          "X-TrackerToken": this.pivotal_api_token,
-          "Content-type": "application/xml"
-        };
-        params[this.io.RequestParameters.CONTENT_TYPE] = this.io.ContentType.DOM;
-        story_xml = "<story>\n  <project_id>" + this.project_id + "</project_id>\n  <story_type>" + this.story_type + "</story_type>\n  <name>" + this.name + "</name>\n  <integration_id>" + this.integration_id + "</integration_id>\n  <requested_by>" + this.requested_by + "</requested_by>\n  <owned_by>" + this.owned_by + "</owned_by>\n</story>";
-        console.log("post new story xml:", story_xml);
-        params[this.io.RequestParameters.POST_DATA] = story_xml;
-        response_callback = __bind(function(response) {
-          var parser, respXML;
-          console.log("post new story response:", response);
-          if (response.rc > 400) {
-            return on_error("Error creating story");
-          } else {
-            respXML = null;
-            if (window.DOMParser) {
-              parser = new DOMParser();
-              respXML = parser.parseFromString(response.text, "text/xml");
-            } else {
-              respXML = new ActiveXObject("Microsoft.XMLDOM");
-              respXML.async = "false";
-              respXML.loadXML(response.text);
-            }
-            this.url = $(respXML).find("url").text();
-            console.log(this.url);
-            this.story_id = $(respXML).find("id").text();
-            on_success(this);
-            return this.put_update_other_id();
-          }
-        }, this);
-        return this.io.makeRequest(stories_url, response_callback, params);
-      };
-      return Story;
-    })();
     on_story_created = function(story) {
       return $(".notification_area", container).html("<a href='" + story.url + "' target='_blank'>" + story.url + "</a>");
     };
