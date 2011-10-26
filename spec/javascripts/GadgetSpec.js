@@ -24,8 +24,8 @@ describe("Configured gadget", function() {
     window.initializeGeepivoGadget();
   });
 
-  xit("should adjust height to 32", function() {
-    expect(getString).toHaveBeenCalled();
+  it("should adjust height to 32", function() {
+    expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(32);
   });
 
   it("should post XML story to Tracker", function() {
