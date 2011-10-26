@@ -12,8 +12,22 @@ describe("Unconfigured gadget", function() {
 });
 
 describe("Configured gadget", function() {
-  var gadget_window, getString;
+  beforeEach(function() {
+    loadFixtures('gadget.html');
+    environment_stub = new GoogleGadgetsEnvironmentStubs();
+    window.google  = environment_stub.google;
+    window.gadgets = environment_stub.gadgets;
+  });
 
+  it("should hide itself when no inputs", function() {
+    spyOn(window.google.contentmatch,'getContentMatches').andReturn([]);
+    window.initializeGeepivoGadget();
+
+  });
+
+});
+
+describe("Initialized gadget", function() {
   beforeEach(function() {
     loadFixtures('gadget.html');
 

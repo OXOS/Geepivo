@@ -38,6 +38,9 @@ GoogleGadgetsEnvironmentStubs = function() {
   this.google = {};
 
   this.google.contentmatch = {};
-  this.google.contentmatch.getContentMatches = jasmine.createSpy('google.contentmatch.getContentMatches').andReturn( [ {subject: "An email subject"} ] );
+  //this.google.contentmatch.getContentMatches = jasmine.createSpy('google.contentmatch.getContentMatches').andReturn( [ {subject: "An email subject"} ] );
+  this.google.contentmatch.getContentMatches = function(){
+    return [ {subject: "An email subject"} ];
+  };
 
 };
