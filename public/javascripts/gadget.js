@@ -1,13 +1,13 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.initializeGeepivoGadget = function() {
-    var Story, container, gadget_content, i, imatch, inputs, key, matches, on_settings_opened_or_closed, on_story_created, post_create_story, prefs, setting_input, settings;
+    var container, gadget_content, i, imatch, inputs, key, matches, on_settings_opened_or_closed, on_story_created, on_story_creation_error, post_create_story, prefs, setting_input, settings;
     if (!window.console) {
       window.console = {};
       console.log = function(msg) {};
       console.debug = function(msg) {};
     }
-    Story = (function() {
+    window.Story = (function() {
       function Story(io) {
         this.io = io;
       }
@@ -29,7 +29,7 @@
         };
         return this.io.makeRequest(story_url, response_callback, params);
       };
-      Story.prototype.create_and_update_other_id = function(on_success) {
+      Story.prototype.create_and_update_other_id = function(on_success, on_error) {
         var params, response_callback, stories_url, story_xml;
         stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
         params = {};
@@ -46,7 +46,7 @@
           var parser, respXML;
           console.log("post new story response:", response);
           if (response.rc > 400) {
-            return $(".notification_area", container).html("Error creating story");
+            return on_error("Error creating story");
           } else {
             respXML = null;
             if (window.DOMParser) {
@@ -71,6 +71,9 @@
     on_story_created = function(story) {
       return $(".notification_area", container).html("<a href='" + story.url + "' target='_blank'>" + story.url + "</a>");
     };
+    on_story_creation_error = function(error) {
+      return $(".notification_area", container).html(error);
+    };
     post_create_story = function(subject, message_id) {
       var story;
       story = new Story(window.gadgets.io);
@@ -81,7 +84,7 @@
       story.integration_id = prefs.getString('integration_id');
       story.requested_by = prefs.getString('requested_by');
       story.owned_by = prefs.getString('owned_by');
-      return story.create_and_update_other_id(on_story_created);
+      return story.create_and_update_other_id(on_story_created, on_story_creation_error);
     };
     on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {

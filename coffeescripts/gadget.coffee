@@ -5,7 +5,7 @@ window.initializeGeepivoGadget = ->
     console.log = (msg) ->
     console.debug = (msg) ->
   
-  class Story
+  class window.Story
     constructor: (@io) ->
 
     put_update_other_id: ->
@@ -25,7 +25,7 @@ window.initializeGeepivoGadget = ->
       
       @io.makeRequest story_url, response_callback, params
   
-    create_and_update_other_id: (on_success) ->
+    create_and_update_other_id: (on_success, on_error) ->
       stories_url = "https://www.pivotaltracker.com/services/v3/projects/#{@project_id}/stories"
       params = {}
       params[@io.RequestParameters.METHOD] = @io.MethodType.POST
@@ -51,7 +51,7 @@ window.initializeGeepivoGadget = ->
       response_callback = (response) =>
         console.log "post new story response:", response
         if (response.rc > 400)
-          $(".notification_area", container).html("Error creating story")
+          on_error("Error creating story")
         else
           respXML = null
           if window.DOMParser
@@ -73,6 +73,9 @@ window.initializeGeepivoGadget = ->
   on_story_created = (story) ->
     $(".notification_area", container).html "<a href='#{story.url}' target='_blank'>#{story.url}</a>"
   
+  on_story_creation_error = (error) ->
+          $(".notification_area", container).html(error)
+  
   post_create_story = (subject, message_id) ->
     story = new Story(window.gadgets.io)
 
@@ -83,7 +86,7 @@ window.initializeGeepivoGadget = ->
     story.integration_id    = prefs.getString('integration_id')
     story.requested_by      = prefs.getString('requested_by')
     story.owned_by          = prefs.getString('owned_by')
-    story.create_and_update_other_id( on_story_created )
+    story.create_and_update_other_id  on_story_created, on_story_creation_error
   
   #TODO: use DOM event instead
   on_settings_opened_or_closed = () ->
