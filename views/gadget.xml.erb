@@ -40,10 +40,14 @@
       <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'></div>
       <p style='display: none;'><%=@git_revision%></p>
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-      <script src="<%=@root_url%>/javascripts/gadget.js"></script>
+      <script src="<%=@root_url%>/javascripts/head.load.min.js"></script>
       <script type="text/javascript">
-	window.initializeGeepivoGadget();
+	head.js(
+	  "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js",
+	  "<%=@root_url%>/javascripts/story.js",
+	  "<%=@root_url%>/javascripts/gadget.js",
+	  function(){ window.initializeGeepivoGadget() }
+	);
       </script>
       ]]>
   </Content>
