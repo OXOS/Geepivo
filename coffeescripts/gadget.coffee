@@ -55,9 +55,8 @@ class window.Story
     console.log "post new story xml:", story_xml
     params[@io.RequestParameters.POST_DATA] = story_xml
     
-    callback_method = @_response_callback
-    response_callback = (response) ->
-      callback_method( response, on_success, on_error )
+    response_callback = (response) =>
+      @_response_callback( response, on_success, on_error )
 
     @io.makeRequest stories_url, response_callback, params
 

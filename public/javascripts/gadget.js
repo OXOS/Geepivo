@@ -40,7 +40,7 @@
       return this.io.makeRequest(story_url, response_callback, params);
     };
     Story.prototype._create_and_update_other_id = function(on_success, on_error) {
-      var callback_method, params, response_callback, stories_url, story_xml;
+      var params, response_callback, stories_url, story_xml;
       stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
       params = {};
       params[this.io.RequestParameters.METHOD] = this.io.MethodType.POST;
@@ -52,10 +52,9 @@
       story_xml = "<story>\n  <project_id>" + this.project_id + "</project_id>\n  <story_type>" + this.story_type + "</story_type>\n  <name>" + this.name + "</name>\n  <integration_id>" + this.integration_id + "</integration_id>\n  <requested_by>" + this.requested_by + "</requested_by>\n  <owned_by>" + this.owned_by + "</owned_by>\n</story>";
       console.log("post new story xml:", story_xml);
       params[this.io.RequestParameters.POST_DATA] = story_xml;
-      callback_method = this._response_callback;
-      response_callback = function(response) {
-        return callback_method(response, on_success, on_error);
-      };
+      response_callback = __bind(function(response) {
+        return this._response_callback(response, on_success, on_error);
+      }, this);
       return this.io.makeRequest(stories_url, response_callback, params);
     };
     Story.prototype._response_callback = function(response, on_success, on_error) {
