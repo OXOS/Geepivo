@@ -3,7 +3,8 @@ GoogleGadgetsEnvironmentStubs = function() {
   this.gadgets = {};
 
   this.gadgets.io = {
-    makeRequest: jasmine.createSpy('gadgets.io.makeRequest'),
+    //makeRequest: jasmine.createSpy('gadgets.io.makeRequest'),
+    makeRequest: function(url,callback,params){},
 
     //I don't know what values those 'constants' actually have,
     //but for now it's not relevant for my tests - I'm only asserting that they appear

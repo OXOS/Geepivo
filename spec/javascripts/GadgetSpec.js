@@ -75,6 +75,8 @@ describe("Initialized gadget", function() {
   });
 
   it("should post XML story to Tracker", function() {
+    spyOn(window.gadgets.io, 'makeRequest');
+
     $('button.create_story_button').click();
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
@@ -91,6 +93,8 @@ describe("Initialized gadget", function() {
   });
 
   it("should display story link when callback called with success message", function() {
+    spyOn(window.gadgets.io, 'makeRequest');
+
     $('button.create_story_button').click();
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
@@ -109,6 +113,8 @@ describe("Initialized gadget", function() {
   });
 
   it("should make another request when callback called with success message", function() {
+    spyOn(window.gadgets.io, 'makeRequest');
+
     $('button.create_story_button').click();
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
@@ -142,6 +148,8 @@ describe("Initialized gadget", function() {
 
 
   it("should show error message callback called with error message", function() {
+    spyOn(window.gadgets.io, 'makeRequest');
+
     $('button.create_story_button').click();
 
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
