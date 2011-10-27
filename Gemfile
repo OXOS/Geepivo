@@ -13,9 +13,9 @@ end
 
 group :development do
   gem "growl"
-  gem "ruby-debug"
   gem "rake"
   gem "guard"
   gem "guard-coffeescript"
+  gem "guard-shell"
   gem "therubyracer"
 end
