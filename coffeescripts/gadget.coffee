@@ -54,19 +54,24 @@ class window.Story
   
     console.log "post new story xml:", story_xml
     params[@io.RequestParameters.POST_DATA] = story_xml
-    response_callback = (response) =>
-      console.log "post new story response:", response
-      if (response.rc >= 400)
-        on_error("Error creating story")
-      else
-        respXML = parse_xml(response.text)
-        @url = $(respXML).find("url").text()
-        console.log @url
-        @story_id = $(respXML).find("id").text()
-        on_success(this)
-        this._put_update_other_id() #TODO: Do it only if integration id is set
     
+    callback_method = @_response_callback
+    response_callback = (response) ->
+      callback_method( response, on_success, on_error )
+
     @io.makeRequest stories_url, response_callback, params
+
+  _response_callback: (response, on_success, on_error) =>
+    console.log "post new story response:", response
+    if (response.rc >= 400)
+      on_error("Error creating story")
+    else
+      respXML = parse_xml(response.text)
+      @url = $(respXML).find("url").text()
+      console.log @url
+      @story_id = $(respXML).find("id").text()
+      on_success(this)
+      this._put_update_other_id() #TODO: Do it only if integration id is set
 
 
 window.initializeGeepivoGadget = ->

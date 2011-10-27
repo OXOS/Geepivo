@@ -16,6 +16,7 @@
   window.Story = (function() {
     function Story(io) {
       this.io = io;
+      this._response_callback = __bind(this._response_callback, this);
     }
     Story.prototype.create = function(on_success, on_error) {
       return this._create_and_update_other_id(on_success, on_error);
@@ -39,7 +40,7 @@
       return this.io.makeRequest(story_url, response_callback, params);
     };
     Story.prototype._create_and_update_other_id = function(on_success, on_error) {
-      var params, response_callback, stories_url, story_xml;
+      var callback_method, params, response_callback, stories_url, story_xml;
       stories_url = "https://www.pivotaltracker.com/services/v3/projects/" + this.project_id + "/stories";
       params = {};
       params[this.io.RequestParameters.METHOD] = this.io.MethodType.POST;
@@ -51,21 +52,25 @@
       story_xml = "<story>\n  <project_id>" + this.project_id + "</project_id>\n  <story_type>" + this.story_type + "</story_type>\n  <name>" + this.name + "</name>\n  <integration_id>" + this.integration_id + "</integration_id>\n  <requested_by>" + this.requested_by + "</requested_by>\n  <owned_by>" + this.owned_by + "</owned_by>\n</story>";
       console.log("post new story xml:", story_xml);
       params[this.io.RequestParameters.POST_DATA] = story_xml;
-      response_callback = __bind(function(response) {
-        var respXML;
-        console.log("post new story response:", response);
-        if (response.rc >= 400) {
-          return on_error("Error creating story");
-        } else {
-          respXML = parse_xml(response.text);
-          this.url = $(respXML).find("url").text();
-          console.log(this.url);
-          this.story_id = $(respXML).find("id").text();
-          on_success(this);
-          return this._put_update_other_id();
-        }
-      }, this);
+      callback_method = this._response_callback;
+      response_callback = function(response) {
+        return callback_method(response, on_success, on_error);
+      };
       return this.io.makeRequest(stories_url, response_callback, params);
+    };
+    Story.prototype._response_callback = function(response, on_success, on_error) {
+      var respXML;
+      console.log("post new story response:", response);
+      if (response.rc >= 400) {
+        return on_error("Error creating story");
+      } else {
+        respXML = parse_xml(response.text);
+        this.url = $(respXML).find("url").text();
+        console.log(this.url);
+        this.story_id = $(respXML).find("id").text();
+        on_success(this);
+        return this._put_update_other_id();
+      }
     };
     return Story;
   })();
