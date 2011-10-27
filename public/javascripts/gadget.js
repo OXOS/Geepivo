@@ -54,7 +54,7 @@
       response_callback = __bind(function(response) {
         var respXML;
         console.log("post new story response:", response);
-        if (response.rc > 400) {
+        if (response.rc >= 400) {
           return on_error("Error creating story");
         } else {
           respXML = parse_xml(response.text);

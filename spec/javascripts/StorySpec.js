@@ -23,7 +23,7 @@ describe("Story", function() {
       on_error = jasmine.createSpy('on_error');
       spyOn(story.io,'makeRequest').andCallFake( function(url,callback,params){
         response = {
-          rc: 401
+          rc: 400
           };
         callback( response );
       } );

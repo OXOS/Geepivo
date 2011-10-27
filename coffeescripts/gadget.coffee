@@ -56,7 +56,7 @@ class window.Story
     params[@io.RequestParameters.POST_DATA] = story_xml
     response_callback = (response) =>
       console.log "post new story response:", response
-      if (response.rc > 400)
+      if (response.rc >= 400)
         on_error("Error creating story")
       else
         respXML = parse_xml(response.text)
