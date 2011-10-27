@@ -58,10 +58,18 @@
       return this.io.makeRequest(stories_url, response_callback, params);
     };
     Story.prototype._response_callback = function(response, on_success, on_error) {
-      var respXML;
+      var message, respXML;
       console.log("post new story response:", response);
       if (response.rc >= 400) {
-        return on_error("Error creating story");
+        message = (function() {
+          switch (response.rc) {
+            case 401:
+              return "Authentication error - check your API token and project permissions";
+            default:
+              return "Error creating story";
+          }
+        })();
+        return on_error(message);
       } else {
         respXML = parse_xml(response.text);
         this.url = $(respXML).find("url").text();

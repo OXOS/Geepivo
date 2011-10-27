@@ -36,6 +36,17 @@ describe("Story", function() {
 
   describe("_response_callback", function() {
 
+    it("should detect authentication errors", function() {
+      on_success = jasmine.createSpy('on_success');
+      on_error = jasmine.createSpy('on_error');
+      response = { rc: 401 };
+
+      story._response_callback( response, on_success, on_error );
+
+      expect(on_success).not.toHaveBeenCalled();
+      expect(on_error).toHaveBeenCalledWith("Authentication error - check your API token and project permissions");
+    });
+
     it("should call on_error callback with 'Error creating story' message", function() {
       on_success = jasmine.createSpy('on_success');
       on_error = jasmine.createSpy('on_error');

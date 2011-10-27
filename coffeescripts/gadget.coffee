@@ -63,7 +63,10 @@ class window.Story
   _response_callback: (response, on_success, on_error) =>
     console.log "post new story response:", response
     if (response.rc >= 400)
-      on_error("Error creating story")
+      message = switch response.rc
+        when 401 then "Authentication error - check your API token and project permissions"
+        else "Error creating story"
+      on_error(message)
     else
       respXML = parse_xml(response.text)
       @url = $(respXML).find("url").text()
