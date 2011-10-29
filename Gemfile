@@ -18,4 +18,5 @@ group :development do
   gem "guard-coffeescript"
   gem "guard-shell"
   gem "therubyracer"
+  gem "json_pure"
 end

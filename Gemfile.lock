@@ -72,6 +72,7 @@ DEPENDENCIES
   guard-coffeescript
   guard-shell
   jasmine (= 1.1.1)!
+  json_pure
   rack-openid
   rake
   ruby-openid
