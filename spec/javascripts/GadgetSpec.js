@@ -10,7 +10,7 @@ describe("Unconfigured gadget", function() {
   });
 
   it("should display prompt", function() {
-    expect( $(".notification_area").html() ).toEqual('Please fill required settings');
+    expect( $(".notification_area") ).toHaveText('Please fill required settings');
   });
 
   it("should expand settings", function() {
@@ -38,7 +38,7 @@ describe("Unconfigured gadget", function() {
       ['owned_by',	'updated owned_by']
       ]);
 
-    expect( $(".notification_area").html() ).toEqual('Settings saved');
+    expect( $(".notification_area") ).toHaveText('Settings saved');
   });
 
 });
@@ -75,17 +75,18 @@ describe("Initialized gadget", function() {
   });
 
   it("should have 'Create story' button", function() {
-    expect( $('#gadget_container button.create_story_button').text() ).toEqual('Create Story');
+    expect( $('#gadget_container button.create_story_button') ).toBeVisible();
+    expect( $('#gadget_container button.create_story_button') ).toHaveText('Create Story');
   });
 
   it("should have settings button that displays and hides settings when clicked", function() {
     var settings_button = $('#gadget_container #toggle_settings_button');
-    expect( settings_button.text() ).toEqual('settings ▼');
+    expect( settings_button ).toHaveText('settings ▼');
     expect( $('#gadget_container #settings') ).not.toBeVisible();
 
     settings_button.click();
 
-    //expect( settings_button.text() ).toEqual('settings ▼'); TODO: should change arrow direction
+    //expect( settings_button ).toHaveText('settings ▼'); TODO: should change arrow direction
     expect( $('#gadget_container #settings') ).toBeVisible();
 
     settings_button.click();
@@ -99,7 +100,7 @@ describe("Initialized gadget", function() {
     var setting_keys = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ];
     for (i in setting_keys) {
       var key = setting_keys[i];
-      expect( $('#gadget_container #settings input[name=pivotal_api_token]').toBeVisible );
+      expect( $('#gadget_container #settings input[name='+key+']') ).toBeVisible();
     }
   });
 
@@ -137,7 +138,7 @@ describe("Initialized gadget", function() {
 
     callback(response_data);
 
-    expect( $(".notification_area").html() ).toEqual('<a href="http://tracker/story/555" target="_blank">http://tracker/story/555</a>');
+    expect( $(".notification_area") ).toHaveHtml('<a href="http://tracker/story/555" target="_blank">http://tracker/story/555</a>');
 
   });
 
@@ -187,7 +188,7 @@ describe("Initialized gadget", function() {
     response_data = { rc: 500, text: '' };
     callback(response_data);
 
-    expect( $(".notification_area").html() ).toEqual('Error creating story');
+    expect( $(".notification_area") ).toHaveText('Error creating story');
   });
 
 });
