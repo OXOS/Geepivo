@@ -32,10 +32,14 @@ describe("Unconfigured gadget", function() {
     expect(window.gadgets.Prefs.prototype.set.argsForCall).toEqual( [
       ['pivotal_api_token',	'updated pivotal_api_token'],
       ['project_id',	'updated project_id'],
-      ['story_type',	'updated story_type'],
-      ['requested_by',	'updated requested_by'],
-      ['integration_id',	'updated integration_id'],
-      ['owned_by',	'updated owned_by']
+      //['story_type',	'updated story_type'],
+      //['requested_by',	'updated requested_by'],
+      //['integration_id',	'updated integration_id'],
+      //['owned_by',	'updated owned_by']
+      ['story_type',	undefined],
+      ['requested_by',	undefined],
+      ['integration_id',	undefined],
+      ['owned_by',	undefined],
       ]);
 
     expect( $(".notification_area") ).toHaveText('Settings saved');
@@ -97,7 +101,7 @@ describe("Initialized gadget", function() {
     var settings_button = $('#gadget_container #toggle_settings_button');
     settings_button.click();
 
-    var setting_keys = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ];
+    var setting_keys = [ "pivotal_api_token", "project_id" /*, "story_type", "requested_by", "integration_id", "owned_by" */ ];
     for (i in setting_keys) {
       var key = setting_keys[i];
       expect( $('#gadget_container #settings input[name='+key+']') ).toBeVisible();
