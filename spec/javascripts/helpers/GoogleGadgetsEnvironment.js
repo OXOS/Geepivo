@@ -14,6 +14,7 @@ GoogleGadgetsEnvironmentStubs = function() {
     },
 
     MethodType: {
+      GET: 'GET',
       POST: 'POST',
       PUT: 'PUT'
     },
