@@ -74,6 +74,35 @@ describe("Initialized gadget", function() {
     expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(32);
   });
 
+  it("should have 'Create story' button", function() {
+    expect( $('#gadget_container button.create_story_button').text() ).toEqual('Create Story');
+  });
+
+  it("should have settings button that displays and hides settings when clicked", function() {
+    var settings_button = $('#gadget_container #toggle_settings_button');
+    expect( settings_button.text() ).toEqual('settings ▼');
+    expect( $('#gadget_container #settings') ).not.toBeVisible();
+
+    settings_button.click();
+
+    //expect( settings_button.text() ).toEqual('settings ▼'); TODO: should change arrow direction
+    expect( $('#gadget_container #settings') ).toBeVisible();
+
+    settings_button.click();
+    expect( $('#gadget_container #settings') ).not.toBeVisible();
+  });
+
+  it("settings section should have inputs for all settings", function() {
+    var settings_button = $('#gadget_container #toggle_settings_button');
+    settings_button.click();
+
+    var setting_keys = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ];
+    for (i in setting_keys) {
+      var key = setting_keys[i];
+      expect( $('#gadget_container #settings input[name=pivotal_api_token]').toBeVisible );
+    }
+  });
+
   it("should post XML story to Tracker", function() {
     spyOn(window.gadgets.io, 'makeRequest');
 
