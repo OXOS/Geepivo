@@ -27,6 +27,19 @@ window.initializeGeepivoGadget = ->
   on_settings_opened_or_closed = () ->
     if $("#settings").is(":visible")
       $(this).html "settings ▲"
+      projects_api = new Project(window.gadgets.io)
+      projects_api.pivotal_api_token = $('input[name=pivotal_api_token]').val()
+      console.log projects_api
+      projects_api.get_index (projects) ->
+        console.log projects
+        projects_dropdown = $('select[name=project_id]')
+        projects_dropdown.html()
+        $.each projects, (i, project) ->
+          opt = $('<option />')
+          opt.val(project.id)
+          opt.text(project.name)
+          opt.appendTo(projects_dropdown)
+        
       window.gadgets.window.adjustHeight 500
     else
       $(this).html "settings ▼"

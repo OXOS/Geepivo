@@ -25,8 +25,25 @@
       return story.create(on_story_created, on_story_creation_error);
     };
     on_settings_opened_or_closed = function() {
+      var projects_api;
       if ($("#settings").is(":visible")) {
         $(this).html("settings ▲");
+        projects_api = new Project(window.gadgets.io);
+        projects_api.pivotal_api_token = $('input[name=pivotal_api_token]').val();
+        console.log(projects_api);
+        projects_api.get_index(function(projects) {
+          var projects_dropdown;
+          console.log(projects);
+          projects_dropdown = $('select[name=project_id]');
+          projects_dropdown.html();
+          return $.each(projects, function(i, project) {
+            var opt;
+            opt = $('<option />');
+            opt.val(project.id);
+            opt.text(project.name);
+            return opt.appendTo(projects_dropdown);
+          });
+        });
         window.gadgets.window.adjustHeight(500);
       } else {
         $(this).html("settings ▼");
