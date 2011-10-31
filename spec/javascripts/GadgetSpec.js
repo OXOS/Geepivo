@@ -218,9 +218,22 @@ describe("Gadget with settings expanded", function() {
     expect(window.gadgets.Prefs.prototype.set).toHaveBeenCalledWith('pivotal_api_token','cc00ffee');
     expect( $('input[name=pivotal_api_token]') ).toHaveValue('cc00ffee');
     expect( window.the_gadget.populate_projects_dropdown ).toHaveBeenCalled();
-
-
   });
+  
+  it("should handle errorw when projects dropdown", function() {
+    spyOn(window, 'alert');
+
+    window.the_gadget.populate_projects_dropdown();
+
+    expect(window.gadgets.io.makeRequest).toHaveBeenCalled();
+
+    callback = window.gadgets.io.makeRequest.mostRecentCall.args[1];
+    response = { rc: 401, text: response_string };
+    callback(response);
+
+    expect(window.alert).toHaveBeenCalledWith('Authentication error - check your API token and project permissions');
+  });
+
 
   it("should save settings", function() {
     var text_setting_keys = [ "story_type", "requested_by", "integration_id", "owned_by" ];
