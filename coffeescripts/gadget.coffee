@@ -73,6 +73,13 @@ class window.GeepivoGadget
         $("#settings").show()
         @on_settings_opened_or_closed()
     
+      $("a#edit_pivotal_api_token", @container).click =>
+        new_token_value = prompt "Enter new Pivotal API Token:"
+        @prefs.set 'pivotal_api_token', new_token_value
+        setting_input('pivotal_api_token').val new_token_value
+        @populate_projects_dropdown()
+
+      
       $(".create_story_button", @container).click =>
         @post_create_story @inputs.subject, @inputs.message_id
       
@@ -82,11 +89,13 @@ class window.GeepivoGadget
     
       $(".save_settings_button", @container).click =>
         for i of settings
-          val = setting_input(settings[i]).val()
-          @prefs.set settings[i], val
-          $("#settings").hide()
-          @on_settings_opened_or_closed()
-          $(".notification_area", @container).html "Settings saved"
+          key = settings[i]
+          unless key == 'pivotal_api_token'
+            val = setting_input(key).val()
+            @prefs.set key, val
+            $("#settings").hide()
+            @on_settings_opened_or_closed()
+            $(".notification_area", @container).html "Settings saved"
 
 
 window.initializeGeepivoGadget = ->
@@ -95,5 +104,5 @@ window.initializeGeepivoGadget = ->
     console.log = (msg) ->
     console.debug = (msg) ->
 
-  new window.GeepivoGadget()
+  window.the_gadget = new window.GeepivoGadget()
 

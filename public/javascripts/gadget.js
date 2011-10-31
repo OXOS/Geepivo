@@ -80,6 +80,13 @@
           $("#settings").show();
           this.on_settings_opened_or_closed();
         }
+        $("a#edit_pivotal_api_token", this.container).click(__bind(function() {
+          var new_token_value;
+          new_token_value = prompt("Enter new Pivotal API Token:");
+          this.prefs.set('pivotal_api_token', new_token_value);
+          setting_input('pivotal_api_token').val(new_token_value);
+          return this.populate_projects_dropdown();
+        }, this));
         $(".create_story_button", this.container).click(__bind(function() {
           return this.post_create_story(this.inputs.subject, this.inputs.message_id);
         }, this));
@@ -88,14 +95,11 @@
           return this.on_settings_opened_or_closed();
         }, this));
         $(".save_settings_button", this.container).click(__bind(function() {
-          var i, val, _results;
+          var i, key, val, _results;
           _results = [];
           for (i in settings) {
-            val = setting_input(settings[i]).val();
-            this.prefs.set(settings[i], val);
-            $("#settings").hide();
-            this.on_settings_opened_or_closed();
-            _results.push($(".notification_area", this.container).html("Settings saved"));
+            key = settings[i];
+            _results.push(key !== 'pivotal_api_token' ? (val = setting_input(key).val(), this.prefs.set(key, val), $("#settings").hide(), this.on_settings_opened_or_closed(), $(".notification_area", this.container).html("Settings saved")) : void 0);
           }
           return _results;
         }, this));
@@ -109,6 +113,6 @@
       console.log = function(msg) {};
       console.debug = function(msg) {};
     }
-    return new window.GeepivoGadget();
+    return window.the_gadget = new window.GeepivoGadget();
   };
 }).call(this);

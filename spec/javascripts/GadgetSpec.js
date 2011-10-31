@@ -205,21 +205,37 @@ describe("Gadget with settings expanded", function() {
     expect( options.eq(1) ).toBeSelected();
   });
 
+  it("should update pivotal api token", function() {
+    expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
+
+    spyOn(window,'prompt').andReturn('cc00ffee');
+    window.gadgets.Prefs.prototype.set = jasmine.createSpy('gadgets.Prefs.prototype.set');
+    spyOn(window.the_gadget, 'populate_projects_dropdown')
+
+    $("a#edit_pivotal_api_token").click();
+
+    expect(window.prompt).toHaveBeenCalledWith("Enter new Pivotal API Token:");
+    expect(window.gadgets.Prefs.prototype.set).toHaveBeenCalledWith('pivotal_api_token','cc00ffee');
+    expect( $('input[name=pivotal_api_token]') ).toHaveValue('cc00ffee');
+    expect( window.the_gadget.populate_projects_dropdown ).toHaveBeenCalled();
+
+
+  });
+
   it("should save settings", function() {
-    var text_setting_keys = [ "pivotal_api_token", "story_type", "requested_by", "integration_id", "owned_by" ];
+    var text_setting_keys = [ "story_type", "requested_by", "integration_id", "owned_by" ];
     for (i in text_setting_keys) {
       var key = text_setting_keys[i];
       $('input[name=' + key + ']').val( 'updated ' + key );
     }
-    $('select[name=pivotal_api_token]').val(1);
+    $('select[name=project_id]').val(1);
 
     window.gadgets.Prefs.prototype.set = jasmine.createSpy('gadgets.Prefs.prototype.set');
 
     $('input.save_settings_button').click();
 
     expect(window.gadgets.Prefs.prototype.set.argsForCall).toEqual( [
-      ['pivotal_api_token',	'updated pivotal_api_token'],
-      ['project_id',	'2'],
+      ['project_id',	'1'],
       ['story_type',	'updated story_type'],
       ['requested_by',	'updated requested_by'],
       ['integration_id',	'updated integration_id'],
@@ -235,6 +251,9 @@ describe("Gadget with settings expanded", function() {
       var key = setting_keys[i];
       expect( $('#gadget_container #settings :input[name='+key+']') ).toBeVisible();
     }
+
+    expect( $('#settings input[name=pivotal_api_token]') ).toBeDisabled();
+    expect( $('#settings input[name=pivotal_api_token]').parent().find("a#edit_pivotal_api_token") ).toBeVisible();
   });
 
 
