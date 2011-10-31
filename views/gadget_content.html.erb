@@ -1,0 +1,18 @@
+      <link rel="stylesheet" href="<%=@root_url%>/stylesheets/tipsy.css" type="text/css" media="screen">
+
+      <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'></div>
+      <p style='display: none;'><%=@git_revision%></p>
+
+      <script src="<%=@root_url%>/javascripts/head.load.min.js"></script>
+      <script type="text/javascript">
+        window.root_url = '<%=@root_url %>';
+	head.js(
+	  "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js",
+	  "<%=@root_url%>/javascripts/story.js",
+	  "<%=@root_url%>/javascripts/project.js",
+	  "<%=@root_url%>/javascripts/gadget.js",
+	  "<%=@root_url%>/javascripts/templates/gadget.js",
+	  "<%=@root_url%>/javascripts/jquery.tipsy.js",
+	  function(){ window.initializeGeepivoGadget() }
+	);
+      </script>

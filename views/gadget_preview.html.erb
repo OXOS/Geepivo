@@ -1,0 +1,22 @@
+<html>
+<body>
+
+      <script type="text/javascript">
+      <%=
+          input_html = nil
+          File.open('spec/javascripts/helpers/GoogleGadgetsEnvironment.js', "r") do |file|
+            input_html = file.read
+          end
+      
+          input_html
+      %>
+      </script>
+      <script type="text/javascript">
+        environment_stub = new GoogleGadgetsEnvironmentStubs();
+        window.google  = environment_stub.google;
+        window.gadgets = environment_stub.gadgets;
+      </script>
+
+<%= erb :'gadget_content.html', {:root_url => @root_url, :git_revision => @git_revision } %>
+</body>
+</html>

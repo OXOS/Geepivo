@@ -83,3 +83,9 @@ get '/manifest.xml' do
   erb :'manifest.xml'
 end
 
+get '/gadget_preview' do
+  @root_url = ENV['ROOT_URL']
+  @git_revision = ''
+  erb :'gadget_preview.html'
+end
+

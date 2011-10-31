@@ -117,6 +117,10 @@
           }
           return false;
         }, this));
+        $("span.help").each(__bind(function(i, help) {
+          $(help).attr('title', $(help).text());
+          return $(help).html("<img src='" + window.root_url + "/images/help_icon.gif' alt='help' />").tipsy();
+        }, this));
       }
     }
     return GeepivoGadget;

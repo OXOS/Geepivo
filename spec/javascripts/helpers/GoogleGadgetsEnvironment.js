@@ -28,7 +28,7 @@ GoogleGadgetsEnvironmentStubs = function() {
   };
 
   this.gadgets['window'] = {
-    adjustHeight: jasmine.createSpy('window')
+    adjustHeight: function(){ }
   };
 
   this.gadgets.Prefs = function() {};

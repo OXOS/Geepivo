@@ -6,6 +6,7 @@ describe("Unconfigured gadget", function() {
     window.google  = environment_stub.google;
     window.gadgets = environment_stub.gadgets;
     spyOn(window.gadgets.Prefs.prototype,'getString').andReturn(null);
+    spyOn(window.gadgets.window,'adjustHeight');
     window.initializeGeepivoGadget();
   });
 
@@ -26,6 +27,7 @@ describe("Configured gadget", function() {
     environment_stub = new GoogleGadgetsEnvironmentStubs();
     window.google  = environment_stub.google;
     window.gadgets = environment_stub.gadgets;
+    spyOn(window.gadgets.window,'adjustHeight');
   });
 
   it("should hide itself when no inputs", function() {
@@ -43,6 +45,7 @@ describe("Initialized gadget", function() {
     environment_stub = new GoogleGadgetsEnvironmentStubs();
     window.google  = environment_stub.google;
     window.gadgets = environment_stub.gadgets;
+    spyOn(window.gadgets.window,'adjustHeight');
 
     window.initializeGeepivoGadget();
   });

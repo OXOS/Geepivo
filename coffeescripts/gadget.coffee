@@ -104,6 +104,10 @@ class window.GeepivoGadget
           $(".notification_area", @container).html "Settings saved"
         return false
 
+      $("span.help").each (i,help)=>
+        $(help).attr('title', $(help).text() )
+        $(help).html("<img src='#{window.root_url}/images/help_icon.gif' alt='help' />").tipsy()
+
 
 window.initializeGeepivoGadget = ->
   unless window.console
