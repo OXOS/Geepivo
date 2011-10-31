@@ -114,7 +114,8 @@ class window.GeepivoGadget
 
       $("span.help").each (i,help)=>
         $(help).attr('title', $(help).text() )
-        $(help).html("<img src='#{window.root_url}/images/help_icon.gif' alt='help' />").tipsy()
+        $(help).html("<img src='#{window.root_url}/images/help_icon.gif' alt='help' />")
+        #.tipsy()
 
 
 window.initializeGeepivoGadget = ->
