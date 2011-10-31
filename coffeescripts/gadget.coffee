@@ -33,12 +33,13 @@ window.initializeGeepivoGadget = ->
       projects_api.get_index (projects) ->
         console.log projects
         projects_dropdown = $('select[name=project_id]')
-        projects_dropdown.html()
+        projects_dropdown.html('')
         $.each projects, (i, project) ->
           opt = $('<option />')
           opt.val(project.id)
           opt.text(project.name)
           opt.appendTo(projects_dropdown)
+        projects_dropdown.val( prefs.getString('project_id') )
         
       window.gadgets.window.adjustHeight 500
     else

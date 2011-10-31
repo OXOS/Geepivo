@@ -35,14 +35,15 @@
           var projects_dropdown;
           console.log(projects);
           projects_dropdown = $('select[name=project_id]');
-          projects_dropdown.html();
-          return $.each(projects, function(i, project) {
+          projects_dropdown.html('');
+          $.each(projects, function(i, project) {
             var opt;
             opt = $('<option />');
             opt.val(project.id);
             opt.text(project.name);
             return opt.appendTo(projects_dropdown);
           });
+          return projects_dropdown.val(prefs.getString('project_id'));
         });
         window.gadgets.window.adjustHeight(500);
       } else {
