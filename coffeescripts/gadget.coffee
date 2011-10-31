@@ -84,7 +84,7 @@ class window.GeepivoGadget
           @prefs.set 'pivotal_api_token', new_token_value
           setting_input('pivotal_api_token').val new_token_value
           @populate_projects_dropdown()
-          return false
+        return false
 
       
       $(".create_story_button", @container).click =>

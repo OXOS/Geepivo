@@ -94,8 +94,8 @@
             this.prefs.set('pivotal_api_token', new_token_value);
             setting_input('pivotal_api_token').val(new_token_value);
             this.populate_projects_dropdown();
-            return false;
           }
+          return false;
         }, this));
         $(".create_story_button", this.container).click(__bind(function() {
           return this.post_create_story(this.inputs.subject, this.inputs.message_id);
