@@ -87,10 +87,12 @@ class window.GeepivoGadget
       
       $(".create_story_button", @container).click =>
         @post_create_story @inputs.subject, @inputs.message_id
+        return false
       
       $("#toggle_settings_button").click =>
         $("#settings").toggle()
         @on_settings_opened_or_closed()
+        return false
     
       $(".save_settings_button", @container).click =>
         for i of settings
@@ -100,6 +102,7 @@ class window.GeepivoGadget
           $("#settings").hide()
           @on_settings_opened_or_closed()
           $(".notification_area", @container).html "Settings saved"
+        return false
 
 
 window.initializeGeepivoGadget = ->

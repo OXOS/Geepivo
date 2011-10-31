@@ -97,24 +97,25 @@
           return false;
         }, this));
         $(".create_story_button", this.container).click(__bind(function() {
-          return this.post_create_story(this.inputs.subject, this.inputs.message_id);
+          this.post_create_story(this.inputs.subject, this.inputs.message_id);
+          return false;
         }, this));
         $("#toggle_settings_button").click(__bind(function() {
           $("#settings").toggle();
-          return this.on_settings_opened_or_closed();
+          this.on_settings_opened_or_closed();
+          return false;
         }, this));
         $(".save_settings_button", this.container).click(__bind(function() {
-          var i, key, val, _results;
-          _results = [];
+          var i, key, val;
           for (i in settings) {
             key = settings[i];
             val = setting_input(key).val();
             this.prefs.set(key, val);
             $("#settings").hide();
             this.on_settings_opened_or_closed();
-            _results.push($(".notification_area", this.container).html("Settings saved"));
+            $(".notification_area", this.container).html("Settings saved");
           }
-          return _results;
+          return false;
         }, this));
       }
     }
