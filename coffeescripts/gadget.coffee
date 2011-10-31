@@ -23,24 +23,27 @@ window.initializeGeepivoGadget = ->
     story.owned_by          = prefs.getString('owned_by')
     story.create on_story_created, on_story_creation_error
   
+  _populate_projects_dropdown_request_success_callback = (projects) ->
+    projects_dropdown = $('select[name=project_id]')
+    projects_dropdown.html('')
+    $.each projects, (i, project) ->
+      opt = $('<option />')
+      opt.val(project.id)
+      opt.text(project.name)
+      opt.appendTo(projects_dropdown)
+    projects_dropdown.val( prefs.getString('project_id') )
+  window._populate_projects_dropdown_request_success_callback = _populate_projects_dropdown_request_success_callback 
+
+  populate_projects_dropdown = () ->
+    projects_api = new Project(window.gadgets.io)
+    projects_api.pivotal_api_token = $('input[name=pivotal_api_token]').val()
+    projects_api.get_index(_populate_projects_dropdown_request_success_callback)
+
   #TODO: use DOM event instead
   on_settings_opened_or_closed = () ->
     if $("#settings").is(":visible")
       $(this).html "settings ▲"
-      projects_api = new Project(window.gadgets.io)
-      projects_api.pivotal_api_token = $('input[name=pivotal_api_token]').val()
-      console.log projects_api
-      projects_api.get_index (projects) ->
-        console.log projects
-        projects_dropdown = $('select[name=project_id]')
-        projects_dropdown.html('')
-        $.each projects, (i, project) ->
-          opt = $('<option />')
-          opt.val(project.id)
-          opt.text(project.name)
-          opt.appendTo(projects_dropdown)
-        projects_dropdown.val( prefs.getString('project_id') )
-        
+      populate_projects_dropdown()
       window.gadgets.window.adjustHeight 500
     else
       $(this).html "settings ▼"
@@ -61,7 +64,7 @@ window.initializeGeepivoGadget = ->
 
   prefs = new window.gadgets.Prefs()
   setting_input = (name) ->
-    $ "input[name=#{name}]", container
+    $ ":input[name=#{name}]", container
   
   gadget_content = window.templates.gadget
   
