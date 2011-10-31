@@ -14,6 +14,7 @@ GoogleGadgetsEnvironmentStubs = function() {
     },
 
     MethodType: {
+      GET: 'GET',
       POST: 'POST',
       PUT: 'PUT'
     },
@@ -32,6 +33,9 @@ GoogleGadgetsEnvironmentStubs = function() {
 
   this.gadgets.Prefs = function() {};
   this.gadgets.Prefs.prototype.getString = function(key) {
+    if (key == 'project_id')
+      return '2';
+    else
       return key + '_value';
   };
 
