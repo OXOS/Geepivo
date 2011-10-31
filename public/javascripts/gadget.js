@@ -19,6 +19,12 @@
       story.owned_by = this.prefs.getString('owned_by');
       return story.create(this.on_story_created, this.on_story_creation_error);
     };
+    GeepivoGadget.prototype._populate_projects_dropdown_request_error_callback = function(error_message) {
+      var projects_dropdown;
+      alert(error_message);
+      projects_dropdown = $('select[name=project_id]');
+      return projects_dropdown.html('');
+    };
     GeepivoGadget.prototype._populate_projects_dropdown_request_success_callback = function(projects) {
       var projects_dropdown;
       projects_dropdown = $('select[name=project_id]');
@@ -51,6 +57,7 @@
     };
     function GeepivoGadget() {
       this._populate_projects_dropdown_request_success_callback = __bind(this._populate_projects_dropdown_request_success_callback, this);
+      this._populate_projects_dropdown_request_error_callback = __bind(this._populate_projects_dropdown_request_error_callback, this);
       var gadget_content, i, imatch, matches, setting_input, settings;
       matches = window.google.contentmatch.getContentMatches();
       this.inputs = {};

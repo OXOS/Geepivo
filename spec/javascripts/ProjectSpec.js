@@ -67,7 +67,7 @@ describe("Project", function() {
       project._get_index_callback( response, on_success, on_error );
 
       expect(on_success).not.toHaveBeenCalled();
-      expect(on_error).toHaveBeenCalled();
+      expect(on_error).toHaveBeenCalledWith("Error retrieving list of projects");
     });
 
     it("should call on_success callback with parsed projects", function() {

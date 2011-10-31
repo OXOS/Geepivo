@@ -28,7 +28,7 @@ class window.Project
     if (response.rc >= 400)
       message = switch response.rc
         when 401 then "Authentication error - check your API token and project permissions"
-        else null
+        else "Error retrieving list of projects"
       on_error(message)
     else
       respXML = parse_xml(response.text)

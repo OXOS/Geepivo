@@ -41,7 +41,7 @@
             case 401:
               return "Authentication error - check your API token and project permissions";
             default:
-              return null;
+              return "Error retrieving list of projects";
           }
         })();
         return on_error(message);

@@ -15,6 +15,11 @@ class window.GeepivoGadget
     story.owned_by          = @prefs.getString('owned_by')
     story.create @on_story_created, @on_story_creation_error
 
+  _populate_projects_dropdown_request_error_callback: (error_message) =>
+    alert(error_message)
+    projects_dropdown = $('select[name=project_id]')
+    projects_dropdown.html('')
+
   _populate_projects_dropdown_request_success_callback: (projects) =>
     projects_dropdown = $('select[name=project_id]')
     projects_dropdown.html('')
