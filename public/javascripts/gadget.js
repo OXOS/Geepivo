@@ -117,6 +117,12 @@
           }
           return false;
         }, this));
+        $.merge($.fn.tipsy.defaults, {
+          gravity: 'nw',
+          html: true,
+          offset: 5,
+          opacity: 0.9
+        });
         $("span.help").each(__bind(function(i, help) {
           $(help).attr('title', $(help).text());
           return $(help).html("<img src='" + window.root_url + "/images/help_icon.gif' alt='help' />").tipsy();
