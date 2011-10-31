@@ -11,8 +11,13 @@
 <div style='clear:both;'></div>
 
 <div id='settings' style='font-size: small; display:none; padding-top:30px;'>
-  <div class='pivotal_api_token'>
-    <label>Pivotal API Token *
+  <input type='submit' class='save_settings_button' value="Save settings" />
+
+  <fieldset>
+  <legend>Required</legend>
+
+  <div>
+    <label>Pivotal API Token
       <span class='help'>To get an API token log in to PivotalTracker, open <em><a href='https://www.pivotaltracker.com/profile'>Profile</a></em> form, scroll down to <em>API Token section</em> and click <em>Create New Token</em>.</span>
       <input name="pivotal_api_token" disabled='disabled' />
       <a href='#' id='edit_pivotal_api_token'>enter new api token</a>
@@ -20,12 +25,17 @@
   </div>
   
   <div>
-    <label>Project ID *
+    <label>Project ID
       <span class='help'>ID of a PivotalTracker project Geepivo will create stories in. You can find project ID at the end of project URL, e.g.: https://www.pivotaltracker.com/projects/12345</span>.
       <select name="project_id" />
     </label>
   </div>
+
+  </fieldset>
   
+  <fieldset>
+  <legend>Optional</legend>
+
   <div>
     <label>Story type (optional):
     <span class='help'>One of following: "feature", "chore" or "bug". Leave the field empty to use the default value - "feature".</span>
@@ -54,5 +64,6 @@
     </label>
   </div>
   
-  <input type='submit' class='save_settings_button' value="Save settings" />
+  </fieldset>
+
 </div>
