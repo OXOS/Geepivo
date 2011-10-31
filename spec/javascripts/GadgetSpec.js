@@ -220,6 +220,21 @@ describe("Gadget with settings expanded", function() {
     expect( window.the_gadget.populate_projects_dropdown ).toHaveBeenCalled();
   });
   
+  it("should cancel updating pivotal api token", function() {
+    expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
+
+    spyOn(window,'prompt').andReturn(false);
+    window.gadgets.Prefs.prototype.set = jasmine.createSpy('gadgets.Prefs.prototype.set');
+    spyOn(window.the_gadget, 'populate_projects_dropdown')
+
+    $("a#edit_pivotal_api_token").click();
+
+    expect(window.prompt).toHaveBeenCalledWith("Enter new Pivotal API Token:");
+    expect(window.gadgets.Prefs.prototype.set).not.toHaveBeenCalled();
+    expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
+    expect(window.the_gadget.populate_projects_dropdown ).not.toHaveBeenCalled();
+  });
+  
   it("should handle errorw when projects dropdown", function() {
     spyOn(window, 'alert');
 
