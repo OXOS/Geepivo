@@ -215,7 +215,6 @@ describe("Gadget with settings expanded", function() {
     $("a#edit_pivotal_api_token").click();
 
     expect(window.prompt).toHaveBeenCalledWith("Enter new Pivotal API Token:");
-    expect(window.gadgets.Prefs.prototype.set).toHaveBeenCalledWith('pivotal_api_token','cc00ffee');
     expect( $('input[name=pivotal_api_token]') ).toHaveValue('cc00ffee');
     expect( window.the_gadget.populate_projects_dropdown ).toHaveBeenCalled();
   });
@@ -224,13 +223,11 @@ describe("Gadget with settings expanded", function() {
     expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
 
     spyOn(window,'prompt').andReturn(false);
-    window.gadgets.Prefs.prototype.set = jasmine.createSpy('gadgets.Prefs.prototype.set');
     spyOn(window.the_gadget, 'populate_projects_dropdown')
 
     $("a#edit_pivotal_api_token").click();
 
     expect(window.prompt).toHaveBeenCalledWith("Enter new Pivotal API Token:");
-    expect(window.gadgets.Prefs.prototype.set).not.toHaveBeenCalled();
     expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
     expect(window.the_gadget.populate_projects_dropdown ).not.toHaveBeenCalled();
   });
@@ -251,10 +248,11 @@ describe("Gadget with settings expanded", function() {
 
 
   it("should save settings", function() {
-    var text_setting_keys = [ "story_type", "requested_by", "integration_id", "owned_by" ];
+    var text_setting_keys = [ "pivotal_api_token", "story_type", "requested_by", "integration_id", "owned_by" ];
     for (i in text_setting_keys) {
       var key = text_setting_keys[i];
-      $('input[name=' + key + ']').val( 'updated ' + key );
+      var input = $('input[name=' + key + ']');
+      input.val( 'updated ' + key );
     }
     $('select[name=project_id]').val(1);
 
@@ -263,6 +261,7 @@ describe("Gadget with settings expanded", function() {
     $('input.save_settings_button').click();
 
     expect(window.gadgets.Prefs.prototype.set.argsForCall).toEqual( [
+      ['pivotal_api_token',	'updated pivotal_api_token'],
       ['project_id',	'1'],
       ['story_type',	'updated story_type'],
       ['requested_by',	'updated requested_by'],

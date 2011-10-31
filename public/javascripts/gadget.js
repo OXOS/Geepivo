@@ -91,7 +91,6 @@
           var new_token_value;
           new_token_value = prompt("Enter new Pivotal API Token:");
           if (typeof new_token_value === 'string') {
-            this.prefs.set('pivotal_api_token', new_token_value);
             setting_input('pivotal_api_token').val(new_token_value);
             this.populate_projects_dropdown();
           }
@@ -109,7 +108,11 @@
           _results = [];
           for (i in settings) {
             key = settings[i];
-            _results.push(key !== 'pivotal_api_token' ? (val = setting_input(key).val(), this.prefs.set(key, val), $("#settings").hide(), this.on_settings_opened_or_closed(), $(".notification_area", this.container).html("Settings saved")) : void 0);
+            val = setting_input(key).val();
+            this.prefs.set(key, val);
+            $("#settings").hide();
+            this.on_settings_opened_or_closed();
+            _results.push($(".notification_area", this.container).html("Settings saved"));
           }
           return _results;
         }, this));
