@@ -1,29 +1,29 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.initializeGeepivoGadget = function() {
-    var GeepivoGadget, container, gadget_content, i, imatch, inputs, key, matches, prefs, setting_input, settings, the_gadget;
+    var GeepivoGadget;
     if (!window.console) {
       window.console = {};
       console.log = function(msg) {};
       console.debug = function(msg) {};
     }
     GeepivoGadget = (function() {
-      function GeepivoGadget() {}
       GeepivoGadget.prototype.on_story_created = function(story) {
-        return $(".notification_area", container).html("<a href='" + story.url + "' target='_blank'>" + story.url + "</a>");
+        return $(".notification_area", this.container).html("<a href='" + story.url + "' target='_blank'>" + story.url + "</a>");
       };
       GeepivoGadget.prototype.on_story_creation_error = function(error) {
-        return $(".notification_area", container).html(error);
+        return $(".notification_area", this.container).html(error);
       };
       GeepivoGadget.prototype.post_create_story = function(subject, message_id) {
         var story;
         story = new Story(window.gadgets.io);
         story.name = subject;
-        story.pivotal_api_token = prefs.getString('pivotal_api_token');
-        story.project_id = prefs.getString('project_id');
-        story.story_type = prefs.getString('story_type');
-        story.integration_id = prefs.getString('integration_id');
-        story.requested_by = prefs.getString('requested_by');
-        story.owned_by = prefs.getString('owned_by');
+        story.pivotal_api_token = this.prefs.getString('pivotal_api_token');
+        story.project_id = this.prefs.getString('project_id');
+        story.story_type = this.prefs.getString('story_type');
+        story.integration_id = this.prefs.getString('integration_id');
+        story.requested_by = this.prefs.getString('requested_by');
+        story.owned_by = this.prefs.getString('owned_by');
         return story.create(this.on_story_created, this.on_story_creation_error);
       };
       GeepivoGadget.prototype._populate_projects_dropdown_request_success_callback = function(projects) {
@@ -37,7 +37,7 @@
           opt.text(project.name);
           return opt.appendTo(projects_dropdown);
         });
-        return projects_dropdown.val(prefs.getString('project_id'));
+        return projects_dropdown.val(this.prefs.getString('project_id'));
       };
       GeepivoGadget.prototype.populate_projects_dropdown = function() {
         var projects_api;
@@ -48,7 +48,7 @@
       GeepivoGadget.prototype.on_settings_opened_or_closed = function() {
         if ($("#settings").is(":visible")) {
           $(this).html("settings ▲");
-          the_gadget.populate_projects_dropdown();
+          this.populate_projects_dropdown();
           window.gadgets.window.adjustHeight(500);
         } else {
           $(this).html("settings ▼");
@@ -56,59 +56,60 @@
         }
         return false;
       };
+      function GeepivoGadget() {
+        this._populate_projects_dropdown_request_success_callback = __bind(this._populate_projects_dropdown_request_success_callback, this);
+        var gadget_content, i, imatch, matches, setting_input, settings;
+        matches = window.google.contentmatch.getContentMatches();
+        this.inputs = {};
+        for (imatch in matches) {
+          $.extend(this.inputs, matches[imatch]);
+        }
+        this.container = $("#gadget_container");
+        if (this.container.length !== 1) {
+          throw "Error. Can't find gadget container.";
+        }
+        this.prefs = new window.gadgets.Prefs();
+        setting_input = function(name) {
+          return $(":input[name=" + name + "]", this.container);
+        };
+        gadget_content = window.templates.gadget;
+        if (!this.inputs.subject) {
+          window.gadgets.window.adjustHeight(0);
+        } else {
+          window.gadgets.window.adjustHeight(32);
+          this.container.html(gadget_content).show();
+          settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
+          for (i in settings) {
+            setting_input(settings[i]).val(this.prefs.getString(settings[i]));
+          }
+          if (!(this.prefs.getString("pivotal_api_token") && this.prefs.getString("project_id"))) {
+            $(".notification_area", this.container).html("Please fill required settings");
+            $("#settings").show();
+            this.on_settings_opened_or_closed();
+          }
+          $(".create_story_button", this.container).click(__bind(function() {
+            return this.post_create_story(this.inputs.subject, this.inputs.message_id);
+          }, this));
+          $("#toggle_settings_button").click(__bind(function() {
+            $("#settings").toggle();
+            return this.on_settings_opened_or_closed();
+          }, this));
+          $(".save_settings_button", this.container).click(__bind(function() {
+            var i, val, _results;
+            _results = [];
+            for (i in settings) {
+              val = setting_input(settings[i]).val();
+              this.prefs.set(settings[i], val);
+              $("#settings").hide();
+              this.on_settings_opened_or_closed();
+              _results.push($(".notification_area", this.container).html("Settings saved"));
+            }
+            return _results;
+          }, this));
+        }
+      }
       return GeepivoGadget;
     })();
-    the_gadget = new GeepivoGadget();
-    matches = window.google.contentmatch.getContentMatches();
-    inputs = {};
-    for (imatch in matches) {
-      $.extend(inputs, matches[imatch]);
-    }
-    for (key in inputs) {
-      console.log("inputs[" + key + " ] => " + inputs[key]);
-    }
-    container = $("#gadget_container");
-    if (container.length !== 1) {
-      throw "Error. Can't find gadget container.";
-    }
-    prefs = new window.gadgets.Prefs();
-    setting_input = function(name) {
-      return $(":input[name=" + name + "]", container);
-    };
-    gadget_content = window.templates.gadget;
-    if (!inputs.subject) {
-      return window.gadgets.window.adjustHeight(0);
-    } else {
-      window.gadgets.window.adjustHeight(32);
-      container.html(gadget_content).show();
-      settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
-      for (i in settings) {
-        setting_input(settings[i]).val(prefs.getString(settings[i]));
-      }
-      if (!(prefs.getString("pivotal_api_token") && prefs.getString("project_id"))) {
-        $(".notification_area", container).html("Please fill required settings");
-        $("#settings").show();
-        the_gadget.on_settings_opened_or_closed();
-      }
-      $(".create_story_button", container).click(function() {
-        return the_gadget.post_create_story(inputs.subject, inputs.message_id);
-      });
-      $("#toggle_settings_button").click(function() {
-        $("#settings").toggle();
-        return the_gadget.on_settings_opened_or_closed();
-      });
-      return $(".save_settings_button", container).click(function() {
-        var i, val, _results;
-        _results = [];
-        for (i in settings) {
-          val = setting_input(settings[i]).val();
-          prefs.set(settings[i], val);
-          $("#settings").hide();
-          the_gadget.on_settings_opened_or_closed();
-          _results.push($(".notification_area", container).html("Settings saved"));
-        }
-        return _results;
-      });
-    }
+    return new GeepivoGadget();
   };
 }).call(this);
