@@ -36,6 +36,7 @@
    "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
       <![CDATA[	<span></span>
+      <link rel="stylesheet" href="<%=@root_url%>/tipsy.css" type="text/css" media="screen">
 
       <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'></div>
       <p style='display: none;'><%=@git_revision%></p>
@@ -48,6 +49,7 @@
 	  "<%=@root_url%>/javascripts/project.js",
 	  "<%=@root_url%>/javascripts/gadget.js",
 	  "<%=@root_url%>/javascripts/templates/gadget.js",
+	  "<%=@root_url%>/javascripts/tipsy.js",
 	  function(){ window.initializeGeepivoGadget() }
 	);
       </script>
