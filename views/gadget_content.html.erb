@@ -1,6 +1,8 @@
 <style type="text/css" media=screen>
 <!--
-<%= read_file "public/geepivo.css" %>
+  <% Dir['stylesheets/*.css'].each do |fname| %>
+    <%= read_file fname %>
+  <% end %>
 -->
 </style>
 
@@ -8,8 +10,10 @@
       <p style='display: none;'><%=@git_revision%></p>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-      <script src="<%=@root_url%>/geepivo.js"></script>
       <script type="text/javascript">
+        <% Dir['javascripts/*.js'].each do |fname| %>
+          <%= read_file fname %>
+        <% end %>
         window.root_url = '<%=@root_url %>';
         window.initializeGeepivoGadget();
       </script>

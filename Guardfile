@@ -2,18 +2,6 @@ guard 'coffeescript', :input => 'coffeescripts', :output => 'javascripts'
 
 guard 'shell' do
 
-  watch(/^javascripts\/(.*)\.js$/) do |matches|
-    `cat javascripts/*.js > public/geepivo.js`
-
-    puts "public/geepivo.js file generated from javascripts/*.js files"
-  end
-
-  watch(/^stylesheets\/(.*)\.css$/) do |matches|
-    `cat stylesheets/*.css > public/geepivo.css`
-
-    puts "public/geepivo.css file generated from stylesheets/*.css files"
-  end
-
   watch(/^templates\/(.*)\.html$/) do |matches|
     require 'rubygems'
     require 'json/pure'
