@@ -39,10 +39,13 @@
       return projects_dropdown.val(this.prefs.getString('project_id'));
     };
     GeepivoGadget.prototype.populate_projects_dropdown = function() {
-      var projects_api;
-      projects_api = new Project(window.gadgets.io);
-      projects_api.pivotal_api_token = $('input[name=pivotal_api_token]').val();
-      return projects_api.get_index(this._populate_projects_dropdown_request_success_callback, this._populate_projects_dropdown_request_error_callback);
+      var pivotal_api_token, projects_api;
+      pivotal_api_token = $('input[name=pivotal_api_token]').val();
+      if (pivotal_api_token.length > 0) {
+        projects_api = new Project(window.gadgets.io);
+        projects_api.pivotal_api_token = pivotal_api_token;
+        return projects_api.get_index(this._populate_projects_dropdown_request_success_callback, this._populate_projects_dropdown_request_error_callback);
+      }
     };
     GeepivoGadget.prototype.on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {

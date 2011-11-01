@@ -31,9 +31,12 @@ class window.GeepivoGadget
     projects_dropdown.val( @prefs.getString('project_id') )
 
   populate_projects_dropdown: () ->
-    projects_api = new Project(window.gadgets.io)
-    projects_api.pivotal_api_token = $('input[name=pivotal_api_token]').val()
-    projects_api.get_index @_populate_projects_dropdown_request_success_callback, @_populate_projects_dropdown_request_error_callback
+    pivotal_api_token = $('input[name=pivotal_api_token]').val()
+
+    if pivotal_api_token.length > 0
+      projects_api = new Project(window.gadgets.io)
+      projects_api.pivotal_api_token = pivotal_api_token
+      projects_api.get_index @_populate_projects_dropdown_request_success_callback, @_populate_projects_dropdown_request_error_callback
 
   #TODO: use DOM event instead
   on_settings_opened_or_closed: () ->

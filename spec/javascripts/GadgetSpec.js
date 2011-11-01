@@ -7,6 +7,9 @@ describe("Unconfigured gadget", function() {
     window.gadgets = environment_stub.gadgets;
     spyOn(window.gadgets.Prefs.prototype,'getString').andReturn(null);
     spyOn(window.gadgets.window,'adjustHeight');
+    spyOn(window,'alert');
+    spyOn(window.gadgets.io,'makeRequest');
+
     window.initializeGeepivoGadget();
   });
 
@@ -17,6 +20,11 @@ describe("Unconfigured gadget", function() {
   it("should expand settings", function() {
     expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(500);
     expect($("#settings")).toBeVisible();
+  });
+
+  it("should not attempt to load projects", function() {
+    expect(window.gadgets.io.makeRequest).not.toHaveBeenCalled();
+    expect(window.alert).not.toHaveBeenCalled();
   });
 
 });
