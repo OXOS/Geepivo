@@ -14,7 +14,7 @@ describe("Project", function() {
       var dummy_error_callback = 3; 
 
       spyOn(project.io,'makeRequest').andCallFake( function(url,callback,params){
-        expect(url).toEqual('https://www.pivotaltracker.com/services/v3/projects');
+        expect(url).toMatch(/^https:\/\/www.pivotaltracker.com\/services\/v3\/projects/);
         expect(typeof callback).toEqual('function');
         expect( params ).toEqual({
           METHOD: 'GET',

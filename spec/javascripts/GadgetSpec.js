@@ -177,7 +177,7 @@ describe("Gadget with settings expanded", function() {
     expect(window.gadgets.io.makeRequest.callCount).toEqual(1);
 
     var request_args = window.gadgets.io.makeRequest.mostRecentCall.args;
-    expect(request_args.shift()).toEqual('https://www.pivotaltracker.com/services/v3/projects');
+    expect(request_args.shift()).toMatch(/^https:\/\/www.pivotaltracker.com\/services\/v3\/projects/);
     var callback = request_args.shift()
     expect(typeof callback).toEqual('function');
     expect( request_args.shift() ).toEqual({
