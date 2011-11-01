@@ -28,7 +28,6 @@
     GeepivoGadget.prototype._populate_projects_dropdown_request_success_callback = function(projects) {
       var projects_dropdown;
       projects_dropdown = $('select[name=project_id]');
-      projects_dropdown.html('');
       $.each(projects, function(i, project) {
         var opt;
         opt = $('<option />');
@@ -39,7 +38,9 @@
       return projects_dropdown.val(this.prefs.getString('project_id'));
     };
     GeepivoGadget.prototype.populate_projects_dropdown = function() {
-      var pivotal_api_token, projects_api;
+      var pivotal_api_token, projects_api, projects_dropdown;
+      projects_dropdown = $('select[name=project_id]');
+      projects_dropdown.html('');
       pivotal_api_token = $('input[name=pivotal_api_token]').val();
       if (pivotal_api_token.length > 0) {
         projects_api = new Project(window.gadgets.io);

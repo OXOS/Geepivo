@@ -22,7 +22,6 @@ class window.GeepivoGadget
 
   _populate_projects_dropdown_request_success_callback: (projects) =>
     projects_dropdown = $('select[name=project_id]')
-    projects_dropdown.html('')
     $.each projects, (i, project) ->
       opt = $('<option />')
       opt.val(project.id)
@@ -31,6 +30,9 @@ class window.GeepivoGadget
     projects_dropdown.val( @prefs.getString('project_id') )
 
   populate_projects_dropdown: () ->
+    projects_dropdown = $('select[name=project_id]')
+    projects_dropdown.html('')
+
     pivotal_api_token = $('input[name=pivotal_api_token]').val()
 
     if pivotal_api_token.length > 0
