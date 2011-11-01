@@ -19,8 +19,9 @@
       this._get_index_callback = __bind(this._get_index_callback, this);
     }
     Project.prototype.get_index = function(on_success, on_error) {
-      var params, projects_url, response_callback;
-      projects_url = "https://www.pivotaltracker.com/services/v3/projects";
+      var params, projects_url, response_callback, time;
+      time = new Date().getTime();
+      projects_url = "https://www.pivotaltracker.com/services/v3/projects?cache_buster=" + time;
       params = {};
       params[this.io.RequestParameters.METHOD] = this.io.MethodType.GET;
       params[this.io.RequestParameters.HEADERS] = {

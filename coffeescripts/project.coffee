@@ -12,7 +12,8 @@ class window.Project
   constructor: (@io) ->
 
   get_index: (on_success, on_error) ->
-    projects_url = "https://www.pivotaltracker.com/services/v3/projects"
+    time = new Date().getTime()
+    projects_url = "https://www.pivotaltracker.com/services/v3/projects?cache_buster=#{time}"
     params = {}
     params[@io.RequestParameters.METHOD] = @io.MethodType.GET
     params[@io.RequestParameters.HEADERS] =
