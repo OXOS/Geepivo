@@ -61,13 +61,14 @@ class window.GeepivoGadget
     setting_input = (name) ->
       $ ":input[name=#{name}]", @container
     
-    gadget_content = window.templates.gadget
+    gadget_content = window.templates.gadget_template
     
     if ! @inputs.subject
       window.gadgets.window.adjustHeight 0
     else
       window.gadgets.window.adjustHeight 32
-      @container.html(gadget_content).show()
+      @container.html(gadget_content)
+      @container.show()
     
       settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
       for i of settings
@@ -124,5 +125,5 @@ window.initializeGeepivoGadget = ->
     console.log = (msg) ->
     console.debug = (msg) ->
 
+  #$.ready ->
   window.the_gadget = new window.GeepivoGadget()
-

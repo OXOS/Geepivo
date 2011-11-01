@@ -29,6 +29,14 @@ helpers do
     url << path
     url
   end
+
+  def read_file(fname)
+    input_html = nil
+    File.open(fname, "r") do |file|
+      input_html = file.read
+    end
+  end
+
 end
 
 # Handle login form & navigation links from Google Apps

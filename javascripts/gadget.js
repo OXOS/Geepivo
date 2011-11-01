@@ -72,12 +72,13 @@
       setting_input = function(name) {
         return $(":input[name=" + name + "]", this.container);
       };
-      gadget_content = window.templates.gadget;
+      gadget_content = window.templates.gadget_template;
       if (!this.inputs.subject) {
         window.gadgets.window.adjustHeight(0);
       } else {
         window.gadgets.window.adjustHeight(32);
-        this.container.html(gadget_content).show();
+        this.container.html(gadget_content);
+        this.container.show();
         settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
         for (i in settings) {
           setting_input(settings[i]).val(this.prefs.getString(settings[i]));

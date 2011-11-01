@@ -1,6 +1,19 @@
-guard 'coffeescript', :input => 'coffeescripts', :output => 'public/javascripts'
+guard 'coffeescript', :input => 'coffeescripts', :output => 'javascripts'
 
 guard 'shell' do
+
+  watch(/^javascripts\/(.*)\.js$/) do |matches|
+    `cat javascripts/*.js > public/geepivo.js`
+
+    puts "public/geepivo.js file generated from javascripts/*.js files"
+  end
+
+  watch(/^stylesheets\/(.*)\.css$/) do |matches|
+    `cat stylesheets/*.css > public/geepivo.css`
+
+    puts "public/geepivo.css file generated from stylesheets/*.css files"
+  end
+
   watch(/^templates\/(.*)\.html$/) do |matches|
     require 'rubygems'
     require 'json/pure'
@@ -8,7 +21,7 @@ guard 'shell' do
 
     file_name = matches[1]
     input_file = "templates/#{file_name}.html"
-    output_file = "public/javascripts/templates/#{file_name}.js"
+    output_file = "javascripts/#{file_name}.js"
 
     input_html = nil
     File.open(input_file, "r") do |file|
@@ -24,6 +37,5 @@ guard 'shell' do
     end
 
     puts "#{output_file} generated from #{input_file}"
-
   end
 end
