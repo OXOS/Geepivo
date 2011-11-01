@@ -105,18 +105,17 @@ class window.GeepivoGadget
           $(".notification_area", @container).html "Settings saved"
         return false
 
-
-      $.merge($.fn.tipsy.defaults, {
-          gravity: 'nw',
-          html: true,
-          offset: 5,
-          opacity: 0.9
-      })
+      #$.merge($.fn.tipsy.defaults, {
+      #    gravity: 'nw',
+      #    html: true,
+      #    offset: 5,
+      #    opacity: 0.9
+      #})
 
       $("span.help").each (i,help)=>
         $(help).attr('title', $(help).text() )
         $(help).html("<img src='#{window.root_url}/images/help_icon.gif' alt='help' />")
-        #.tipsy()
+        #$(help).tipsy()
 
 
 window.initializeGeepivoGadget = ->
