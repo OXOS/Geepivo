@@ -14,6 +14,5 @@
         <% Dir['javascripts/*.js'].each do |fname| %>
           <%= File.read fname %>
         <% end %>
-        window.root_url = '<%=@root_url %>';
         window.initializeGeepivoGadget();
       </script>
