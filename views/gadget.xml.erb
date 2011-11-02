@@ -36,9 +36,6 @@
    "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
       <![CDATA[	<span></span>
-      <script type="text/javascript">
-        window.root_url = '<%=@root_url %>';
-      </script>
       <%= Erubis::Eruby.new(File.read('views/gadget_content.html.erb')).result({}) %>
       ]]>
   </Content>

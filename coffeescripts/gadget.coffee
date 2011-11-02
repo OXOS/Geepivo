@@ -119,7 +119,7 @@ class window.GeepivoGadget
 
       $("span.help").each (i,help)=>
         $(help).attr('title', $(help).text() )
-        $(help).html("<img src='#{window.root_url}/images/help_icon.gif' alt='help' />")
+        $(help).html("<img src='http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/16x16/categories/system-help-3.png' alt='help' />")
         #$(help).tipsy()
 
 
