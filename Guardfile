@@ -46,12 +46,12 @@ guard 'shell' do
   watch(/\.(css|js|erb)$/) do |matches|
     input_file = "views/gadget.xml.erb"
     
-    @root_url = "geepivo.com"
+    @root_url = "http://geepivo.com"
     output_file = "website/public/gadget.xml"
     output = render_erb input_file, binding()
     write_file(output_file, output)
 
-    @root_url = "dev.geepivo.com"
+    @root_url = "http://dev.geepivo.com"
     output_file = "website/public/dev_gadget.xml"
     output = render_erb input_file, binding()
     write_file(output_file, output)
