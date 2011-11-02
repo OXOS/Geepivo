@@ -1,7 +1,7 @@
 <style type="text/css" media=screen>
 <!--
   <% Dir['stylesheets/*.css'].each do |fname| %>
-    <%= read_file fname %>
+    <%= File.read fname %>
   <% end %>
 -->
 </style>
@@ -12,7 +12,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
       <script type="text/javascript">
         <% Dir['javascripts/*.js'].each do |fname| %>
-          <%= read_file fname %>
+          <%= File.read fname %>
         <% end %>
         window.root_url = '<%=@root_url %>';
         window.initializeGeepivoGadget();

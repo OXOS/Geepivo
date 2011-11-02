@@ -17,7 +17,9 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.1.2)
+    columnize (0.3.4)
     diff-lcs (1.1.3)
+    erubis (2.7.0)
     execjs (1.2.9)
       multi_json (~> 1.0)
     ffi (1.0.9)
@@ -32,12 +34,16 @@ GEM
     jasmine-core (1.1.0)
     json_pure (1.6.1)
     libv8 (3.3.10.2)
+    linecache (0.46)
+      rbx-require-relative (> 0.0.4)
     multi_json (1.0.3)
     rack (1.2.1)
     rack-openid (1.3.1)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
     rake (0.8.7)
+    rb-fsevent (0.4.3.1)
+    rbx-require-relative (0.0.5)
     rspec (2.7.0)
       rspec-core (~> 2.7.0)
       rspec-expectations (~> 2.7.0)
@@ -46,6 +52,11 @@ GEM
     rspec-expectations (2.7.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.7.0)
+    ruby-debug (0.10.4)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.4.0)
+    ruby-debug-base (0.10.4)
+      linecache (>= 0.3)
     ruby-openid (2.1.8)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
@@ -67,6 +78,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  erubis
   growl
   guard
   guard-coffeescript
@@ -75,6 +87,8 @@ DEPENDENCIES
   json_pure
   rack-openid
   rake
+  rb-fsevent
+  ruby-debug
   ruby-openid
   ruby-openid-apps-discovery
   sinatra

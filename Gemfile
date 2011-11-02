@@ -12,6 +12,9 @@ group :test do
 end
 
 group :development do
+  gem "erubis"
+  gem "rb-fsevent"
+  gem "ruby-debug"
   gem "growl"
   gem "rake"
   gem "guard"

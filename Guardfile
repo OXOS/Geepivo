@@ -1,15 +1,9 @@
 require 'rubygems'
-require 'erb'
+require 'ruby-debug'
+require 'erubis'
+require 'ostruct'
 
 guard 'coffeescript', :input => 'coffeescripts', :output => 'javascripts'
-
-def read_file(fname)
-  content = nil
-  File.open(fname, "r") do |file|
-    content = file.read
-  end
-  content
-end
 
 def write_file(fname, content)
   File.open(fname, "w") do |file|
@@ -17,10 +11,11 @@ def write_file(fname, content)
   end
 end
 
-def erb(input_file,binding)
-  template_content = read_file(input_file)
-  template = ERB.new(template_content)
-  template.result(binding)
+def render_erb(input_file,variables)
+  namespace = OpenStruct.new( variables )
+
+  template_content = File.read(input_file)
+  Erubis::Eruby.new(template_content).result(variables)
 end
 
 guard 'shell' do
@@ -50,15 +45,18 @@ guard 'shell' do
     puts "#{output_file} generated from #{input_file}"
   end
 
-  watch(/^views\/gadget\.xml\.erb$/) do |matches|
+  watch(/\.(css|js|erb)$/) do |matches|
     input_file = "views/gadget.xml.erb"
-    output_file = "website/public/gadget.xml"
-
-    output = erb(input_file, binding)
     
+    output_file = "website/public/gadget.xml"
+    output = render_erb input_file, {:root_url => "geepivo.com" }
     write_file(output_file, output)
 
-    puts "compiled #{input_file} -> #{input_file}"
+    output_file = "website/public/dev_gadget.xml"
+    output = render_erb input_file, {:root_url => "dev.geepivo.com" }
+    write_file(output_file, output)
+
+    puts "compiled #{input_file} -> #{output_file}"
   end
 
 end
