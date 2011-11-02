@@ -18,7 +18,7 @@ describe("Unconfigured gadget", function() {
   });
 
   it("should expand settings", function() {
-    expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(500);
+    expect(window.gadgets.window.adjustHeight).toHaveBeenCalledWith(260)
     expect($("#settings")).toBeVisible();
   });
 

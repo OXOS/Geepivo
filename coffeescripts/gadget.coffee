@@ -45,7 +45,7 @@ class window.GeepivoGadget
     if $("#settings").is(":visible")
       $(this).html "settings ▲"
       @populate_projects_dropdown()
-      window.gadgets.window.adjustHeight 500
+      window.gadgets.window.adjustHeight 260
     else
       $(this).html "settings ▼"
       window.gadgets.window.adjustHeight 32

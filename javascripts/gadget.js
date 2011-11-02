@@ -52,7 +52,7 @@
       if ($("#settings").is(":visible")) {
         $(this).html("settings ▲");
         this.populate_projects_dropdown();
-        window.gadgets.window.adjustHeight(500);
+        window.gadgets.window.adjustHeight(260);
       } else {
         $(this).html("settings ▼");
         window.gadgets.window.adjustHeight(32);
