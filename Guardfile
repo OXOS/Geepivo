@@ -1,4 +1,27 @@
+require 'rubygems'
+require 'erb'
+
 guard 'coffeescript', :input => 'coffeescripts', :output => 'javascripts'
+
+def read_file(fname)
+  content = nil
+  File.open(fname, "r") do |file|
+    content = file.read
+  end
+  content
+end
+
+def write_file(fname, content)
+  File.open(fname, "w") do |file|
+    file.write(content)
+  end
+end
+
+def erb(input_file,binding)
+  template_content = read_file(input_file)
+  template = ERB.new(template_content)
+  template.result(binding)
+end
 
 guard 'shell' do
 
@@ -26,4 +49,16 @@ guard 'shell' do
 
     puts "#{output_file} generated from #{input_file}"
   end
+
+  watch(/^views\/gadget\.xml\.erb$/) do |matches|
+    input_file = "views/gadget.xml.erb"
+    output_file = "website/public/gadget.xml"
+
+    output = erb(input_file, binding)
+    
+    write_file(output_file, output)
+
+    puts "compiled #{input_file} -> #{input_file}"
+  end
+
 end

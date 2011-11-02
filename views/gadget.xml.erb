@@ -36,7 +36,8 @@
    "html" and "card" are required for all Gmail contextual gadgets. -->
   <Content type="html" view="card">
       <![CDATA[	<span></span>
-      <%= erb :'gadget_content.html', {:root_url => @root_url, :git_revision => @git_revision } %>
+      <%= erb 'views/gadget_content.html.erb', binding #{:root_url => @root_url, :git_revision => @git_revision }
+      %>
       ]]>
   </Content>
 </Module>
