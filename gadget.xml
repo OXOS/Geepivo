@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="GeePivo"
+    description="Create Pivotal Tracker stories from emails"
+    height="50"
+    author="Wojciech Kruszewski (OXOS.pl)"
+    author_email="wojciech@oxos.pl"
+    author_location="Nowa Sól, Poland">
+
+    <!-- Declare feature dependencies. -->
+
+    <!-- This one is not specific to Gmail contextual gadgets. -->
+    <Require feature="dynamic-height"/>
+    
+    <Require feature="setprefs"/>
+
+    <!-- The next feature, Caja, is optional, and is supported for
+     use only within test domains. Uncomment the tag only for
+     non-production gadgets. -->
+    <!-- <Require feature="caja"/> -->
+
+    <!-- The next feature, google.contentmatch, is required for all
+     Gmail contextual gadgets.
+     <Param> - specify one or more comma-separated extractor IDs in
+     a param named "extractors". This line is overridden by the extractor ID
+     in the manifest, but is still expected to be present. -->
+    <Require feature="google.contentmatch">
+      <Param name="extractors">
+        google.com:SubjectExtractor
+      </Param>
+    </Require>
+
+  </ModulePrefs>
+
+  <!-- Define the content type and display location. The settings
+   "html" and "card" are required for all Gmail contextual gadgets. -->
+  <Content type="html" view="card">
+      <![CDATA[	<span></span>
+      <style type="text/css" media=screen>
+<!--
+    .tipsy { font-size: 10px; position: absolute; padding: 5px; z-index: 100000; }
+  .tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: center; }
+
+  /* Rounded corners */
+  .tipsy-inner { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+  
+  /* Uncomment for shadow */
+  /*.tipsy-inner { box-shadow: 0 0 5px #000000; -webkit-box-shadow: 0 0 5px #000000; -moz-box-shadow: 0 0 5px #000000; }*/
+  
+  .tipsy-arrow { position: absolute; width: 0; height: 0; line-height: 0; border: 5px dashed #000; }
+  
+  /* Rules to colour arrows */
+  .tipsy-arrow-n { border-bottom-color: #000; }
+  .tipsy-arrow-s { border-top-color: #000; }
+  .tipsy-arrow-e { border-left-color: #000; }
+  .tipsy-arrow-w { border-right-color: #000; }
+  
+	.tipsy-n .tipsy-arrow { top: 0px; left: 50%; margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
+    .tipsy-nw .tipsy-arrow { top: 0; left: 10px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent;}
+    .tipsy-ne .tipsy-arrow { top: 0; right: 10px; border-bottom-style: solid; border-top: none;  border-left-color: transparent; border-right-color: transparent;}
+  .tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -5px; border-top-style: solid; border-bottom: none;  border-left-color: transparent; border-right-color: transparent; }
+    .tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; border-top-style: solid; border-bottom: none;  border-left-color: transparent; border-right-color: transparent; }
+    .tipsy-se .tipsy-arrow { bottom: 0; right: 10px; border-top-style: solid; border-bottom: none; border-left-color: transparent; border-right-color: transparent; }
+  .tipsy-e .tipsy-arrow { right: 0; top: 50%; margin-top: -5px; border-left-style: solid; border-right: none; border-top-color: transparent; border-bottom-color: transparent; }
+  .tipsy-w .tipsy-arrow { left: 0; top: 50%; margin-top: -5px; border-right-style: solid; border-left: none; border-top-color: transparent; border-bottom-color: transparent; }
+
+-->
+</style>
+
+      <div id='gadget_container' style='position:relative; display: none; margin:0px; padding:0px;'></div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+      <script type="text/javascript">
+          if (typeof window.templates === 'undefined') { window.templates = {}; }
+window.templates['gadget_template'] = "<div style='widh: 100px; position:absolute; top:3px; left:3px;'>\n  <button class=\"create_story_button\">Create Story</button>\n</div>\n\n<div class='notification_area' style=' position:absolute; top:3px; left:113px;'>&nbsp;</div>\n\n<div style='widh: 100px; position:absolute; top:3px; right:3px;'>\n  <a href=\"#\" id='toggle_settings_button' style='font-size: small; text-decoration:none;'>settings ▼</a>\n</div>\n\n<div style='clear:both;'></div>\n\n<div id='settings' style='font-size: small; display:none; padding-top:30px;'>\n  <input type='submit' class='save_settings_button' value=\"Save settings\" />\n\n  <fieldset>\n  <legend>Required</legend>\n\n  <div>\n    <label>Pivotal API Token\n      <span class='help'>To get an API token log in to PivotalTracker, open <em><a href='https://www.pivotaltracker.com/profile'>Profile</a></em> form, scroll down to <em>API Token section</em> and click <em>Create New Token</em>.</span>\n      <input name=\"pivotal_api_token\" disabled='disabled' />\n      <a href='#' id='edit_pivotal_api_token'>enter new api token</a>\n    </label>\n  </div>\n  \n  <div>\n    <label>Project ID\n      <span class='help'>ID of a PivotalTracker project Geepivo will create stories in. You can find project ID at the end of project URL, e.g.: https://www.pivotaltracker.com/projects/12345</span>.\n      <select name=\"project_id\" />\n    </label>\n  </div>\n\n  </fieldset>\n  \n  <fieldset>\n  <legend>Optional</legend>\n\n  <div>\n    <label>Story type (optional):\n    <span class='help'>One of following: \"feature\", \"chore\" or \"bug\". Leave the field empty to use the default value - \"feature\".</span>\n    <input name=\"story_type\" />\n    </label>\n  </div>\n  \n  <div>\n    <label>Requested by (optional):\n    <span class='help'>Optionally specify user who will be notified about story delivery and prompted to accept or reject it. By default it's the owner of API token. Enter \"Full Name\" here, as visible in Pivotal Tracker's story form.</span>.\n    <input name=\"requested_by\" />\n    </label>\n  </div>\n  \n  <div>\n    <label>Owned by (optional):\n    <span class='help'>User the story will be assigned to. By default the story is not assigned. Enter \"Full Name\" here, as visible in Pivotal Tracker's story form.</em>.</span>\n    <input name=\"owned_by\" />\n    </label>\n  </div>\n\n  <div>\n    <label>Integration ID (optional):\n    <span class='help'>Experimental hack. Configure \"External Integration\" in Pivotal Tracker and it will be filled with Story ID. Set base URL of the integration to something like <em>https://mail.google.com/mail/u/0/?shva=1#search/</em>, story ID will be prepended and you will be able to search for emails that contain links to the story.</em>.</span>\n    <input name=\"integration_id\" />\n    </label>\n  </div>\n  \n  </fieldset>\n\n</div>\n";
+        window.initializeGeepivoGadget();
+      </script>
+
+      ]]>
+  </Content>
+</Module>
