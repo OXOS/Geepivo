@@ -16,8 +16,7 @@ rescue LoadError
 end
 
 FileList['coffeescripts/*.coffee'].each do |input_file|
-  base_name = /coffeescripts\/(.*)\.coffee$/.match(input_file)[1]
-  output_file = "javascripts/#{base_name}.js"
+  output_file = input_file.sub(/\.coffee$/,'.js')
 
   desc "Compile #{input_file} to #{output_file}"
   file output_file => input_file do |t|
@@ -29,8 +28,8 @@ FileList['coffeescripts/*.coffee'].each do |input_file|
 end
 
 FileList['templates/*.html'].each do |input_file|
-  base_name = /templates\/(.*)\.html$/.match(input_file)[1]
-  output_file = "javascripts/#{base_name}.js"
+  output_file = input_file.sub(/\.html$/,'.js')
+
   desc "Compile #{input_file} to #{output_file}"
   file output_file => input_file do |t|
     input_file = t.prerequisites[0]
