@@ -32,7 +32,7 @@ class window.Project
         else "Error retrieving list of projects"
       on_error(message)
     else
-      console.log "GET /projects response XML"
+      console.log "GET /projects response XML", response.text
       respXML = parse_xml(response.text)
       projects_dom = $(respXML).find("projects project")
 
