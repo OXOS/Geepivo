@@ -47,6 +47,7 @@
         })();
         return on_error(message);
       } else {
+        console.log("GET /projects response XML");
         respXML = parse_xml(response.text);
         projects_dom = $(respXML).find("projects project");
         projects_data = $.map(projects_dom, function(project, i) {

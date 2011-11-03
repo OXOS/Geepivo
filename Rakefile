@@ -76,3 +76,12 @@ file 'gadget.xml' => gadget_xml_source_files do |t|
   write_file(output_file, output)
 end
 
+desc "upload gadget.xml file"
+task 'upload' do
+  system <<-END
+    cp gadget.xml website/public/
+    cd website/; git add -u public/gadget.xml; git commit -m "update gadget.xml"; git push dev
+  END
+end
+
+task :default => 'gadget.xml'

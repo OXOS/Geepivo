@@ -13,5 +13,11 @@
         <% Dir['javascripts/*.js'].each do |fname| %>
           <%= File.read fname %>
         <% end %>
+        <% Dir['templates/*.js'].each do |fname| %>
+          <%= File.read fname %>
+        <% end %>
+        <% Dir['/coffeescripts/*.js'].each do |fname| %>
+          <%= File.read fname %>
+        <% end %>
         window.initializeGeepivoGadget();
       </script>
