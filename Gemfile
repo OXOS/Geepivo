@@ -18,8 +18,8 @@ group :development do
   gem "growl"
   gem "rake"
   gem "guard"
-  gem "guard-coffeescript"
-  gem "guard-shell"
+  gem "guard-rake", :git => "git://github.com/wojciech/guard-rake.git"
+  gem "coffee-script"
   gem "therubyracer"
   gem "json_pure"
 end
