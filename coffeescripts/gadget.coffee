@@ -58,6 +58,7 @@ class window.GeepivoGadget
       opt.val(member.name)
       opt.text(member.name)
       opt.appendTo(owned_by_dropdown)
+    owned_by_dropdown.val( @prefs.getString('owned_by') )
 
 
   #TODO: use DOM event instead

@@ -259,8 +259,8 @@ describe("Gadget with settings expanded", function() {
     expect( options.length ).toEqual(1)
     expect( options.eq(0) ).toBeSelected();
 
-    expect( options.eq(0).val() ).toEqual('Wojtek Kruszewski')
-    expect( options.eq(0) ).toHaveText('Wojtek Kruszewski')
+    expect( options.eq(0).val() ).toEqual('daniel')
+    expect( options.eq(0) ).toHaveText('daniel')
   });
 
   it("should cancel updating pivotal api token", function() {
@@ -299,7 +299,7 @@ describe("Gadget with settings expanded", function() {
       input.val( 'updated ' + key );
     }
     $('select[name=project_id]').val(145861);
-    $('select[name=owned_by]').val('daniel');
+    $('select[name=owned_by]').val('Wojtek Kruszewski');
 
     window.gadgets.Prefs.prototype.set = jasmine.createSpy('gadgets.Prefs.prototype.set');
 
@@ -309,9 +309,9 @@ describe("Gadget with settings expanded", function() {
       ['pivotal_api_token',	'updated pivotal_api_token'],
       ['project_id',	'145861'],
       ['story_type',	'updated story_type'],
-      ['requested_by',	'updated requested_by'],
+      ['requested_by',	null],
       ['integration_id',	'updated integration_id'],
-      ['owned_by',	'daniel']
+      ['owned_by',	'Wojtek Kruszewski']
       ]);
 
     expect( $(".notification_area") ).toHaveText('Settings saved');

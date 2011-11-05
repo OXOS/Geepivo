@@ -167,13 +167,14 @@ window.templates['gadget_template'] = "<div style='widh: 100px; position:absolut
       console.log('proj', proj);
       owned_by_dropdown = $('select[name=owned_by]');
       owned_by_dropdown.html('');
-      return $.each(proj.members, function(i, member) {
+      $.each(proj.members, function(i, member) {
         var opt;
         opt = $('<option />');
         opt.val(member.name);
         opt.text(member.name);
         return opt.appendTo(owned_by_dropdown);
       });
+      return owned_by_dropdown.val(this.prefs.getString('owned_by'));
     };
     GeepivoGadget.prototype.on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {

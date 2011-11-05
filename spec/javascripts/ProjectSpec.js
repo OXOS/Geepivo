@@ -89,7 +89,7 @@ describe("Project", function() {
           id: 145861,
           name: 'Side project',
           members: [
-            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' }
+            { email: 'daniel@oxos.pl', name: 'daniel', initials: 'DS' }
           ]
         }
       ];
