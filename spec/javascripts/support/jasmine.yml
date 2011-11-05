@@ -13,6 +13,8 @@
 src_files:
     - spec/javascripts/helpers/jquery.min.js
     - javascripts/**/*.js
+    - coffeescripts/**/*.js
+    - templates/**/*.js
 
 # stylesheets
 #
