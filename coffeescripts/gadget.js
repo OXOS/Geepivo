@@ -53,10 +53,14 @@
     GeepivoGadget.prototype.populate_members_dropdowns = function() {
       var owned_by_dropdown, proj, selected_project_id;
       selected_project_id = $('select[name=project_id]').val();
+      console.log('selected_project_id', selected_project_id);
+      console.log('@projects', this.projects);
       proj = _.find(this.projects, function(p) {
         return p.id === parseInt(selected_project_id);
       });
+      console.log('proj', proj);
       owned_by_dropdown = $('select[name=owned_by]');
+      owned_by_dropdown.html('');
       return $.each(proj.members, function(i, member) {
         var opt;
         opt = $('<option />');
@@ -121,6 +125,9 @@
         $(".create_story_button", this.container).click(__bind(function() {
           this.post_create_story(this.inputs.subject, this.inputs.message_id);
           return false;
+        }, this));
+        $("select[name=project_id]").change(__bind(function() {
+          return this.populate_members_dropdowns();
         }, this));
         $("#toggle_settings_button").click(__bind(function() {
           $("#settings").toggle();

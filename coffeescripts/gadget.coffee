@@ -43,13 +43,16 @@ class window.GeepivoGadget
 
   populate_members_dropdowns: () ->
     selected_project_id = $('select[name=project_id]').val()
-    #unless @projects && selected_project_id
-    #  return
+    console.log('selected_project_id', selected_project_id)
+    console.log('@projects', @projects)
 
     proj = _.find @projects, (p)->
       p.id == parseInt(selected_project_id)
+
+    console.log('proj', proj)
     
     owned_by_dropdown = $('select[name=owned_by]')
+    owned_by_dropdown.html('')
     $.each proj.members, (i, member) ->
       opt = $('<option />')
       opt.val(member.name)
@@ -112,6 +115,9 @@ class window.GeepivoGadget
         @post_create_story @inputs.subject, @inputs.message_id
         return false
       
+      $("select[name=project_id]").change =>
+        @populate_members_dropdowns()
+    
       $("#toggle_settings_button").click =>
         $("#settings").toggle()
         @on_settings_opened_or_closed()

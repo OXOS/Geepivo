@@ -54,7 +54,6 @@
             id: parseInt($(project).children('id').text()),
             name: $(project).children('name').text(),
             members: $.map($(project).find('person'), function(person, i) {
-              console.log('person', person);
               return {
                 email: $(person).children('email').text(),
                 name: $(person).children('name').text(),

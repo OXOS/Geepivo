@@ -238,6 +238,31 @@ describe("Gadget with settings expanded", function() {
     expect( options.eq(0) ).toHaveText('Wojtek Kruszewski')
   });
 
+  it("should update members dropdown when project selected", function() {
+    options = $('select[name=owned_by] option');
+    expect( options.length ).toEqual(2)
+
+    spyOn(window.the_gadget, 'populate_members_dropdowns').andCallThrough();
+
+    project_id_select = $('select[name=project_id]');
+    expect( project_id_select ).toExist();
+    expect( project_id_select ).toBeVisible();
+    expect( $('select[name=project_id]') ).toHandle('change');
+    expect( project_id_select ).toHaveValue(293423);
+
+    project_id_select.val(145861);       //doesn't trigger change event, so...
+    project_id_select.trigger('change'); //...here goes a workaround
+
+    expect(window.the_gadget.populate_members_dropdowns).toHaveBeenCalled();
+
+    options = $('select[name=owned_by]').children('option');
+    expect( options.length ).toEqual(1)
+    expect( options.eq(0) ).toBeSelected();
+
+    expect( options.eq(0).val() ).toEqual('Wojtek Kruszewski')
+    expect( options.eq(0) ).toHaveText('Wojtek Kruszewski')
+  });
+
   it("should cancel updating pivotal api token", function() {
     expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
 
