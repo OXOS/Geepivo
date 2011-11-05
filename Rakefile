@@ -16,6 +16,21 @@ rescue LoadError
   end
 end
 
+desc "Compile get_projects_response.xml"
+file "spec/javascripts/helpers/get_projects_response.js" => "spec/javascripts/fixtures/get_projects_response.xml" do |t|
+  puts t.inspect
+  input_file = t.prerequisites[0]
+  base_name = File.basename(input_file)
+  input_content = File.read(t.prerequisites[0])
+  output_file = t.name
+
+  output = ""
+  output << "if (typeof window.fixtures === 'undefined') { window.fixtures = {}; }\n"
+  output << "window.fixtures['#{base_name}'] = #{input_content.to_json};"
+
+  File.open(output_file, "w") {|file| file.write(output) }
+end
+
 FileList['coffeescripts/*.coffee'].each do |input_file|
   output_file = input_file.sub(/\.coffee$/,'.js')
 
