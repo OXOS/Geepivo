@@ -8,14 +8,6 @@ GIT
       rspec (>= 1.3.1)
       selenium-webdriver (>= 0.1.3)
 
-GIT
-  remote: git://github.com/wojciech/guard-rake.git
-  revision: 2e9137134968c34b3e2d9972e0cc4aaad9888faa
-  specs:
-    guard-rake (0.0.1)
-      guard
-      rake
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -34,6 +26,8 @@ GEM
     growl (1.0.3)
     guard (0.8.8)
       thor (~> 0.14.6)
+    guard-shell (0.1.1)
+      guard (>= 0.2.0)
     jasmine-core (1.1.0)
     json_pure (1.6.1)
     libv8 (3.3.10.2)
@@ -85,7 +79,7 @@ DEPENDENCIES
   erubis
   growl
   guard
-  guard-rake!
+  guard-shell
   jasmine (= 1.1.1)!
   json_pure
   rack-openid
