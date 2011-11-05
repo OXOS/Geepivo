@@ -50,8 +50,20 @@
         return projects_api.get_index(this._populate_projects_dropdown_request_success_callback, this._populate_projects_dropdown_request_error_callback);
       }
     };
+    GeepivoGadget.prototype._populate_dropdown = function(dropdown, options, val) {
+      console.log('_populate_dropdown', dropdown, options, val);
+      dropdown.html('');
+      $.each(options, function(i, option) {
+        var option_elm;
+        option_elm = $('<option />');
+        option_elm.val(option[0]);
+        option_elm.text(option[1]);
+        return option_elm.appendTo(dropdown);
+      });
+      return dropdown.val(val);
+    };
     GeepivoGadget.prototype.populate_members_dropdowns = function() {
-      var owned_by_dropdown, proj, selected_project_id;
+      var options, proj, selected_project_id;
       selected_project_id = $('select[name=project_id]').val();
       console.log('selected_project_id', selected_project_id);
       console.log('@projects', this.projects);
@@ -59,16 +71,12 @@
         return p.id === parseInt(selected_project_id);
       });
       console.log('proj', proj);
-      owned_by_dropdown = $('select[name=owned_by]');
-      owned_by_dropdown.html('');
-      $.each(proj.members, function(i, member) {
-        var opt;
-        opt = $('<option />');
-        opt.val(member.name);
-        opt.text(member.name);
-        return opt.appendTo(owned_by_dropdown);
+      options = _.map(proj.members, function(member) {
+        console.log('member', member);
+        return [member.name, member.name];
       });
-      return owned_by_dropdown.val(this.prefs.getString('owned_by'));
+      this._populate_dropdown($('select[name=owned_by]'), options, this.prefs.getString('owned_by'));
+      return this._populate_dropdown($('select[name=requested_by]'), options, this.prefs.getString('requested_by'));
     };
     GeepivoGadget.prototype.on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {

@@ -245,9 +245,6 @@ describe("Gadget with settings expanded", function() {
     spyOn(window.the_gadget, 'populate_members_dropdowns').andCallThrough();
 
     project_id_select = $('select[name=project_id]');
-    expect( project_id_select ).toExist();
-    expect( project_id_select ).toBeVisible();
-    expect( $('select[name=project_id]') ).toHandle('change');
     expect( project_id_select ).toHaveValue(293423);
 
     project_id_select.val(145861);       //doesn't trigger change event, so...
@@ -258,7 +255,11 @@ describe("Gadget with settings expanded", function() {
     options = $('select[name=owned_by]').children('option');
     expect( options.length ).toEqual(1)
     expect( options.eq(0) ).toBeSelected();
-
+    expect( options.eq(0).val() ).toEqual('daniel')
+    expect( options.eq(0) ).toHaveText('daniel')
+    options = $('select[name=requested_by]').children('option');
+    expect( options.length ).toEqual(1)
+    expect( options.eq(0) ).toBeSelected();
     expect( options.eq(0).val() ).toEqual('daniel')
     expect( options.eq(0) ).toHaveText('daniel')
   });
@@ -309,7 +310,7 @@ describe("Gadget with settings expanded", function() {
       ['pivotal_api_token',	'updated pivotal_api_token'],
       ['project_id',	'145861'],
       ['story_type',	'updated story_type'],
-      ['requested_by',	null],
+      ['requested_by',	'Wojtek Kruszewski'],
       ['integration_id',	'updated integration_id'],
       ['owned_by',	'Wojtek Kruszewski']
       ]);

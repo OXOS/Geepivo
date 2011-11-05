@@ -41,6 +41,17 @@ class window.GeepivoGadget
       projects_api.pivotal_api_token = pivotal_api_token
       projects_api.get_index @_populate_projects_dropdown_request_success_callback, @_populate_projects_dropdown_request_error_callback
 
+  _populate_dropdown: (dropdown, options, val) ->
+    console.log('_populate_dropdown', dropdown, options, val)
+
+    dropdown.html('')
+    $.each options, (i, option) ->
+      option_elm = $('<option />')
+      option_elm.val(option[0])
+      option_elm.text(option[1])
+      option_elm.appendTo(dropdown)
+    dropdown.val( val )
+
   populate_members_dropdowns: () ->
     selected_project_id = $('select[name=project_id]').val()
     console.log('selected_project_id', selected_project_id)
@@ -50,16 +61,13 @@ class window.GeepivoGadget
       p.id == parseInt(selected_project_id)
 
     console.log('proj', proj)
-    
-    owned_by_dropdown = $('select[name=owned_by]')
-    owned_by_dropdown.html('')
-    $.each proj.members, (i, member) ->
-      opt = $('<option />')
-      opt.val(member.name)
-      opt.text(member.name)
-      opt.appendTo(owned_by_dropdown)
-    owned_by_dropdown.val( @prefs.getString('owned_by') )
 
+    options = _.map proj.members, (member) ->
+      console.log('member', member)
+      return [member.name, member.name]
+
+    @_populate_dropdown $('select[name=owned_by]'),     options, @prefs.getString('owned_by')
+    @_populate_dropdown $('select[name=requested_by]'), options, @prefs.getString('requested_by')
 
   #TODO: use DOM event instead
   on_settings_opened_or_closed: () ->
