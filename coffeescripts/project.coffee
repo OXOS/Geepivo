@@ -32,14 +32,20 @@ class window.Project
         else "Error retrieving list of projects"
       on_error(message)
     else
-      console.log "GET /projects response XML", response.text
       respXML = parse_xml(response.text)
       projects_dom = $(respXML).find("projects project")
 
       projects_data = $.map projects_dom, (project, i) ->
         return {
           id: parseInt($(project).children('id').text())
-          name: $(project).children('name').text()
+          name: $(project).children('name').text(),
+          members: $.map $(project).find('person'), (person, i) ->
+            console.log('person', person)
+            return {
+              email:    $(person).children('email').text(),
+              name:     $(person).children('name').text(),
+              initials: $(person).children('initials').text()
+            }
         }
       on_success projects_data
 

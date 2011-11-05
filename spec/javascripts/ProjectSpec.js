@@ -79,11 +79,18 @@ describe("Project", function() {
       expected_data = [
         {
           id: 293423,
-          name: 'Main Project'
+          name: 'Main Project',
+          members: [
+            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' }
+          ]
         },
         {
           id: 145861,
-          name: 'Side project'
+          name: 'Side project',
+          members: [
+            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' },
+            { email: 'daniel@oxos.pl', name: 'daniel', initials: 'DS' }
+          ]
         }
       ];
 
