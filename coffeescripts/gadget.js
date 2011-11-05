@@ -27,6 +27,7 @@
     };
     GeepivoGadget.prototype._populate_projects_dropdown_request_success_callback = function(projects) {
       var projects_dropdown;
+      this.projects = projects;
       projects_dropdown = $('select[name=project_id]');
       $.each(projects, function(i, project) {
         var opt;
@@ -35,7 +36,8 @@
         opt.text(project.name);
         return opt.appendTo(projects_dropdown);
       });
-      return projects_dropdown.val(this.prefs.getString('project_id'));
+      projects_dropdown.val(this.prefs.getString('project_id'));
+      return this.populate_members_dropdowns();
     };
     GeepivoGadget.prototype.populate_projects_dropdown = function() {
       var pivotal_api_token, projects_api, projects_dropdown;
@@ -47,6 +49,21 @@
         projects_api.pivotal_api_token = pivotal_api_token;
         return projects_api.get_index(this._populate_projects_dropdown_request_success_callback, this._populate_projects_dropdown_request_error_callback);
       }
+    };
+    GeepivoGadget.prototype.populate_members_dropdowns = function() {
+      var owned_by_dropdown, proj, selected_project_id;
+      selected_project_id = $('select[name=project_id]').val();
+      proj = _.find(this.projects, function(p) {
+        return p.id === parseInt(selected_project_id);
+      });
+      owned_by_dropdown = $('select[name=owned_by]');
+      return $.each(proj.members, function(i, member) {
+        var opt;
+        opt = $('<option />');
+        opt.val(member.name);
+        opt.text(member.name);
+        return opt.appendTo(owned_by_dropdown);
+      });
     };
     GeepivoGadget.prototype.on_settings_opened_or_closed = function() {
       if ($("#settings").is(":visible")) {

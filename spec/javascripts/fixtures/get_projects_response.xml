@@ -30,6 +30,15 @@
         </person>
         <role>Owner</role>
       </membership>
+      <membership>
+        <id>460055</id>
+        <person>
+          <email>daniel@oxos.pl</email>
+          <name>daniel</name>
+          <initials>DS</initials>
+        </person>
+        <role>Member</role>
+      </membership>
     </memberships>
     <integrations type="array">
     </integrations>
@@ -66,15 +75,6 @@
           <initials>WOJ</initials>
         </person>
         <role>Owner</role>
-      </membership>
-      <membership>
-        <id>460055</id>
-        <person>
-          <email>daniel@oxos.pl</email>
-          <name>daniel</name>
-          <initials>DS</initials>
-        </person>
-        <role>Member</role>
       </membership>
     </memberships>
     <integrations type="array">

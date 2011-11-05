@@ -229,16 +229,14 @@ describe("Gadget with settings expanded", function() {
     expect( window.the_gadget.populate_projects_dropdown ).toHaveBeenCalled();
   });
   
-  //it("should populate members dropdown", function() {
-  //  options = $('select[name=project_id] option')
-  //  expect( options.length ).toEqual(2)
-  //  expect( options.eq(1) ).toBeSelected();
+  it("should populate members dropdown", function() {
+    options = $('select[name=owned_by] option')
+    expect( options.length ).toEqual(2)
+    expect( options.eq(0) ).toBeSelected();
 
-  //  expect( options.eq(0).val() ).toEqual('1')
-  //  expect( options.eq(0) ).toHaveText('Sample Project')
-  //  expect( options.eq(1).val() ).toEqual('2')
-  //  expect( options.eq(1) ).toHaveText('Sample Project 2')
-  //});
+    expect( options.eq(0).val() ).toEqual('Wojtek Kruszewski')
+    expect( options.eq(0) ).toHaveText('Wojtek Kruszewski')
+  });
 
   it("should cancel updating pivotal api token", function() {
     expect( $('input[name=pivotal_api_token]') ).toHaveValue('pivotal_api_token_value');
@@ -276,6 +274,7 @@ describe("Gadget with settings expanded", function() {
       input.val( 'updated ' + key );
     }
     $('select[name=project_id]').val(145861);
+    $('select[name=owned_by]').val('daniel');
 
     window.gadgets.Prefs.prototype.set = jasmine.createSpy('gadgets.Prefs.prototype.set');
 
@@ -287,7 +286,7 @@ describe("Gadget with settings expanded", function() {
       ['story_type',	'updated story_type'],
       ['requested_by',	'updated requested_by'],
       ['integration_id',	'updated integration_id'],
-      ['owned_by',	'updated owned_by']
+      ['owned_by',	'daniel']
       ]);
 
     expect( $(".notification_area") ).toHaveText('Settings saved');

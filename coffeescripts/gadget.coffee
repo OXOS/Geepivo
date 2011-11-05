@@ -20,7 +20,7 @@ class window.GeepivoGadget
     projects_dropdown = $('select[name=project_id]')
     projects_dropdown.html('')
 
-  _populate_projects_dropdown_request_success_callback: (projects) =>
+  _populate_projects_dropdown_request_success_callback: (@projects) =>
     projects_dropdown = $('select[name=project_id]')
     $.each projects, (i, project) ->
       opt = $('<option />')
@@ -28,6 +28,7 @@ class window.GeepivoGadget
       opt.text(project.name)
       opt.appendTo(projects_dropdown)
     projects_dropdown.val( @prefs.getString('project_id') )
+    @populate_members_dropdowns()
 
   populate_projects_dropdown: () ->
     projects_dropdown = $('select[name=project_id]')
@@ -39,6 +40,22 @@ class window.GeepivoGadget
       projects_api = new Project(window.gadgets.io)
       projects_api.pivotal_api_token = pivotal_api_token
       projects_api.get_index @_populate_projects_dropdown_request_success_callback, @_populate_projects_dropdown_request_error_callback
+
+  populate_members_dropdowns: () ->
+    selected_project_id = $('select[name=project_id]').val()
+    #unless @projects && selected_project_id
+    #  return
+
+    proj = _.find @projects, (p)->
+      p.id == parseInt(selected_project_id)
+    
+    owned_by_dropdown = $('select[name=owned_by]')
+    $.each proj.members, (i, member) ->
+      opt = $('<option />')
+      opt.val(member.name)
+      opt.text(member.name)
+      opt.appendTo(owned_by_dropdown)
+
 
   #TODO: use DOM event instead
   on_settings_opened_or_closed: () ->

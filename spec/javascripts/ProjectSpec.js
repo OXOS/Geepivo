@@ -81,15 +81,15 @@ describe("Project", function() {
           id: 293423,
           name: 'Main Project',
           members: [
-            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' }
+            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' },
+            { email: 'daniel@oxos.pl', name: 'daniel', initials: 'DS' }
           ]
         },
         {
           id: 145861,
           name: 'Side project',
           members: [
-            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' },
-            { email: 'daniel@oxos.pl', name: 'daniel', initials: 'DS' }
+            { email: 'wojtek@oxos.pl', name: 'Wojtek Kruszewski', initials: 'WOJ' }
           ]
         }
       ];
