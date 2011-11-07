@@ -104,9 +104,12 @@ class window.GeepivoGadget
       @container.html(gadget_content)
       @container.show()
     
-      settings = [ "pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by" ]
+      settings = [ "pivotal_api_token", "project_id", "requested_by", "integration_id", "owned_by" ]
       for i of settings
-        setting_input(settings[i]).val @prefs.getString(settings[i])
+        key = settings[i]
+        unless key == 'story_type'
+          setting_input().val @prefs.getString(key)
+      $("input[name=story_type][value=#{@prefs.getString('story_type')}]").prop('checked', true)
     
       unless @prefs.getString("pivotal_api_token") and @prefs.getString("project_id")
         $(".notification_area", @container).html "Please fill required settings"
@@ -135,7 +138,13 @@ class window.GeepivoGadget
       $(".save_settings_button", @container).click =>
         for i of settings
           key = settings[i]
-          val = setting_input(key).val()
+          if key == 'story_type'
+            val = $('input[name=story_type]:checked').val()
+          else
+            val = setting_input(key).val()
+
+          console.log 'saving setting', key, val
+
           @prefs.set key, val
           $("#settings").hide()
           @on_settings_opened_or_closed()

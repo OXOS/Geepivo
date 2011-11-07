@@ -92,7 +92,7 @@
     function GeepivoGadget() {
       this._populate_projects_dropdown_request_success_callback = __bind(this._populate_projects_dropdown_request_success_callback, this);
       this._populate_projects_dropdown_request_error_callback = __bind(this._populate_projects_dropdown_request_error_callback, this);
-      var gadget_content, i, imatch, matches, setting_input, settings;
+      var gadget_content, i, imatch, key, matches, setting_input, settings;
       matches = window.google.contentmatch.getContentMatches();
       this.inputs = {};
       for (imatch in matches) {
@@ -113,10 +113,14 @@
         window.gadgets.window.adjustHeight(32);
         this.container.html(gadget_content);
         this.container.show();
-        settings = ["pivotal_api_token", "project_id", "story_type", "requested_by", "integration_id", "owned_by"];
+        settings = ["pivotal_api_token", "project_id", "requested_by", "integration_id", "owned_by"];
         for (i in settings) {
-          setting_input(settings[i]).val(this.prefs.getString(settings[i]));
+          key = settings[i];
+          if (key !== 'story_type') {
+            setting_input().val(this.prefs.getString(key));
+          }
         }
+        $("input[name=story_type][value=" + (this.prefs.getString('story_type')) + "]").prop('checked', true);
         if (!(this.prefs.getString("pivotal_api_token") && this.prefs.getString("project_id"))) {
           $(".notification_area", this.container).html("Please fill required settings");
           $("#settings").show();
@@ -144,10 +148,15 @@
           return false;
         }, this));
         $(".save_settings_button", this.container).click(__bind(function() {
-          var i, key, val;
+          var i, val;
           for (i in settings) {
             key = settings[i];
-            val = setting_input(key).val();
+            if (key === 'story_type') {
+              val = $('input[name=story_type]:checked').val();
+            } else {
+              val = setting_input(key).val();
+            }
+            console.log('saving setting', key, val);
             this.prefs.set(key, val);
             $("#settings").hide();
             this.on_settings_opened_or_closed();
